@@ -9,7 +9,7 @@
       <h3>Hello</h3>
     </Content>
     <Actions fullBleed>
-      <Button>This is a button!</Button>
+      <Button>Work</Button>
     </Actions>
   </Card>
 </main>
