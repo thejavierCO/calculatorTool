@@ -9,17 +9,21 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@smui/layout-grid": "^7.0.0-beta.0",
     "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "svelte": "^3.55.1",
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "@smui/banner": "^7.0.0-beta.0",
     "@smui/button": "^7.0.0-beta.0",
     "@smui/card": "^7.0.0-beta.0",
     "@smui/data-table": "^7.0.0-beta.0",
     "@smui/dialog": "^7.0.0-beta.0",
     "@smui/list": "^7.0.0-beta.0",
     "@smui/radio": "^7.0.0-beta.0",
+    "@smui/top-app-bar": "^7.0.0-beta.0",
+    "normalize.css": "^8.0.1",
     "svelte-material-ui": "^7.0.0-beta.0"
   }
 }
