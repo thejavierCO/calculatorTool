@@ -5,8 +5,12 @@
 
 <main>
   <Card>
-    <h3>Hello</h3>
-    <Button>This is a button!</Button>
+    <Content>
+      <h3>Hello</h3>
+    </Content>
+    <Actions fullBleed>
+      <Button>This is a button!</Button>
+    </Actions>
   </Card>
 </main>
 
