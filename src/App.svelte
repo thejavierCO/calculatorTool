@@ -18,25 +18,15 @@
       <Cell span={6}>
         <Card style="margin:5px;">
           <Content>
-            <h3>Hello</h3>
+            <h3>6</h3>
           </Content>
-          <Actions>
-            <Button>ADD</Button>
-            <Button>DEL</Button>
-            <Button>EDIT</Button>
-          </Actions>
         </Card>
       </Cell>
       <Cell span={6}>
         <Card style="margin:5px;">
           <Content>
-            <h3>Hello</h3>
+            <h3>6</h3>
           </Content>
-          <Actions>
-            <Button>ADD</Button>
-            <Button>DEL</Button>
-            <Button>EDIT</Button>
-          </Actions>
         </Card>
       </Cell>
     </LayoutGrid>
