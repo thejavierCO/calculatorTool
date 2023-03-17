@@ -2,6 +2,7 @@
   import Button from "@smui/button";
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import Card, { Content, Actions } from "@smui/card";
+  import LayoutGrid, { Cell } from "@smui/layout-grid";
 </script>
 
 <main>
@@ -13,14 +14,32 @@
     </Row>
   </TopAppBar>
   <Content>
-    <Card>
-      <Content>
-        <h3>Hello</h3>
-      </Content>
-      <Actions fullBleed>
-        <Button>Work</Button>
-      </Actions>
-    </Card>
+    <LayoutGrid>
+      <Cell span={6}>
+        <Card style="margin:5px;">
+          <Content>
+            <h3>Hello</h3>
+          </Content>
+          <Actions>
+            <Button>ADD</Button>
+            <Button>DEL</Button>
+            <Button>EDIT</Button>
+          </Actions>
+        </Card>
+      </Cell>
+      <Cell span={6}>
+        <Card style="margin:5px;">
+          <Content>
+            <h3>Hello</h3>
+          </Content>
+          <Actions>
+            <Button>ADD</Button>
+            <Button>DEL</Button>
+            <Button>EDIT</Button>
+          </Actions>
+        </Card>
+      </Cell>
+    </LayoutGrid>
   </Content>
 </main>
 
