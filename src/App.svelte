@@ -24,24 +24,8 @@
 
     <Cell span={4}>
       <Card>
-        <Content>
-          <h3>6</h3>
-        </Content>
-      </Card>
-    </Cell>
-
-    <Cell span={4}>
-      <Card>
-        <Content>
-          <h3>6</h3>
-        </Content>
-      </Card>
-    </Cell>
-
-    <Cell span={4}>
-      <Card>
-        <Content>
-          <h3>6</h3>
+        <Content style="text-align:center;">
+          <h3 style="font-size:50px;">+</h3>
         </Content>
       </Card>
     </Cell>
