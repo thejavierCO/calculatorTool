@@ -13,24 +13,39 @@
       </Section>
     </Row>
   </TopAppBar>
-  <Content>
-    <LayoutGrid>
-      <Cell span={6}>
-        <Card style="margin:5px;">
-          <Content>
-            <h3>6</h3>
-          </Content>
-        </Card>
-      </Cell>
-      <Cell span={6}>
-        <Card style="margin:5px;">
-          <Content>
-            <h3>6</h3>
-          </Content>
-        </Card>
-      </Cell>
-    </LayoutGrid>
-  </Content>
+  <LayoutGrid>
+    <Cell span={4}>
+      <Card>
+        <Content>
+          <h3>6</h3>
+        </Content>
+      </Card>
+    </Cell>
+
+    <Cell span={4}>
+      <Card>
+        <Content>
+          <h3>6</h3>
+        </Content>
+      </Card>
+    </Cell>
+
+    <Cell span={4}>
+      <Card>
+        <Content>
+          <h3>6</h3>
+        </Content>
+      </Card>
+    </Cell>
+
+    <Cell span={4}>
+      <Card>
+        <Content>
+          <h3>6</h3>
+        </Content>
+      </Card>
+    </Cell>
+  </LayoutGrid>
 </main>
 
 <style>
