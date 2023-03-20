@@ -1,8 +1,9 @@
 <script>
-  import Button from "@smui/button";
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
-  import Card, { Content, Actions } from "@smui/card";
+  import Card, { Content, Actions, ActionIcons } from "@smui/card";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
+  import Button, { Label } from "@smui/button";
+  import IconButton, { Icon } from "@smui/icon-button";
 </script>
 
 <main>
@@ -16,17 +17,7 @@
   <LayoutGrid>
     <Cell span={4}>
       <Card>
-        <Content>
-          <h3>6</h3>
-        </Content>
-      </Card>
-    </Cell>
-
-    <Cell span={4}>
-      <Card>
-        <Content style="text-align:center;">
-          <h3 style="font-size:50px;">+</h3>
-        </Content>
+        <Content />
       </Card>
     </Cell>
   </LayoutGrid>
