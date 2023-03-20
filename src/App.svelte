@@ -4,6 +4,9 @@
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import IconButton, { Icon } from "@smui/icon-button";
+  import Autocomplete from "@smui-extra/autocomplete";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
 </script>
 
 <main>
@@ -17,11 +20,24 @@
   <LayoutGrid>
     <Cell span={4}>
       <Card>
-        <Content />
+        <form action="#">
+          <Content>
+            <Autocomplete
+              options={[
+                "black container",
+                "white container",
+                "metalic container",
+              ]}
+              textfield$variant="outlined"
+              label="Type"
+            />
+            <hr />
+            <Textfield label="adasd" value="test">
+              <HelperText slot="helper">Helper Text</HelperText>
+            </Textfield>
+          </Content>
+        </form>
       </Card>
     </Cell>
   </LayoutGrid>
 </main>
-
-<style>
-</style>
