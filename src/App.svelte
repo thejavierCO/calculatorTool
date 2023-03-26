@@ -1,6 +1,7 @@
 <script>
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import Content from "./Components/Content.svelte";
+  import Form from "./Components/Form.svelte";
 </script>
 
 <main>
@@ -12,6 +13,6 @@
     </Row>
   </TopAppBar>
   <Content>
-    <div>test</div>
+    <Form>init</Form>
   </Content>
 </main>
