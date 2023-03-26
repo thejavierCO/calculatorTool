@@ -3,7 +3,8 @@
 </script>
 
 <LayoutGrid>
-  <slot>data</slot>
+  <slot name="input" />
+  <slot>apps</slot>
 </LayoutGrid>
 
 <style>

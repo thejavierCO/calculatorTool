@@ -3,7 +3,7 @@
 </script>
 
 <Cell span={4}>
-  <slot><span>init</span></slot>
+  <slot test={true}><span>init</span></slot>
 </Cell>
 
 <style>
