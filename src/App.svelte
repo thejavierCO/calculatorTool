@@ -11,8 +11,5 @@
   <Title value="Working" />
   <Content>
     <Form on:addCalc={add} />
-    <div slot="components">
-      <Form on:addCalc={add} />
-    </div>
   </Content>
 </main>
