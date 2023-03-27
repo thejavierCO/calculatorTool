@@ -1,11 +1,12 @@
 <script>
-  import LayoutGrid from "@smui/layout-grid";
+  import LayoutGrid, { Cell } from "@smui/layout-grid";
 </script>
 
 <LayoutGrid>
-  <slot name="input" />
-  <slot>apps</slot>
+  <Cell span={4}>
+    <slot>from</slot>
+  </Cell>
+  {#if $$slots.hasOwnProperty("components")}
+    <slot name="components">from</slot>
+  {/if}
 </LayoutGrid>
-
-<style>
-</style>

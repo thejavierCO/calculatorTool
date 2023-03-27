@@ -1,20 +1,18 @@
 <script>
-  import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
+  import Title from "./Components/Title.svelte";
   import Content from "./Components/Content.svelte";
   import Form from "./Components/Form.svelte";
+  function add(...a) {
+    console.log(a);
+  }
 </script>
 
 <main>
-  <TopAppBar variant="static">
-    <Row>
-      <Section>
-        <Title>Working</Title>
-      </Section>
-    </Row>
-  </TopAppBar>
+  <Title value="Working" />
   <Content>
-    <Form>
-      <div>asda</div>
-    </Form>
+    <Form on:addCalc={add} />
+    <div slot="components">
+      <Form on:addCalc={add} />
+    </div>
   </Content>
 </main>

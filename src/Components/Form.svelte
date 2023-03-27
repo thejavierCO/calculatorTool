@@ -1,10 +1,15 @@
 <script>
-  import { Cell } from "@smui/layout-grid";
+  import DataTypes from "../js/data";
+  import Card, { Content, Actions } from "@smui/card";
+  import Autocomplete from "@smui-extra/autocomplete";
 </script>
 
-<Cell span={4}>
-  <slot test={true}><span>init</span></slot>
-</Cell>
-
-<style>
-</style>
+<Card>
+  <Content>
+    <Autocomplete
+      options={DataTypes}
+      label="Type"
+      textfield$variant="outlined"
+    />
+  </Content>
+</Card>
