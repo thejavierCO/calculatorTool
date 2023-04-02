@@ -2,14 +2,18 @@
   import Title from "./Components/Title.svelte";
   import Content from "./Components/Content.svelte";
   import Form from "./Components/Form.svelte";
-  function add(...a) {
+  let show = true;
+  function add({ detail: a }) {
     console.log(a);
+    show = !show;
   }
 </script>
 
 <main>
   <Title value="Working" />
   <Content>
-    <Form on:save={add} />
+    {#if show}
+      <Form on:save={add} />
+    {/if}
   </Content>
 </main>
