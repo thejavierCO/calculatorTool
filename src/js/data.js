@@ -1,15 +1,13 @@
-import { readable, readonly, get } from "svelte/store";
+import { writable, readable, get, derived } from "svelte/store";
 
-let Types = readable([
+export let Types = writable([
   "Bote Negro",
   "Bote dorado",
   "Bote de aluminio"
 ])
 
 let DataTypes = () => new Promise((res, rej) => {
-  Types.subscribe((a) => {
-    res(a)
-  })
+  res(get(Types))
 })
 
 export default DataTypes;

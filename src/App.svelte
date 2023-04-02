@@ -10,6 +10,6 @@
 <main>
   <Title value="Working" />
   <Content>
-    <Form on:addCalc={add} />
+    <Form on:save={add} />
   </Content>
 </main>
