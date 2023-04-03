@@ -8,7 +8,7 @@
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
-  export let Time = 5;
+  export let Time = 10;
   export let progress = 0;
   export let start = false;
   export let id;
@@ -48,7 +48,8 @@
   <CircularProgress style="height: 200px; width: 200px;" {progress} {closed} />
 </Cell>
 <Cell span={12}>
-  {progress}
+  Posicion : {progress}
+  Time: {Time}
 </Cell>
 <Cell span={12}>
   {#if type == "temporizer"}
