@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import Timer from "./timer.svelte";
   import Card, { Content, Actions } from "@smui/card";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
@@ -13,9 +14,7 @@
   <Card>
     <Content>
       <LayoutGrid>
-        <Cell span={12}>
-          <span>{id}</span>
-        </Cell>
+        <Timer type="temporizer" />
       </LayoutGrid>
       <Actions>
         <Button on:click={() => emit("add", { id: uuidv4() })}>
