@@ -1,3 +1,5 @@
+import { writable, get, derived } from "svelte/store";
+
 class Events extends EventTarget {
   emit(type, data) {
     this.dispatchEvent(!data ? new Event(type) : new CustomEvent(type, { detail: data }))
@@ -12,6 +14,7 @@ export class Store extends Events {
     super();
     if (!id) throw "Require id";
     this.id = id;
+    this._data = writable([]);
   }
   get data() {
     return localStorage.getItem(this.id)

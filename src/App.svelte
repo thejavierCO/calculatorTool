@@ -3,6 +3,7 @@
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
   import { Cards } from "./js/data";
+  import Timer from "./Components/timer2.svelte";
   let addItem = ({ detail }) =>
     Cards.update((a) => {
       a.push(detail);
@@ -22,18 +23,23 @@
   <Title value="Working" />
   <LayoutGrid>
     {#if $Cards.length == 0}
-      <Card type="start" on:add={addItem} />
+      <Card type="start" on:add={addItem}><p>inmit</p></Card>
     {:else}
       {#each $Cards as item}
         <Card
           type="item"
           id={item.id}
-          bind:progress={item.progress}
-          bind:start={item.start}
           on:add={addItem}
           on:del={delItem}
           on:edit={editItem}
-        />
+        >
+          <Timer
+            type="temporizer"
+            Time={item.time}
+            progress={item.progress}
+            start={item.start}
+          />
+        </Card>
       {/each}
     {/if}
   </LayoutGrid>
