@@ -3,30 +3,33 @@
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
-  let showButtonAdd = true;
-  let addItem = ({ detail }) => {
+  let addItem = ({ detail }) =>
     Cards.update((a) => {
       a.push(detail);
-      showButtonAdd = false;
       return a;
     });
-  };
-  let delItem = ({ detail }) => {
-    Cards.update((a) => {
-      console.log(detail, a);
-      return a;
-    });
+  let delItem = ({ detail }) =>
+    Cards.update((a) => a.filter((item) => detail.id !== item.id));
+
+  let editItem = ({ detail }) => {
+    console.log(detail);
   };
 </script>
 
 <main>
   <Title value="Working" />
   <LayoutGrid>
-    {#if showButtonAdd}
+    {#if $Cards.length == 0}
       <Card on:add={addItem} />
     {:else}
       {#each $Cards as item}
-        <Card on:add={addItem} on:del={delItem} />
+        <Card
+          type="item"
+          id={item.id}
+          on:add={addItem}
+          on:del={delItem}
+          on:edit={editItem}
+        />
       {/each}
     {/if}
   </LayoutGrid>
