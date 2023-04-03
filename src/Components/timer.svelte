@@ -1,24 +1,30 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
 
+  let emit = createEventDispatcher();
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
   export let Time = 30;
+  export let progress = 0;
   let temp;
-  let progress = 0;
   let start = false;
   function TimerTest() {
     start = true;
     temp = setInterval(() => {
-      if (progress < 0.99) progress = progress + 1 / Time;
-      else {
+      if (progress < 0.99) {
+        progress = progress + 1 / Time;
+        emit("progress", progress);
+      } else {
         progress = 1;
+        emit("progress", progress);
         clearInterval(temp);
         setTimeout(() => {
           progress = 0;
           start = false;
+          emit("progress", progress);
         }, 500);
       }
     }, 1000);

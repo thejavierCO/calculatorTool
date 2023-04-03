@@ -21,7 +21,7 @@
   <Title value="Working" />
   <LayoutGrid>
     {#if $Cards.length == 0}
-      <Card on:add={addItem} />
+      <Card type="start" on:add={addItem} />
     {:else}
       {#each $Cards as item}
         <Card
