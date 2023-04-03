@@ -4,8 +4,29 @@
   import CircularProgress from "@smui/circular-progress";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
-  export let progress = 0;
   export let closed = false;
+  export let Time = 30;
+  let temp;
+  let progress = 0;
+  let start = false;
+  function TimerTest() {
+    start = true;
+    temp = setInterval(() => {
+      if (progress < 0.99) progress = progress + 1 / Time;
+      else {
+        progress = 1;
+        clearInterval(temp);
+        setTimeout(() => {
+          progress = 0;
+          start = false;
+        }, 500);
+      }
+    }, 1000);
+  }
+  function StopTimerTest() {
+    clearInterval(temp);
+    start = false;
+  }
 </script>
 
 <Cell span={12}>
@@ -13,12 +34,15 @@
 </Cell>
 <Cell span={12}>
   {#if type == "temporizer"}
-    <Button>
-      <Label>Start</Label>
-    </Button>
-    <Button>
-      <Label>Stop</Label>
-    </Button>
+    {#if start}
+      <Button on:click={StopTimerTest}>
+        <Label>Stop</Label>
+      </Button>
+    {:else}
+      <Button on:click={TimerTest}>
+        <Label>Start</Label>
+      </Button>
+    {/if}
     <Button>
       <Label>Edit</Label>
     </Button>
