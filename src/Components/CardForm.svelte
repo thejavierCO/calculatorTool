@@ -11,19 +11,14 @@
   export let type = undefined;
   let progresso = 0;
   const emit = createEventDispatcher();
-  onMount(() => {
-    let unsus = Cards.subscribe((e) => {
-      console.log(
-        id,
-        e.map((e) => {
-          if (e.id == id) {
-            if (typeof e.progress === "number") {
-              progresso = e.progress;
-            }
-          }
-          return e;
-        })
-      );
+  Cards.subscribe((e) => {
+    e.map((e) => {
+      if (e.id == id) {
+        if (typeof e.progress === "number") {
+          progresso = e.progress;
+        } else progresso = 0;
+      }
+      return e;
     });
   });
 </script>
@@ -32,6 +27,7 @@
   <Card>
     <Content>
       <LayoutGrid>
+        <Cell span={12}>{id}</Cell>
         {#if type !== "start"}
           <Timer
             on:progress={({ detail }) => {

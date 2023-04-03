@@ -33,6 +33,11 @@
     clearInterval(temp);
     start = false;
   }
+  function clearTimerTest() {
+    progress = 0;
+    StopTimerTest();
+    emit("progress", progress);
+  }
 </script>
 
 <Cell span={12}>
@@ -44,13 +49,13 @@
       <Button on:click={StopTimerTest}>
         <Label>Stop</Label>
       </Button>
+      <Button on:click={clearTimerTest}>
+        <Label>Clear</Label>
+      </Button>
     {:else}
       <Button on:click={TimerTest}>
         <Label>Start</Label>
       </Button>
     {/if}
-    <Button>
-      <Label>Edit</Label>
-    </Button>
   {/if}
 </Cell>
