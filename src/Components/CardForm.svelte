@@ -3,12 +3,10 @@
   import Card, { Content, Actions } from "@smui/card";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
+  import { v4 as uuidv4 } from "uuid";
+  export let id = uuidv4();
   const emit = createEventDispatcher();
-  export let data = Math.round(Math.random() * 100);
-  export let store;
-  onDestroy(() => {
-    console.log("del", data);
-  });
+  onDestroy(() => console.log("del id:" + id));
 </script>
 
 <Cell>
@@ -16,17 +14,17 @@
     <Content>
       <LayoutGrid>
         <Cell span={12}>
-          <span>{data}</span>
+          <span>{id}</span>
         </Cell>
       </LayoutGrid>
       <Actions>
-        <Button on:click={() => emit("add", data)}>
+        <Button on:click={() => emit("add", id)}>
           <Label style="text-align:center">add</Label>
         </Button>
-        <Button on:click={() => emit("del", data)}>
+        <Button on:click={() => emit("del", id)}>
           <Label style="text-align:center">Del</Label>
         </Button>
-        <Button on:click={() => emit("edit", data)}>
+        <Button on:click={() => emit("edit", id)}>
           <Label style="text-align:center">Edit</Label>
         </Button>
       </Actions>
