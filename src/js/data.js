@@ -1,4 +1,7 @@
-import { writable, readable, get, derived } from "svelte/store";
+import { Store } from "./tools"
+import { writable, get, derived } from "svelte/store";
+
+export let store = new Store("store");
 
 export let Types = writable([
   "Bote Negro",
@@ -7,14 +10,8 @@ export let Types = writable([
 ]);
 
 export let Cards = writable([], (set) => {
-  let data = JSON.parse(localStorage.getItem("store"))
-  if (data == null) localStorage.setItem("store", "[]");
-  else set(data)
+  if (store.data == null) store.data = "[]";
+  else set(JSON.parse(store.data))
 });
 
-let DataTypes = () => new Promise((res, rej) => {
-  res(get(Types))
-})
-
-Cards.subscribe((a) => { localStorage.setItem("store", JSON.stringify(a)) })
-export default DataTypes;
+Cards.subscribe((a) => { store.data = JSON.stringify(a) })

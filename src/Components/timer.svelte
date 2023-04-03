@@ -1,43 +1,39 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onDestroy } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
+  import { Temporisador } from "../js/tools";
 
-  let emit = createEventDispatcher();
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
-  export let Time = 30;
+  export let Time = 5;
   export let progress = 0;
-  let temp;
   let start = false;
+  const emit = createEventDispatcher();
+  const TimerCounter = new Temporisador(Time);
+
   function TimerTest() {
-    start = true;
-    temp = setInterval(() => {
-      if (progress < 0.99) {
-        progress = progress + 1 / Time;
-        emit("progress", progress);
-      } else {
-        progress = 1;
-        emit("progress", progress);
-        clearInterval(temp);
-        setTimeout(() => {
-          progress = 0;
-          start = false;
-          emit("progress", progress);
-        }, 500);
-      }
-    }, 1000);
+    const { start: startTimer, stop: stopTimer } = TimerCounter.start();
+    startTimer(({ detail: { time, total } }) => {
+      start = true;
+      progress = (time * 1) / total;
+      emit("progress", progress);
+    });
+    stopTimer((_) => {
+      start = false;
+      progress = 0;
+      emit("progress", progress);
+    });
   }
   function StopTimerTest() {
-    clearInterval(temp);
+    TimerCounter.pause();
     start = false;
   }
   function clearTimerTest() {
-    progress = 0;
-    StopTimerTest();
-    emit("progress", progress);
+    TimerCounter.clear();
   }
+  onDestroy(() => StopTimerTest());
 </script>
 
 <Cell span={12}>

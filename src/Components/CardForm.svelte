@@ -1,26 +1,24 @@
 <script>
-  import { onMount } from "svelte";
   import { Cards } from "../js/data";
   import { createEventDispatcher } from "svelte";
-  import Timer from "./timer.svelte";
   import Card, { Content, Actions } from "@smui/card";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
+  import Timer from "./timer.svelte";
   import { v4 as uuidv4 } from "uuid";
   export let id = 0;
   export let type = undefined;
-  let progresso = 0;
   const emit = createEventDispatcher();
-  Cards.subscribe((e) => {
-    e.map((e) => {
+  let progresso = 0;
+  Cards.subscribe((e) =>
+    e.forEach((e) => {
       if (e.id == id) {
         if (typeof e.progress === "number") {
           progresso = e.progress;
         } else progresso = 0;
       }
-      return e;
-    });
-  });
+    })
+  );
 </script>
 
 <Cell>
@@ -57,7 +55,7 @@
             <Label style="text-align:center">Del</Label>
           </Button>
           <Button on:click={() => emit("edit", { id })}>
-            <Label style="text-align:center">view id</Label>
+            <Label style="text-align:center">Edit</Label>
           </Button>
         {/if}
       </Actions>

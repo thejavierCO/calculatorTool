@@ -3,7 +3,6 @@
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
-  let data = false;
   let addItem = ({ detail }) =>
     Cards.update((a) => {
       a.push(detail);
@@ -13,7 +12,15 @@
     Cards.update((a) => a.filter((item) => detail.id !== item.id));
 
   let editItem = ({ detail }) => {
-    console.log(detail);
+    Cards.update((e) => {
+      console.log(
+        e.map((e) => {
+          if (detail == e.id) console.log(e);
+          return e;
+        })
+      );
+      return e;
+    });
   };
 </script>
 
