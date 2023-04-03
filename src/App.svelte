@@ -3,6 +3,7 @@
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
+  let data = false;
   let addItem = ({ detail }) =>
     Cards.update((a) => {
       a.push(detail);

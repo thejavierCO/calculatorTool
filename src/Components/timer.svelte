@@ -1,11 +1,11 @@
 <script lang="ts">
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
-  export let type: "temporizer" | "Cronometer" | undefined = undefined;
   import CircularProgress from "@smui/circular-progress";
 
-  let progress = 0;
-  let closed = false;
+  export let type: "temporizer" | "Cronometer" | undefined = undefined;
+  export let progress = 0;
+  export let closed = false;
 </script>
 
 <Cell span={12}>
