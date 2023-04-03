@@ -1,17 +1,15 @@
 <script lang="ts">
-  import { onDestroy, onMount, beforeUpdate } from "svelte";
+  import { onMount } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
   import { Temporisador } from "../js/tools";
-  import { store } from "../js/data";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
   export let Time = 10;
   export let progress = 0;
   export let start = false;
-  export let id;
   const TimerCounter = new Temporisador(Time);
 
   function TimerTest() {
@@ -34,14 +32,6 @@
     start = false;
   }
   onMount(() => (start == true ? TimerTest() : StopTimerTest()));
-  store.on("delete", ({ target }) => {
-    JSON.parse(target.data).forEach((e) => {
-      if (e.id == id) TimerCounter.pause();
-    });
-    setTimeout(() => {
-      if (start == true) TimerTest();
-    }, 200);
-  });
 </script>
 
 <Cell span={12}>

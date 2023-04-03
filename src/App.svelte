@@ -1,16 +1,14 @@
 <script>
-  import { Cards } from "./js/data";
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
-  import { store } from "./js/data";
+  import { Cards } from "./js/data";
   let addItem = ({ detail }) =>
     Cards.update((a) => {
       a.push(detail);
       return a;
     });
   let delItem = ({ detail }) => {
-    store.emit("delete");
     Cards.update((a) => a.filter((item) => detail.id !== item.id));
   };
   let editItem = ({ detail }) => {

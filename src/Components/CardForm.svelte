@@ -21,7 +21,7 @@
       <LayoutGrid>
         <Cell span={12}>{id}</Cell>
         {#if type !== "start"}
-          <Timer bind:id bind:start bind:progress type="temporizer" />
+          <Timer bind:start bind:progress type="temporizer" />
         {:else}
           Add Item
         {/if}
