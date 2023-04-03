@@ -4,7 +4,7 @@
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
   import { Temporisador } from "../js/tools";
-  import { Cards } from "../js/data";
+  import { store } from "../js/data";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
@@ -34,8 +34,13 @@
     start = false;
   }
   onMount(() => (start == true ? TimerTest() : StopTimerTest()));
-  beforeUpdate(() => {
-    console.log(start);
+  store.on("delete", ({ target }) => {
+    JSON.parse(target.data).forEach((e) => {
+      if (e.id == id) TimerCounter.pause();
+    });
+    setTimeout(() => {
+      if (start == true) TimerTest();
+    }, 200);
   });
 </script>
 
