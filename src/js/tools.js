@@ -31,7 +31,8 @@ export class Temporisador extends Events {
     this.Temp = undefined;
   }
 
-  start() {
+  start(progress) {
+    if (progress) this._time = progress * this._timeCounter / 1;
     this.Temp = setInterval(() => {
       if (this._time < this._timeCounter) {
         this._time = this._time + this._timeCounter / this._interval;

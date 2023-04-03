@@ -1,29 +1,28 @@
 <script lang="ts">
-  import { createEventDispatcher, onDestroy } from "svelte";
+  import { onDestroy, onMount, beforeUpdate } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
   import { Temporisador } from "../js/tools";
+  import { Cards } from "../js/data";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
   export let Time = 5;
   export let progress = 0;
-  let start = false;
-  const emit = createEventDispatcher();
+  export let start = false;
+  export let id;
   const TimerCounter = new Temporisador(Time);
 
   function TimerTest() {
-    const { start: startTimer, stop: stopTimer } = TimerCounter.start();
+    const { start: startTimer, stop: stopTimer } = TimerCounter.start(progress);
     startTimer(({ detail: { time, total } }) => {
       start = true;
       progress = (time * 1) / total;
-      emit("progress", progress);
     });
     stopTimer((_) => {
       start = false;
       progress = 0;
-      emit("progress", progress);
     });
   }
   function StopTimerTest() {
@@ -32,12 +31,19 @@
   }
   function clearTimerTest() {
     TimerCounter.clear();
+    start = false;
   }
-  onDestroy(() => StopTimerTest());
+  onMount(() => (start == true ? TimerTest() : StopTimerTest()));
+  beforeUpdate(() => {
+    console.log(start);
+  });
 </script>
 
 <Cell span={12}>
   <CircularProgress style="height: 200px; width: 200px;" {progress} {closed} />
+</Cell>
+<Cell span={12}>
+  {progress}
 </Cell>
 <Cell span={12}>
   {#if type == "temporizer"}

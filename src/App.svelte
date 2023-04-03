@@ -12,15 +12,9 @@
     Cards.update((a) => a.filter((item) => detail.id !== item.id));
 
   let editItem = ({ detail }) => {
-    Cards.update((e) => {
-      console.log(
-        e.map((e) => {
-          if (detail == e.id) console.log(e);
-          return e;
-        })
-      );
-      return e;
-    });
+    // Cards.update((e) => {
+    //   return e;
+    // });
   };
 </script>
 
@@ -34,6 +28,8 @@
         <Card
           type="item"
           id={item.id}
+          bind:progress={item.progress}
+          bind:start={item.start}
           on:add={addItem}
           on:del={delItem}
           on:edit={editItem}
