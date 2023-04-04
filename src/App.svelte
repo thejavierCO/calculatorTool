@@ -3,19 +3,29 @@
   import Card from "./Components/CardForm.svelte";
   import LayoutGrid from "@smui/layout-grid";
 
-  import { Cards } from "./js/data";
-  let addItem = ({ detail }) => {};
-  let delItem = ({ detail }) => {};
-  let editItem = ({ detail }) => {};
+  import { store } from "./js/data";
+  let { base } = store;
+  let addItem = ({ detail }) => {
+    store.add(detail);
+  };
+  let delItem = ({ detail }) => {
+    store.del(detail.id);
+  };
+  let editItem = ({ detail }) => {
+    store.edit(detail.id, (data) => {
+      console.log(data);
+      return data;
+    });
+  };
 </script>
 
 <main>
   <Title value="Working" />
   <LayoutGrid>
-    {#if $Cards.length == 0}
+    {#if $base.length == 0}
       <Card type="start" on:add={addItem}><p>inmit</p></Card>
     {:else}
-      {#each $Cards as item}
+      {#each $base as item}
         <Card
           type="item"
           id={item.id}

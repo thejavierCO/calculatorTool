@@ -4,7 +4,7 @@
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import { v4 as uuidv4 } from "uuid";
-  export let id = 0;
+  export let id = "";
   export let type = undefined;
   const emit = createEventDispatcher();
   onMount(() => {
@@ -20,7 +20,15 @@
         <slot>default data card</slot>
       </LayoutGrid>
       <Actions>
-        <Button on:click={() => emit("add", { id: uuidv4() })}>
+        <Button
+          on:click={() =>
+            emit("add", {
+              id: uuidv4(),
+              status: false,
+              progress: 0,
+              time: 10,
+            })}
+        >
           <Label style="text-align:center">add</Label>
         </Button>
         {#if type == "item"}

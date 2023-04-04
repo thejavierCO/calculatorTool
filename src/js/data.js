@@ -9,9 +9,4 @@ export let Types = writable([
   "Bote de aluminio"
 ]);
 
-export let Cards = writable([], (set) => {
-  if (store.data == null) store.data = "[]";
-  else set(JSON.parse(store.data))
-});
-
-Cards.subscribe((a) => { store.data = JSON.stringify(a) })
+export let Cards = store.base;

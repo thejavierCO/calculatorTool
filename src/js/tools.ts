@@ -1,7 +1,7 @@
-import { writable, get, derived } from "svelte/store";
+import { writable, get, derived, Writable } from "svelte/store";
 
 class Events extends EventTarget {
-  emit(type, data) {
+  emit(type, data?) {
     this.dispatchEvent(!data ? new Event(type) : new CustomEvent(type, { detail: data }))
   }
   on(type, fns) {
@@ -10,44 +10,76 @@ class Events extends EventTarget {
 }
 
 export class Store extends Events {
+  id: string
+  _data: Writable<[{
+    id: string,
+    status: boolean,
+    progress: number,
+    time: number,
+  }] | []>
   constructor(id) {
     super();
     if (!id) throw "Require id";
     this.id = id;
-    this._data = writable([]);
+    this._data = writable([], (set) => {
+      const data = JSON.parse(localStorage.getItem(this.id));
+      if (data == null) localStorage.setItem(this.id, "[]")
+      set(data)
+    });
+  }
+  add(data) {
+    this.base.update((a) => {
+      a.push(data);
+      return a;
+    })
+    this.emit("add", data)
+  }
+  del(id) {
+    // this.emit("del", { id })
+    console.log(id);
+  }
+  edit(id, fns) {
+    // this.emit("edit", { id })
+    console.log(id);
+  }
+  get base() {
+    return this._data;
   }
   get data() {
-    return localStorage.getItem(this.id)
+    return get(this._data)
   }
   set data(value) {
-    if (typeof value === "string") localStorage.setItem(this.id, value)
-    else throw "require string data"
+    this._data.set(value)
   }
 }
 
 export class Temporisador extends Events {
-  constructor(time = 0) {
+  _timeCounter: number
+  _time: number
+  _interval: number
+  _Temp: any
+  constructor(time: number = 0) {
     super();
     this._timeCounter = time;
     this._time = 0;
     this._interval = 1000 / 10;
-    this.Temp = undefined;
+    this._Temp = undefined;
   }
 
   start(progress) {
     if (progress) this._time = progress * this._timeCounter / 1;
-    this.Temp = setInterval(() => {
+    this._Temp = setInterval(() => {
       if (this._time < this._timeCounter) {
         this._time = this._time + this._timeCounter / this._interval;
         this.emit("start", { time: this.time, total: this._timeCounter });
-        this.on("pause", () => clearInterval(this.Temp))
+        this.on("pause", () => clearInterval(this._Temp))
       } else if (this._time > this._timeCounter) {
         this.emit("stop");
       }
     }, this._interval)
     this.on("stop", () => {
       this._time = 0;
-      clearInterval(this.Temp);
+      clearInterval(this._Temp);
     })
     return { start: (fns) => this.on("start", fns), stop: (fns) => this.on("stop", fns) };
   }
