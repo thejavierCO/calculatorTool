@@ -4,6 +4,7 @@
   import LayoutGrid from "@smui/layout-grid";
 
   import { store } from "./js/data";
+  import Timer from "./Components/timer.svelte";
   let { base } = store;
   let addItem = ({ detail }) => {
     store.add(detail);
@@ -32,7 +33,17 @@
           on:add={addItem}
           on:del={delItem}
           on:edit={editItem}
-        />
+        >
+          <Timer
+            id={item.id}
+            type="temporizer"
+            bind:status={item.status}
+            bind:progress={item.progress}
+            bind:time={item.time}
+          >
+            init
+          </Timer>
+        </Card>
       {/each}
     {/if}
   </LayoutGrid>

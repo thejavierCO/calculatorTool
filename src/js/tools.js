@@ -36,6 +36,9 @@ export class Store extends Events {
     this.base.update((a) => a.map(e => e.id == id ? fns(e) : e))
     this.emit("edit", { id })
   }
+  get(id) {
+    return this.data.filter(e => e.id == id);
+  }
   get base() {
     return this._data;
   }
