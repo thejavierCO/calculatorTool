@@ -1,4 +1,4 @@
-import { Store } from "./tools"
+import { Store } from "./tools.js"
 import { writable, get, derived } from "svelte/store";
 
 export let store = new Store("store");

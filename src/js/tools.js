@@ -1,7 +1,7 @@
-import { writable, get, derived, Writable } from "svelte/store";
+import { writable, get, derived } from "svelte/store";
 
 class Events extends EventTarget {
-  emit(type, data?) {
+  emit(type, data) {
     this.dispatchEvent(!data ? new Event(type) : new CustomEvent(type, { detail: data }))
   }
   on(type, fns) {
@@ -10,13 +10,6 @@ class Events extends EventTarget {
 }
 
 export class Store extends Events {
-  id: string
-  _data: Writable<[{
-    id: string,
-    status: boolean,
-    progress: number,
-    time: number,
-  }] | []>
   constructor(id) {
     super();
     if (!id) throw "Require id";
@@ -26,6 +19,7 @@ export class Store extends Events {
       if (data == null) localStorage.setItem(this.id, "[]")
       set(data)
     });
+    this._data.subscribe((a) => localStorage.setItem(this.id, JSON.stringify(a)))
   }
   add(data) {
     this.base.update((a) => {
@@ -35,12 +29,12 @@ export class Store extends Events {
     this.emit("add", data)
   }
   del(id) {
-    // this.emit("del", { id })
-    console.log(id);
+    this.base.update((a) => a.filter(e => e.id != id))
+    this.emit("del", { id })
   }
   edit(id, fns) {
-    // this.emit("edit", { id })
-    console.log(id);
+    this.base.update((a) => a.map(e => e.id == id ? fns(e) : e))
+    this.emit("edit", { id })
   }
   get base() {
     return this._data;
@@ -54,11 +48,7 @@ export class Store extends Events {
 }
 
 export class Temporisador extends Events {
-  _timeCounter: number
-  _time: number
-  _interval: number
-  _Temp: any
-  constructor(time: number = 0) {
+  constructor(time = 0) {
     super();
     this._timeCounter = time;
     this._time = 0;
