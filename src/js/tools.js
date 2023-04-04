@@ -17,9 +17,11 @@ export class Store extends Events {
     this._data = writable([], (set) => {
       const data = JSON.parse(localStorage.getItem(this.id));
       if (data == null) localStorage.setItem(this.id, "[]")
-      set(data)
+      else set(data)
     });
-    this._data.subscribe((a) => localStorage.setItem(this.id, JSON.stringify(a)))
+    this._data.subscribe((a) => {
+      localStorage.setItem(this.id, JSON.stringify(a))
+    })
   }
   add(data) {
     this.base.update((a) => {
