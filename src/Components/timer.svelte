@@ -59,16 +59,16 @@
   });
 </script>
 
-<Cell span={12}>
-  <p>{id}</p>
+<Cell span={12} style="text-align:center;">
+  <!-- <p>{id}</p> -->
   <CircularProgress style="height: 200px; width: 200px;" {progress} {closed} />
-  <slot>initasda</slot>
+  <!-- <slot>initasda</slot> -->
 </Cell>
-<Cell span={12}>
+<!-- <Cell span={12}>
   Posicion : {progress}
   Time: {time}
-</Cell>
-<Cell span={12}>
+</Cell> -->
+<Cell span={12} style="text-align:center;">
   {#if type == "temporizer"}
     {#if status == "play"}
       <Button on:click={StopTimerTest}>

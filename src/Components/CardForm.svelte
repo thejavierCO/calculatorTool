@@ -19,7 +19,7 @@
         <!-- <Cell span={12}>{id}</Cell> -->
         <slot>default data card</slot>
       </LayoutGrid>
-      <Actions>
+      <Actions fullBleed>
         <Button
           on:click={() =>
             emit("add", {
@@ -29,14 +29,14 @@
               time: 10,
             })}
         >
-          <Label style="text-align:center">add</Label>
+          <Label>add</Label>
         </Button>
         {#if type == "item"}
           <Button on:click={() => emit("del", { id })}>
-            <Label style="text-align:center">Del</Label>
+            <Label>Del</Label>
           </Button>
           <Button on:click={() => emit("edit", { id })}>
-            <Label style="text-align:center">Edit</Label>
+            <Label>Edit</Label>
           </Button>
         {/if}
       </Actions>

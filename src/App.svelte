@@ -41,7 +41,7 @@
             bind:progress={item.progress}
             bind:time={item.time}
           >
-            init
+            <!-- init -->
           </Timer>
         </Card>
       {/each}
