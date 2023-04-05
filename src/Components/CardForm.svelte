@@ -24,7 +24,7 @@
           on:click={() =>
             emit("add", {
               id: uuidv4(),
-              status: false,
+              status: "stop",
               progress: 0,
               time: 10,
             })}

@@ -1,10 +1,5 @@
 <script lang="ts">
-  import {
-    onMount,
-    createEventDispatcher,
-    beforeUpdate,
-    afterUpdate,
-  } from "svelte";
+  import { beforeUpdate, createEventDispatcher } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
@@ -15,64 +10,53 @@
   export let closed = false;
   export let time = 10;
   export let progress = 0;
-  export let status = false;
+  export let status: "play" | "stop" = "stop";
   export let id;
   const TimerCounter = new Temporisador(time);
   const emit = createEventDispatcher();
+  let once = false;
 
-  function TimerTest() {
+  function StartTimerTest() {
     const { start: startTimer, stop: stopTimer } = TimerCounter.start(progress);
     startTimer(({ detail: { time, total } }) => {
-      status = true;
+      if (status != "play") status = "play";
       progress = (time * 1) / total;
       store.edit(id, (a) => {
         a.progress = progress;
         return a;
       });
-      emit("start");
     });
     stopTimer((_) => {
-      status = false;
+      if (status != "stop") status = "stop";
       progress = 0;
       store.edit(id, (a) => {
         a.progress = 0;
         return a;
       });
-      emit("stop");
     });
   }
   function StopTimerTest() {
     TimerCounter.pause();
-    status = false;
-    emit("pause");
+    if (status != "stop") status = "stop";
   }
   function clearTimerTest() {
     TimerCounter.clear();
-    status = false;
-    emit("clear");
   }
-  let once = false;
-  onMount(() => {
-    if (status == true) TimerTest();
-    else StopTimerTest();
+  store.once("del", () => {
+    TimerCounter.pause();
+    setTimeout(() => {
+      if (status == "play") StartTimerTest();
+    }, 500);
   });
-  // beforeUpdate(() => {
-  //   if (isMount == true) {
-  //     if (once == true && status == false) {
-  //       once = false;
-  //     } else if (once == false && status == true) {
-  //       once = true;
-  //     }
-  //   }
-  // });
-  // store.once("del", () => {
-  //   if (status == true) {
-  //     TimerCounter.pause();
-  //   }
-  // });
-  // once((a) => {
-  //   console.log(a);
-  // });
+  beforeUpdate(() => {
+    if (once == false) {
+      if (status == "play") StartTimerTest();
+      else if (status == "stop") StopTimerTest();
+      once = true;
+    } else if (once == true && status == "stop") {
+      once = false;
+    }
+  });
 </script>
 
 <Cell span={12}>
@@ -86,15 +70,15 @@
 </Cell>
 <Cell span={12}>
   {#if type == "temporizer"}
-    {#if status}
-      <Button on:click={() => (status = false)}>
+    {#if status == "play"}
+      <Button on:click={StopTimerTest}>
         <Label>Stop</Label>
       </Button>
       <Button on:click={clearTimerTest}>
         <Label>Clear</Label>
       </Button>
-    {:else}
-      <Button on:click={() => (status = true)}>
+    {:else if status == "stop"}
+      <Button on:click={StartTimerTest}>
         <Label>Start</Label>
       </Button>
     {/if}

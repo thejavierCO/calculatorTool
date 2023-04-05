@@ -64,23 +64,29 @@ export class Temporisador extends Events {
     this._time = 0;
     this._interval = 1000 / 10;
     this._Temp = undefined;
+    this.status = "stop";
+    this.on("start", () => this.status = "play")
+    this.on("pause", () => this.status = "pause")
+    this.on("stop", () => this.status = "stop")
   }
 
   start(progress) {
     if (progress) this._time = progress * this._timeCounter / 1;
-    this._Temp = setInterval(() => {
-      if (this._time < this._timeCounter) {
-        this._time = this._time + this._timeCounter / this._interval;
-        this.emit("start", { time: this.time, total: this._timeCounter });
-        this.on("pause", () => clearInterval(this._Temp))
-      } else if (this._time > this._timeCounter) {
-        this.emit("stop");
-      }
-    }, this._interval)
-    this.on("stop", () => {
-      this._time = 0;
-      clearInterval(this._Temp);
-    })
+    if (this.status != "play") {
+      this._Temp = setInterval(() => {
+        if (this._time < this._timeCounter) {
+          this._time = this._time + this._timeCounter / this._interval;
+          this.emit("start", { time: this.time, total: this._timeCounter });
+          this.on("pause", () => clearInterval(this._Temp))
+        } else if (this._time > this._timeCounter) {
+          this.emit("stop");
+        }
+      }, this._interval)
+      this.on("stop", () => {
+        this._time = 0;
+        clearInterval(this._Temp);
+      })
+    }
     return { start: (fns) => this.on("start", fns), stop: (fns) => this.on("stop", fns) };
   }
   pause() {
