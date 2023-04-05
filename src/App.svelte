@@ -14,7 +14,7 @@
   };
   let editItem = ({ detail }) => {
     store.edit(detail.id, (data) => {
-      console.log(data);
+      console.log(data, "edit");
       return data;
     });
   };

@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import {
+    onMount,
+    createEventDispatcher,
+    beforeUpdate,
+    afterUpdate,
+  } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
@@ -7,12 +12,13 @@
   import { store } from "../js/data";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
-  // export let closed = false;
+  export let closed = false;
   export let time = 10;
   export let progress = 0;
   export let status = false;
   export let id;
   const TimerCounter = new Temporisador(time);
+  const emit = createEventDispatcher();
 
   function TimerTest() {
     const { start: startTimer, stop: stopTimer } = TimerCounter.start(progress);
@@ -23,6 +29,7 @@
         a.progress = progress;
         return a;
       });
+      emit("start");
     });
     stopTimer((_) => {
       status = false;
@@ -31,23 +38,45 @@
         a.progress = 0;
         return a;
       });
+      emit("stop");
     });
   }
   function StopTimerTest() {
     TimerCounter.pause();
     status = false;
+    emit("pause");
   }
   function clearTimerTest() {
     TimerCounter.clear();
     status = false;
+    emit("clear");
   }
-  onMount(() => (status == true ? TimerTest() : StopTimerTest()));
-  store.on("del", (_) => {
-    console.log(store.get(id));
+  let once = false;
+  onMount(() => {
+    if (status == true) TimerTest();
+    else StopTimerTest();
   });
+  // beforeUpdate(() => {
+  //   if (isMount == true) {
+  //     if (once == true && status == false) {
+  //       once = false;
+  //     } else if (once == false && status == true) {
+  //       once = true;
+  //     }
+  //   }
+  // });
+  // store.once("del", () => {
+  //   if (status == true) {
+  //     TimerCounter.pause();
+  //   }
+  // });
+  // once((a) => {
+  //   console.log(a);
+  // });
 </script>
 
 <Cell span={12}>
+  <p>{id}</p>
   <CircularProgress style="height: 200px; width: 200px;" {progress} {closed} />
   <slot>initasda</slot>
 </Cell>
@@ -58,14 +87,14 @@
 <Cell span={12}>
   {#if type == "temporizer"}
     {#if status}
-      <Button on:click={StopTimerTest}>
+      <Button on:click={() => (status = false)}>
         <Label>Stop</Label>
       </Button>
       <Button on:click={clearTimerTest}>
         <Label>Clear</Label>
       </Button>
     {:else}
-      <Button on:click={TimerTest}>
+      <Button on:click={() => (status = true)}>
         <Label>Start</Label>
       </Button>
     {/if}

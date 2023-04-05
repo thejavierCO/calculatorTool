@@ -3,9 +3,14 @@ import { writable, get, derived } from "svelte/store";
 class Events extends EventTarget {
   emit(type, data) {
     this.dispatchEvent(!data ? new Event(type) : new CustomEvent(type, { detail: data }))
+    return this;
   }
   on(type, fns) {
     this.addEventListener(type, fns)
+    return this;
+  }
+  once(type, fns) {
+    return this.on(type, (evt) => new Promise((res, rej) => res(fns(evt))))
   }
 }
 
@@ -28,15 +33,15 @@ export class Store extends Events {
       a.push(data);
       return a;
     })
-    this.emit("add", data)
+    return this.emit("add", data)
   }
   del(id) {
     this.base.update((a) => a.filter(e => e.id != id))
-    this.emit("del", { id })
+    return this.emit("del", { id })
   }
   edit(id, fns) {
     this.base.update((a) => a.map(e => e.id == id ? fns(e) : e))
-    this.emit("edit", { id })
+    return this.emit("edit", { id })
   }
   get(id) {
     return this.data.filter(e => e.id == id);
