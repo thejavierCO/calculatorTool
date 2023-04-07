@@ -78,7 +78,6 @@ export class Temporisador extends Events {
           this._time = this._time + this._interval;
           this.emit("start", { time: this.time, total: this._timeCounter });
           this.on("pause", () => clearInterval(this._Temp))
-          console.log(this._time, this._timeCounter, this._timeCounter / this._interval);
         } else if (this._time >= this._timeCounter) {
           this.emit("stop");
         }
