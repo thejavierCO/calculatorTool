@@ -4,11 +4,10 @@
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
   import { Temporisador } from "../js/tools";
-  // import { store } from "../js/data";
 
   export let type: "temporizer" | "Cronometer" | undefined = undefined;
   export let closed = false;
-  export let time = 10;
+  export let time;
   export let progress = 0;
   export let status: "play" | "stop" = "stop";
   export let id;

@@ -1,9 +1,10 @@
 <script>
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
+  import Form from "./Components/form.svelte";
   import LayoutGrid from "@smui/layout-grid";
 
-  import { store } from "./js/data";
+  import { store, Types } from "./js/data";
   import Timer from "./Components/timer.svelte";
   let { base } = store;
 
@@ -25,7 +26,9 @@
   <Title value="Working" />
   <LayoutGrid>
     {#if $base.length == 0}
-      <Card type="start" on:add={addItem}><p>inmit</p></Card>
+      <Card type="start">
+        <Form {Types} on:done={addItem} />
+      </Card>
     {:else}
       {#each $base as item}
         <Card

@@ -12,7 +12,7 @@
 <Cell>
   <Card>
     <Content>
-      <LayoutGrid>
+      <LayoutGrid style="padding:5px;">
         <slot>Default</slot>
       </LayoutGrid>
       <Actions fullBleed>
