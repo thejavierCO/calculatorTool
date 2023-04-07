@@ -7,9 +7,6 @@
   export let id = "";
   export let type = undefined;
   const emit = createEventDispatcher();
-  onMount(() => {
-    console.log("mounted");
-  });
 </script>
 
 <Cell>

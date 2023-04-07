@@ -6,6 +6,7 @@
   import { store } from "./js/data";
   import Timer from "./Components/timer.svelte";
   let { base } = store;
+  
   let addItem = ({ detail }) => {
     store.add(detail);
   };
