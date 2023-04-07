@@ -13,8 +13,7 @@
   <Card>
     <Content>
       <LayoutGrid>
-        <!-- <Cell span={12}>{id}</Cell> -->
-        <slot>default data card</slot>
+        <slot>Default</slot>
       </LayoutGrid>
       <Actions fullBleed>
         <Button

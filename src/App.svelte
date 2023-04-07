@@ -6,7 +6,7 @@
   import { store } from "./js/data";
   import Timer from "./Components/timer.svelte";
   let { base } = store;
-  
+
   let addItem = ({ detail }) => {
     store.add(detail);
   };
@@ -38,12 +38,11 @@
           <Timer
             id={item.id}
             type="temporizer"
+            {store}
             bind:status={item.status}
             bind:progress={item.progress}
             bind:time={item.time}
-          >
-            <!-- init -->
-          </Timer>
+          />
         </Card>
       {/each}
     {/if}
