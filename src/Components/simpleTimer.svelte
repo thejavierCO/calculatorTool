@@ -47,15 +47,15 @@
   //   }
   //   if (posicion >= time) posicion = 0;
   // });
-  beforeUpdate(() => {
-    if (status == "play") {
-      status = "pause";
-      calc();
-    }
-  });
-  onDestroy(() => {
-    status = "stop";
-  });
+  // beforeUpdate(() => {
+  //   if (status == "play") {
+  //     status = "pause";
+  //     calc();
+  //   }
+  // });
+  // onDestroy(() => {
+  //   status = "stop";
+  // });
 </script>
 
 <slot {time} {posicion} {status} start={calc}>
