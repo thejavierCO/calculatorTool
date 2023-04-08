@@ -37,22 +37,14 @@
       return item;
     });
   };
-  const temp = ({ detail }) => {
-    console.log(detail);
-  };
 </script>
 
 <main>
   <Title value="Working" />
   <LayoutGrid>
-    <!-- <Test seconds={5} on:Status={temp}>
-      <span>
-        {status}
-      </span>
-    </Test> -->
     {#if $base.length == 0}
-      <Card type="start" on:add={addItem}>
-        <!-- <Form {Types} on:done={addItem} /> -->
+      <Card type="start">
+        <Form {Types} on:done={addItem} />
       </Card>
     {:else}
       {#each $base as item}
@@ -65,19 +57,29 @@
         >
           <Cell span={12}>
             <Test
-              seconds={item.time}
+              bind:seconds={item.time}
               posicion={Math.round((item.progress * (item.time * 1000)) / 1)}
-              status={item.status}
+              bind:status={item.status}
               on:Play={(evt) => updatePosicion(item.id, evt.detail)}
               on:Status={(evt) => updateStatus(item.id, evt.detail)}
               let:posicion
               let:status
               let:start
+              let:clear
             >
               <p>{posicion}</p>
-              <Button on:click={start}>
-                <Label>{status == "play" ? "pause" : "play"}</Label>
-              </Button>
+              {#if status == "play"}
+                <Button on:click={start}>
+                  <Label>Pause</Label>
+                </Button>
+                <Button on:click={clear}>
+                  <Label>clear</Label>
+                </Button>
+              {:else}
+                <Button on:click={start}>
+                  <Label>play</Label>
+                </Button>
+              {/if}
             </Test>
           </Cell>
           <!-- <Timer

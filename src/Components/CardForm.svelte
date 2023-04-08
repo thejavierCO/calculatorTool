@@ -22,7 +22,7 @@
               id: uuidv4(),
               status: "stop",
               progress: 0,
-              time: 10,
+              time: 30,
             })}
         >
           <Label>add</Label>
