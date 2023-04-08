@@ -4,7 +4,7 @@
   export let posicion: number | undefined = undefined;
   export let status: "play" | "stop" | "pause" = "stop";
   export let CPS = 10;
-  if (seconds == 0) seconds = 1;
+  if (seconds === 0) seconds = 1;
   if (seconds > 30) CPS = 3;
   else if (seconds > 60) CPS = 2;
   else if (seconds > 120) CPS = 1;
@@ -54,8 +54,9 @@
           if (temp && posicion == test) {
             clearInterval(temp);
             clearTimeout(testingstop);
+            if (status === "play") calc();
+            test = 0;
           }
-          test = 0;
         }, 1000);
       }
     }
