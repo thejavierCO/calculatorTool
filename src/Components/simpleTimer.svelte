@@ -4,6 +4,7 @@
   export let posicion: number | undefined = undefined;
   export let status: "play" | "stop" | "pause" = "stop";
   export let CPS = 10;
+  if (seconds == 0) seconds = 1;
   if (seconds > 30) CPS = 3;
   else if (seconds > 60) CPS = 2;
   else if (seconds > 120) CPS = 1;
