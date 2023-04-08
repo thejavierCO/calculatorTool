@@ -6,8 +6,7 @@
   import LayoutGrid, { Cell } from "@smui/layout-grid";
 
   import { store, Types } from "./js/data";
-  import Timer from "./Components/timer.svelte";
-  import Test from "./Components/simpleTimer.svelte";
+  import Timer from "./Components/simpleTimer.svelte";
   import Button, { Label } from "@smui/button";
   let { base } = store;
 
@@ -57,7 +56,7 @@
           on:edit={editItem}
         >
           <Cell span={12} style="text-align: center;">
-            <Test
+            <Timer
               bind:seconds={item.time}
               posicion={Math.round((item.progress * (item.time * 1000)) / 1)}
               bind:status={item.status}
@@ -89,7 +88,7 @@
                   </Button>
                 {/if}
               </p>
-            </Test>
+            </Timer>
           </Cell>
         </Card>
       {/each}
