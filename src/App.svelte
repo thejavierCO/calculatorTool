@@ -2,6 +2,7 @@
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import Form from "./Components/form.svelte";
+  import CircularProgress from "@smui/circular-progress";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
 
   import { store, Types } from "./js/data";
@@ -55,7 +56,7 @@
           on:del={delItem}
           on:edit={editItem}
         >
-          <Cell span={12}>
+          <Cell span={12} style="text-align: center;">
             <Test
               bind:seconds={item.time}
               posicion={Math.round((item.progress * (item.time * 1000)) / 1)}
@@ -67,29 +68,29 @@
               let:start
               let:clear
             >
-              <p>{posicion}</p>
-              {#if status == "play"}
-                <Button on:click={start}>
-                  <Label>Pause</Label>
-                </Button>
-                <Button on:click={clear}>
-                  <Label>clear</Label>
-                </Button>
-              {:else}
-                <Button on:click={start}>
-                  <Label>play</Label>
-                </Button>
-              {/if}
+              <p>
+                <CircularProgress
+                  style="height: 300px; width: 300px;"
+                  progress={(posicion * 1) / (item.time * 1000)}
+                  closed={false}
+                />
+              </p>
+              <p>
+                {#if status == "play"}
+                  <Button on:click={start}>
+                    <Label>Pause</Label>
+                  </Button>
+                  <Button on:click={clear}>
+                    <Label>clear</Label>
+                  </Button>
+                {:else}
+                  <Button on:click={start}>
+                    <Label>play</Label>
+                  </Button>
+                {/if}
+              </p>
             </Test>
           </Cell>
-          <!-- <Timer
-            id={item.id}
-            type="temporizer"
-            {store}
-            bind:status={item.status}
-            bind:progress={item.progress}
-            bind:time={item.time}
-          /> -->
         </Card>
       {/each}
     {/if}
