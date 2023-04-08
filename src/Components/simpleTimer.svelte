@@ -3,7 +3,10 @@
   export let seconds: number = 0;
   export let posicion: number | undefined = undefined;
   export let status: "play" | "stop" | "pause" = "stop";
-  export let CPS = 6;
+  export let CPS = 10;
+  if (seconds > 30) CPS = 3;
+  else if (seconds > 60) CPS = 2;
+  else if (seconds > 120) CPS = 1;
   const time = seconds * 1000;
   const interval = 1000 / CPS;
   const emit = createEventDispatcher();
@@ -40,20 +43,21 @@
       emit("Status", { status });
     }
   };
+  let test = 0;
   beforeUpdate(() => {
     if (!temp && status == "play") calc();
-    else if (temp && status == "play")
-      console.log(status, posicion, time, interval, temp);
-
-    // if (status == "play") {
-    //   if (once == false) {
-    //     status = "stop";
-    //     calc();
-    //     once = true;
-    //   }
-    // } else if (status == "pause") {
-    //   console.log(status);
-    // }
+    else if (temp && status == "play") {
+      if (test == 0) {
+        test = posicion;
+        let testingstop = setTimeout(() => {
+          if (temp && posicion == test) {
+            clearInterval(temp);
+            clearTimeout(testingstop);
+          }
+          test = 0;
+        }, 1000);
+      }
+    }
   });
   onDestroy(() => clearInterval(temp));
 </script>
