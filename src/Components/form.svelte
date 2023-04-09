@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
   import Select, { Option } from "@smui/select";
   import Textfield from "@smui/textfield";
@@ -12,8 +12,8 @@
   import { v4 as uuidv4 } from "uuid";
   export let Types;
   const emit = createEventDispatcher();
-  let size = "";
-  let type = "";
+  let size = 1;
+  let type: "Bote Negro" | "Bote dorado" | "Bote de aluminio" = "Bote Negro";
   let id = uuidv4();
   let time = 1;
   function Save() {
@@ -24,9 +24,8 @@
       document
         .querySelector("#awaitTime")
         .querySelectorAll("input[type='number']")
-    ).map((e) => {
-      // @ts-ignore
-      e.min = 0;
+    ).map((e: HTMLInputElement) => {
+      e.min = "0";
       return e;
     });
   });
