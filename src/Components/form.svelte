@@ -1,5 +1,5 @@
-<script lang="ts">
-  import { createEventDispatcher } from "svelte";
+<script>
+  import { createEventDispatcher, onMount } from "svelte";
   import Select, { Option } from "@smui/select";
   import Textfield from "@smui/textfield";
   import Switch from "@smui/switch";
@@ -15,36 +15,45 @@
   let size = "";
   let type = "";
   let id = uuidv4();
-  let time = 0;
+  let time = 1;
   function Save() {
     emit("done", { id, time, type, status: "stop", progress: 0 });
   }
+  onMount(() => {
+    Array.from(
+      document
+        .querySelector("#awaitTime")
+        .querySelectorAll("input[type='number']")
+    ).map((e) => {
+      // @ts-ignore
+      e.min = 0;
+      return e;
+    });
+  });
 </script>
 
-<Cell span={12}>
-  <form action="#">
-    <LayoutGrid style="padding:10px;">
-      <Cell span={12}>
-        <Textfield bind:value={id} label="Id" />
-      </Cell>
-      <Cell span={12}>
-        <Select bind:value={type} label="Type">
-          {#each $Types as item}
-            <Option value={item}>{item}</Option>
-          {/each}
-        </Select>
-      </Cell>
-      <Cell span={12}>
-        <Textfield bind:value={size} label="Size" suffix="g" type="number" />
-      </Cell>
-      <Cell span={12}>
-        <Textfield bind:value={time} label="Size" suffix="sec" type="number" />
-      </Cell>
-      <Cell span={12}>
-        <Button on:click={Save}>
-          <Label>Save</Label>
-        </Button>
-      </Cell>
-    </LayoutGrid>
-  </form>
+<Cell span={12} id="awaitTime">
+  <LayoutGrid style="padding:10px;">
+    <Cell span={12}>
+      <Textfield bind:value={id} label="Id" />
+    </Cell>
+    <Cell span={6}>
+      <Select bind:value={type} label="Type">
+        {#each $Types as item}
+          <Option value={item}>{item}</Option>
+        {/each}
+      </Select>
+    </Cell>
+    <Cell span={6}>
+      <Textfield bind:value={size} label="Size" suffix="g" type="number" />
+    </Cell>
+    <Cell span={6}>
+      <Textfield bind:value={time} label="Size" suffix="sec" type="number" />
+    </Cell>
+    <Cell span={12}>
+      <Button on:click={Save}>
+        <Label>Save</Label>
+      </Button>
+    </Cell>
+  </LayoutGrid>
 </Cell>

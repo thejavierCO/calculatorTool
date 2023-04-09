@@ -69,7 +69,7 @@
             >
               <p>
                 <CircularProgress
-                  style="height: 300px; width: 300px;"
+                  style="height: 200px; width: 200px;"
                   progress={(posicion * 1) / (item.time * 1000)}
                   closed={false}
                 />

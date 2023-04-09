@@ -11,7 +11,7 @@
 
 <Cell>
   <Card>
-    <Content>
+    <Content style="text-align: center;">
       <LayoutGrid style="padding:5px;">
         <slot>Default</slot>
       </LayoutGrid>
