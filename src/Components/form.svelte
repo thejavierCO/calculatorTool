@@ -47,7 +47,7 @@
       <Textfield bind:value={size} label="Size" suffix="g" type="number" />
     </Cell>
     <Cell span={6}>
-      <Textfield bind:value={time} label="Size" suffix="sec" type="number" />
+      <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
     </Cell>
     <Cell span={12}>
       <Button on:click={Save}>
