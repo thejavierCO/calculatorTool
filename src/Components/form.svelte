@@ -12,12 +12,16 @@
   import { v4 as uuidv4 } from "uuid";
   export let Types;
   const emit = createEventDispatcher();
-  let size = 1;
-  let type: "Bote Negro" | "Bote dorado" | "Bote de aluminio" = "Bote Negro";
-  let id = uuidv4();
-  let time = 1;
+
+  export let size = 1;
+  export let type: "Bote Negro" | "Bote dorado" | "Bote de aluminio" =
+    "Bote Negro";
+  export let id = uuidv4();
+  export let time = 1;
+  export let progress = 0;
+
   function Save() {
-    emit("done", { id, time, type, status: "stop", progress: 0 });
+    emit("done", { id, time, type, status: "stop", progress: 0, size });
   }
   onMount(() => {
     Array.from(
@@ -48,6 +52,14 @@
     </Cell>
     <Cell span={6}>
       <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
+    </Cell>
+    <Cell span={6}>
+      <Textfield
+        bind:value={progress}
+        label="Progress"
+        suffix="sec"
+        type="number"
+      />
     </Cell>
     <Cell span={12}>
       <Button on:click={Save}>

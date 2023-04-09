@@ -48,13 +48,7 @@
       </Card>
     {:else}
       {#each $base as item}
-        <Card
-          type="item"
-          id={item.id}
-          on:add={addItem}
-          on:del={delItem}
-          on:edit={editItem}
-        >
+        <Card type="item" id={item.id} on:del={delItem}>
           <Cell span={12} style="text-align: center;">
             <Timer
               bind:seconds={item.time}
@@ -89,6 +83,16 @@
                 {/if}
               </p>
             </Timer>
+          </Cell>
+          <Cell span={12}>
+            <Form
+              {Types}
+              bind:id={item.id}
+              bind:time={item.time}
+              bind:progress={item.progress}
+              bind:type={item.type}
+              bind:size={item.size}
+            />
           </Cell>
         </Card>
       {/each}

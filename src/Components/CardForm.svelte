@@ -16,7 +16,7 @@
         <slot>Default</slot>
       </LayoutGrid>
       <Actions fullBleed>
-        <Button
+        <!-- <Button
           on:click={() =>
             emit("add", {
               id: uuidv4(),
@@ -26,14 +26,14 @@
             })}
         >
           <Label>add</Label>
-        </Button>
+        </Button> -->
         {#if type == "item"}
           <Button on:click={() => emit("del", { id })}>
-            <Label>Del</Label>
+            <Label style="text-align:center;">Del</Label>
           </Button>
-          <Button on:click={() => emit("edit", { id })}>
+          <!-- <Button on:click={() => emit("edit", { id })}>
             <Label>Edit</Label>
-          </Button>
+          </Button> -->
         {/if}
       </Actions>
     </Content>
