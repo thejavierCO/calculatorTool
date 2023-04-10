@@ -1,5 +1,3 @@
-import { writable, get, derived } from "svelte/store";
-
 class Events extends EventTarget {
   emit(type, data) {
     this.dispatchEvent(!data ? new Event(type) : new CustomEvent(type, { detail: data }))
@@ -11,49 +9,6 @@ class Events extends EventTarget {
   }
   once(type, fns) {
     return this.on(type, (evt) => new Promise((res, rej) => res(fns(evt))))
-  }
-}
-
-export class Store extends Events {
-  constructor(id) {
-    super();
-    if (!id) throw "Require id";
-    this.id = id;
-    this._data = writable([], (set) => {
-      const data = JSON.parse(localStorage.getItem(this.id));
-      if (data == null) localStorage.setItem(this.id, "[]")
-      else set(data)
-    });
-    this._data.subscribe((a) => {
-      localStorage.setItem(this.id, JSON.stringify(a))
-    })
-  }
-  add(data) {
-    this.base.update((a) => {
-      a.push(data);
-      return a;
-    })
-    return this.emit("add", data)
-  }
-  del(id) {
-    this.base.update((a) => a.filter(e => e.id != id))
-    return this.emit("del", { id })
-  }
-  edit(id, fns) {
-    this.base.update((a) => a.map(e => e.id == id ? fns(e) : e))
-    return this.emit("edit", { id })
-  }
-  get(id) {
-    return this.data.filter(e => e.id == id);
-  }
-  get base() {
-    return this._data;
-  }
-  get data() {
-    return get(this._data)
-  }
-  set data(value) {
-    this._data.set(value)
   }
 }
 
