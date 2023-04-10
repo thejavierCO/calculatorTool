@@ -60,12 +60,13 @@
         <slot name="add" />
       </Cell>
     {/if}
-    {#each $store as { id, state, time, size, type }}
+    {#each $store as { id, state, time, size, type }, index}
       <Cell>
         <slot
           name="loop"
           length={$store.length}
           idItem={id}
+          indexItem={index}
           stateItem={state}
           timeItem={time}
           sizeItem={size}
