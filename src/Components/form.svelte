@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
+
   import Select, { Option } from "@smui/select";
   import Textfield from "@smui/textfield";
   import Switch from "@smui/switch";
@@ -9,20 +10,18 @@
   import Button, { Label } from "@smui/button";
   import Radio from "@smui/radio";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
-  import { v4 as uuidv4 } from "uuid";
-  export let Types;
   const emit = createEventDispatcher();
 
+  export let id;
+  export let state: "play" | "pause" | "stop" = "stop";
   export let size = 1;
   export let type: "Bote Negro" | "Bote dorado" | "Bote de aluminio" =
     "Bote Negro";
-  export let id = uuidv4();
   export let time = 1;
-  export let progress = 0;
+  export let action;
+  export let textBtnSubmit = "submit";
+  export let Types;
 
-  function Save() {
-    emit("done", { id, time, type, status: "stop", progress: 0, size });
-  }
   onMount(() => {
     Array.from(
       document
@@ -35,36 +34,35 @@
   });
 </script>
 
-<Cell span={12} id="awaitTime">
-  <LayoutGrid style="padding:10px;">
-    <Cell span={12}>
-      <Textfield bind:value={id} label="Id" />
-    </Cell>
-    <Cell span={6}>
-      <Select bind:value={type} label="Type">
-        {#each $Types as item}
-          <Option value={item}>{item}</Option>
-        {/each}
-      </Select>
-    </Cell>
-    <Cell span={6}>
-      <Textfield bind:value={size} label="Size" suffix="g" type="number" />
-    </Cell>
-    <Cell span={6}>
-      <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
-    </Cell>
-    <Cell span={6}>
-      <Textfield
-        bind:value={progress}
-        label="Progress"
-        suffix="sec"
-        type="number"
-      />
-    </Cell>
-    <Cell span={12}>
-      <Button on:click={Save}>
-        <Label>Save</Label>
-      </Button>
-    </Cell>
-  </LayoutGrid>
-</Cell>
+<LayoutGrid style="padding:10px;" id="awaitTime">
+  <Cell span={12}>
+    {id}
+  </Cell>
+  <Cell span={6}>
+    <Select bind:value={type} label="Type">
+      {#each Types as item}
+        <Option value={item}>{item}</Option>
+      {/each}
+    </Select>
+  </Cell>
+  <Cell span={6}>
+    <Textfield bind:value={size} label="Size" suffix="g" type="number" />
+  </Cell>
+  <Cell span={6}>
+    <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
+  </Cell>
+  <!-- <Cell span={6}>
+    <Textfield
+      bind:value={progress}
+      label="Progress"
+      suffix="sec"
+      type="number"
+    />
+  </Cell> -->
+  <Cell span={12}>
+    <Button on:click={(evt) => action({ id, state, time, size, type })}>
+      <Label>{textBtnSubmit}</Label>
+    </Button>
+    <slot name="moreBtn" />
+  </Cell>
+</LayoutGrid>

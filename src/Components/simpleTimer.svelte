@@ -1,7 +1,7 @@
 <script lang="ts">
   import { beforeUpdate, createEventDispatcher, onDestroy } from "svelte";
   export let seconds: number = 0;
-  export let posicion: number | undefined = undefined;
+  export let posicion: number = 0;
   export let status: "play" | "stop" | "pause" = "stop";
   export let CPS = 10;
   if (seconds === 0) seconds = 1;

@@ -2,100 +2,43 @@
   import Title from "./Components/Title.svelte";
   import Card from "./Components/CardForm.svelte";
   import Form from "./Components/form.svelte";
-  import CircularProgress from "@smui/circular-progress";
-  import LayoutGrid, { Cell } from "@smui/layout-grid";
-
-  import { store, Types } from "./js/data";
-  import Timer from "./Components/simpleTimer.svelte";
+  import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
-  let { base } = store;
-
-  let addItem = ({ detail }) => {
-    store.add(detail);
-  };
-  let delItem = ({ detail }) => {
-    store.del(detail.id);
-  };
-  let editItem = ({ detail }) => {
-    store.edit(detail.id, (data) => {
-      console.log(data, "edit");
-      return data;
-    });
-  };
-  let updatePosicion = (id, data) => {
-    store.edit(id, (item) => {
-      let { posicion, time } = data;
-      item.progress = (posicion * 1) / time;
-      return item;
-    });
-  };
-
-  let updateStatus = (id, data) => {
-    store.edit(id, (item) => {
-      let { status } = data;
-      item.status = status;
-      return item;
-    });
-  };
+  import Timer from "./Components/simpleTimer.svelte";
+  import { storeBase, Types } from "./js/data";
+  export let id = "store";
+  export let ver = "0.0.1";
+  const store = storeBase(id, [], true);
+  function errorEvent(a) {
+    console.log(a);
+  }
 </script>
 
 <main>
-  <Title value="Working" />
-  <LayoutGrid>
-    {#if $base.length == 0}
-      <Card type="start">
-        <Form {Types} on:done={addItem} />
+  <Store {store} let:add let:Id on:error={errorEvent}>
+    <Title value={"Working " + ver} />
+    <div slot="loop" let:idItem let:timeItem let:del let:edit>
+      <Card>
+        <Timer seconds={timeItem} />
+        <Form
+          id={idItem}
+          time={timeItem}
+          action={edit}
+          textBtnSubmit="Edit"
+          {Types}
+        >
+          <div slot="moreBtn">
+            <Button on:click={del}>
+              <Label>Del</Label>
+            </Button>
+          </div>
+        </Form>
       </Card>
-    {:else}
-      {#each $base as item}
-        <Card type="item" id={item.id} on:del={delItem}>
-          <Cell span={12} style="text-align: center;">
-            <Timer
-              bind:seconds={item.time}
-              posicion={Math.round((item.progress * (item.time * 1000)) / 1)}
-              bind:status={item.status}
-              on:Play={(evt) => updatePosicion(item.id, evt.detail)}
-              on:Status={(evt) => updateStatus(item.id, evt.detail)}
-              let:posicion
-              let:status
-              let:start
-              let:clear
-            >
-              <p>
-                <CircularProgress
-                  style="height: 200px; width: 200px;"
-                  progress={(posicion * 1) / (item.time * 1000)}
-                  closed={false}
-                />
-              </p>
-              <p>
-                {#if status == "play"}
-                  <Button on:click={start}>
-                    <Label>Pause</Label>
-                  </Button>
-                  <Button on:click={clear}>
-                    <Label>clear</Label>
-                  </Button>
-                {:else}
-                  <Button on:click={start}>
-                    <Label>play</Label>
-                  </Button>
-                {/if}
-              </p>
-            </Timer>
-          </Cell>
-          <Cell span={12}>
-            <Form
-              {Types}
-              bind:id={item.id}
-              bind:time={item.time}
-              bind:progress={item.progress}
-              bind:type={item.type}
-              bind:size={item.size}
-            />
-          </Cell>
-        </Card>
-      {/each}
-    {/if}
-  </LayoutGrid>
+    </div>
+    <div slot="add">
+      <Card>
+        <Form {Types} id="" action={add} textBtnSubmit="Save" />
+      </Card>
+    </div>
+  </Store>
 </main>
