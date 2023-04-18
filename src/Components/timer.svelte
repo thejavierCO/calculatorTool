@@ -8,6 +8,7 @@
   export let time: number;
   export let start: number = 0;
   export let autoRun = false;
+  export let status: "Play" | "Pause" | "Stop" = "Stop";
   if (!time) time = 1;
 
   let CalcPeerSecond = 10;
@@ -15,17 +16,38 @@
   else if (time > 60) CalcPeerSecond = 2;
   else if (time > 120) CalcPeerSecond = 1;
 
-  const Time = time * 1000;
   const TimeInterval = 1000 / CalcPeerSecond;
+  let Time = time * 1000;
   let interval;
 
   let loop = (fns) => {
-    let inter = setInterval(() => fns(inter), TimeInterval);
-    return (fns) => {
-      clearInterval(inter);
-      return fns;
-    };
+    let inter = setInterval(() => {
+      status = "Play";
+      if (start > Time) clearInterval(inter);
+      start = start + TimeInterval;
+      fns({ start, id: inter });
+    }, TimeInterval);
+    return inter;
   };
+  onMount(() => {
+    if (autoRun) {
+      interval = loop(({ start, id }) => {
+        console.log(start);
+      });
+    }
+  });
+  beforeUpdate(() => {
+    Time = time * 1000;
+    if (interval && start > Time) {
+      clearInterval(interval);
+      interval = undefined;
+    }
+    if (!interval && start < Time)
+      interval = loop(({ start, id }) => {
+        console.log(start);
+      });
+    console.log(autoRun, Time, time, start, interval);
+  });
 </script>
 
 <p>{time}</p>

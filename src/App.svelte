@@ -24,8 +24,8 @@
     </div>
     <div slot="print" let:edit let:id let:data>
       <Card>
-        <Timer time={data.time} autoStart />
-        <Form {id} action={edit} textBtnSubmit="Save" />
+        <Timer time={data.time} autoRun />
+        <Form {id} time={data.time} action={edit} textBtnSubmit="Save" />
       </Card>
     </div>
     <!-- <div slot="loop" let:id let:data let:del let:edit>
