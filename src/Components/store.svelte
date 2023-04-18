@@ -47,34 +47,35 @@
   }
 </script>
 
-<slot {add} Id={uuidv4()} />
+<slot Id={uuidv4()} />
 
 <LayoutGrid>
   {#if $store.length == 0}
     <Cell>
-      <slot name="add" />
+      <slot name="input" action={add} />
     </Cell>
   {:else}
     {#if InsertAddStart}
       <Cell>
-        <slot name="add" />
+        <slot name="input" action={add} />
       </Cell>
     {/if}
-    {#each $store as { id, state, time, size, type }, index}
+    {#each $store as data, index}
       <Cell>
         <slot
-          name="loop"
+          name="print"
           length={$store.length}
-          {id}
-          data={{ state, time, size, type }}
-          del={() => del(id)}
-          edit={(data) => edit(id, data)}
+          id={data.id}
+          {data}
+          {index}
+          del={() => del(data.id)}
+          edit={(data) => edit(data.id, data)}
         />
       </Cell>
     {/each}
     {#if InsertAddEnd}
       <Cell>
-        <slot name="add" />
+        <slot name="input" action={add} />
       </Cell>
     {/if}
   {/if}

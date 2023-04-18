@@ -47,7 +47,7 @@
   <!-- <Cell span={6}>
     <Textfield bind:value={size} label="Size" suffix="g" type="number" />
   </Cell> -->
-  <Cell span={6}>
+  <Cell span={12}>
     <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
   </Cell>
   <!-- <Cell span={6}>
