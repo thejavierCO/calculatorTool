@@ -65,12 +65,8 @@
         <slot
           name="loop"
           length={$store.length}
-          idItem={id}
-          indexItem={index}
-          stateItem={state}
-          timeItem={time}
-          sizeItem={size}
-          typeItem={type}
+          {id}
+          data={{ state, time, size, type }}
           del={() => del(id)}
           edit={(data) => edit(id, data)}
         />

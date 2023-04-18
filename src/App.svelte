@@ -4,7 +4,7 @@
   import Form from "./Components/form.svelte";
   import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
-  import Timer from "./Components/simpleTimer.svelte";
+  import Timer from "./Components/timer.svelte";
   import { storeBase, Types } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
@@ -17,16 +17,10 @@
 <main>
   <Store {store} let:add let:Id on:error={errorEvent}>
     <Title value={"Working " + ver} />
-    <div slot="loop" let:idItem let:timeItem let:del let:edit>
+    <div slot="loop" let:id let:data let:del let:edit>
       <Card>
-        <Timer seconds={timeItem} />
-        <Form
-          id={idItem}
-          time={timeItem}
-          action={edit}
-          textBtnSubmit="Edit"
-          {Types}
-        >
+        <Timer {data} />
+        <Form {id} time={data.time} action={edit} textBtnSubmit="Edit">
           <div slot="moreBtn">
             <Button on:click={del}>
               <Label>Del</Label>
@@ -37,7 +31,7 @@
     </div>
     <div slot="add">
       <Card>
-        <Form {Types} id="" action={add} textBtnSubmit="Save" />
+        <Form id="" action={add} textBtnSubmit="Save" />
       </Card>
     </div>
   </Store>

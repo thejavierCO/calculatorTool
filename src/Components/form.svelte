@@ -20,7 +20,6 @@
   export let time = 1;
   export let action;
   export let textBtnSubmit = "submit";
-  export let Types;
 
   onMount(() => {
     Array.from(
@@ -38,16 +37,16 @@
   <Cell span={12}>
     {id}
   </Cell>
-  <Cell span={6}>
+  <!-- <Cell span={6}>
     <Select bind:value={type} label="Type">
       {#each Types as item}
         <Option value={item}>{item}</Option>
       {/each}
     </Select>
-  </Cell>
-  <Cell span={6}>
+  </Cell> -->
+  <!-- <Cell span={6}>
     <Textfield bind:value={size} label="Size" suffix="g" type="number" />
-  </Cell>
+  </Cell> -->
   <Cell span={6}>
     <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
   </Cell>
