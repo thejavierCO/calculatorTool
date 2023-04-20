@@ -22,28 +22,43 @@
         <Form id="" {action} textBtnSubmit="Save" />
       </Card>
     </div>
-    <div slot="print" let:edit let:id let:data>
+    <div slot="print" let:edit let:del let:id let:data>
       <Card>
-        <Timer time={data.time} autoRun />
-        <Form {id} time={data.time} action={edit} textBtnSubmit="Save" />
+        <Timer
+          time={data.time}
+          status={data.status}
+          start={data.start}
+          let:btnPlay
+          let:btnStop
+          let:btnPause
+          let:start
+          let:status
+          on:state={({ detail }) => edit(detail)}
+        >
+          <Form
+            {id}
+            {start}
+            {status}
+            time={data.time}
+            action={edit}
+            textBtnSubmit="Save"
+          />
+          <Button on:click={btnPlay}>
+            <Label>Play</Label>
+          </Button>
+          <Button on:click={btnStop}>
+            <Label>Stop</Label>
+          </Button>
+          <Button on:click={btnPause}>
+            <Label>Pause</Label>
+          </Button>
+        </Timer>
+        <div slot="actions">
+          <Button on:click={del}>
+            <Label>Del</Label>
+          </Button>
+        </div>
       </Card>
     </div>
-    <!-- <div slot="loop" let:id let:data let:del let:edit>
-      <Card>
-        <Timer {data} />
-        <Form {id} time={data.time} action={edit} textBtnSubmit="Edit">
-          <div slot="moreBtn">
-            <Button on:click={del}>
-              <Label>Del</Label>
-            </Button>
-          </div>
-        </Form>
-      </Card>
-    </div>
-    <div slot="add">
-      <Card>
-        <Form id="" action={add} textBtnSubmit="Save" />
-      </Card>
-    </div> -->
   </Store>
 </main>
