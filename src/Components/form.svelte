@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from "svelte";
+  import {
+    createEventDispatcher,
+    onMount,
+    afterUpdate,
+    beforeUpdate,
+  } from "svelte";
 
   import Select, { Option } from "@smui/select";
   import Textfield from "@smui/textfield";
@@ -13,14 +18,14 @@
   const emit = createEventDispatcher();
 
   export let id;
-  export let state: "play" | "pause" | "stop" = "stop";
-  export let size = 1;
-  export let type: "Bote Negro" | "Bote dorado" | "Bote de aluminio" =
-    "Bote Negro";
+  export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let time = 1;
+  export let start = 0;
   export let action;
   export let textBtnSubmit = "submit";
 
+  let data = { id, status, time, start, action, textBtnSubmit };
+  let isChange = false;
   onMount(() => {
     Array.from(
       document
@@ -31,37 +36,43 @@
       return e;
     });
   });
+  afterUpdate(() => {
+    let newData = { id, status, time, start, action, textBtnSubmit };
+    let changeData = Object.keys(data).filter((k) => newData[k] != data[k]);
+    if (changeData.length > 0) {
+      isChange = true;
+      data = newData;
+    } else isChange = false;
+
+    emit("change", newData);
+  });
 </script>
 
 <LayoutGrid style="padding:10px;" id="awaitTime">
   <Cell span={12}>
-    {id}
+    ID: {id}
   </Cell>
-  <!-- <Cell span={6}>
-    <Select bind:value={type} label="Type">
-      {#each Types as item}
-        <Option value={item}>{item}</Option>
-      {/each}
-    </Select>
-  </Cell> -->
-  <!-- <Cell span={6}>
-    <Textfield bind:value={size} label="Size" suffix="g" type="number" />
-  </Cell> -->
   <Cell span={12}>
     <Textfield bind:value={time} label="Time" suffix="sec" type="number" />
   </Cell>
-  <!-- <Cell span={6}>
-    <Textfield
-      bind:value={progress}
-      label="Progress"
-      suffix="sec"
-      type="number"
-    />
-  </Cell> -->
   <Cell span={12}>
-    <Button on:click={(evt) => action({ id, state, time, size, type })}>
-      <Label>{textBtnSubmit}</Label>
-    </Button>
-    <slot name="moreBtn" />
+    Posicion: {start}
+  </Cell>
+  <Cell span={12}>
+    <slot
+      name="btnSubmit"
+      componentBtn={{ Button, Label }}
+      action={(_) => action({ id, status, time, start })}
+    >
+      {#if isChange}
+        <Button
+          on:click={(evt) => {
+            action({ id, status, time, start });
+          }}
+        >
+          <Label>{textBtnSubmit}</Label>
+        </Button>
+      {/if}
+    </slot>
   </Cell>
 </LayoutGrid>
