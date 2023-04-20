@@ -5,51 +5,70 @@
     onDestroy,
     onMount,
   } from "svelte";
-  export let time: number;
+  export let time: number = 1;
   export let start: number = 0;
   export let autoRun = false;
   export let status: "Play" | "Pause" | "Stop" = "Stop";
-  if (!time) time = 1;
 
-  let CalcPeerSecond = 10;
-  if (time > 30) CalcPeerSecond = 3;
-  else if (time > 60) CalcPeerSecond = 2;
-  else if (time > 120) CalcPeerSecond = 1;
-
-  const TimeInterval = 1000 / CalcPeerSecond;
+  const TimeInterval = 1000 / 10;
+  const emit = createEventDispatcher();
   let Time = time * 1000;
   let interval;
 
   let loop = (fns) => {
     let inter = setInterval(() => {
-      status = "Play";
-      if (start > Time) clearInterval(inter);
-      start = start + TimeInterval;
-      fns({ start, id: inter });
+      switch (status) {
+        case "Play":
+          start = start + TimeInterval;
+          if (start > Time) status = "Stop";
+          break;
+        case "Pause":
+          clearInterval(inter);
+          break;
+        case "Stop":
+          clearInterval(inter);
+          start = 0;
+          break;
+      }
+      fns({ start, id: inter, status });
     }, TimeInterval);
     return inter;
   };
+  let acctions = {
+    play: () => (status = "Play"),
+    pause: () => (status = "Pause"),
+    stop: () => (status = "Stop"),
+  };
   onMount(() => {
-    if (autoRun) {
-      interval = loop(({ start, id }) => {
-        console.log(start);
-      });
+    if (autoRun) status = "Play";
+  });
+  onDestroy(() => {
+    if (interval) {
+      clearInterval(interval);
     }
   });
   beforeUpdate(() => {
     Time = time * 1000;
-    if (interval && start > Time) {
-      clearInterval(interval);
-      interval = undefined;
-    }
-    if (!interval && start < Time)
-      interval = loop(({ start, id }) => {
-        console.log(start);
+    if (status == "Play" && !interval) {
+      interval = loop(({ status }) => {
+        if (status == "Stop") interval = undefined;
+        else if (status == "Pause") interval = undefined;
+        emit("state", { status, time, start });
       });
-    console.log(autoRun, Time, time, start, interval);
+    } else emit("warn", { type: "is running" });
   });
 </script>
 
-<p>{time}</p>
-<p>{start}</p>
-<p>{autoRun}</p>
+<slot
+  btnPause={acctions.pause}
+  btnStop={acctions.stop}
+  btnPlay={acctions.play}
+  {time}
+  {start}
+  {autoRun}
+  {status}
+>
+  <p>{time}</p>
+  <p>{start}</p>
+  <p>{autoRun}</p>
+</slot>
