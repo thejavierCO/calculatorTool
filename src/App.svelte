@@ -34,6 +34,7 @@
           let:start
           let:status
           on:state={({ detail }) => edit(detail)}
+          on:warn={({ detail }) => console.log(detail, id)}
         >
           <Form
             {id}

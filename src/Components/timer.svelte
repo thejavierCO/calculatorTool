@@ -5,6 +5,7 @@
     onDestroy,
     onMount,
   } from "svelte";
+
   export let time: number = 1;
   export let start: number = 0;
   export let autoRun = false;
@@ -43,9 +44,7 @@
     if (autoRun) status = "Play";
   });
   onDestroy(() => {
-    if (interval) {
-      clearInterval(interval);
-    }
+    if (interval) clearInterval(interval);
   });
   beforeUpdate(() => {
     Time = time * 1000;
@@ -55,7 +54,8 @@
         else if (status == "Pause") interval = undefined;
         emit("state", { status, time, start });
       });
-    } else emit("warn", { type: "is running" });
+    } else emit("warn", { type: "is " + status, interval });
+    if (status == "Stop" && !interval) start = 0;
   });
 </script>
 

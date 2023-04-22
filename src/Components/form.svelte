@@ -38,11 +38,11 @@
   });
   afterUpdate(() => {
     let newData = { id, status, time, start, action, textBtnSubmit };
-    let changeData = Object.keys(data).filter((k) => newData[k] != data[k]);
-    if (changeData.length > 0) {
-      isChange = true;
-      data = newData;
-    } else isChange = false;
+    // let changeData = Object.keys(data).filter((k) => newData[k] != data[k]);
+    // if (changeData.length > 0) {
+    //   isChange = true;
+    //   data = newData;
+    // } else isChange = false;
 
     emit("change", newData);
   });
@@ -64,15 +64,13 @@
       componentBtn={{ Button, Label }}
       action={(_) => action({ id, status, time, start })}
     >
-      {#if isChange}
-        <Button
-          on:click={(evt) => {
-            action({ id, status, time, start });
-          }}
-        >
-          <Label>{textBtnSubmit}</Label>
-        </Button>
-      {/if}
+      <Button
+        on:click={(evt) => {
+          action({ id, status, time, start });
+        }}
+      >
+        <Label>{textBtnSubmit}</Label>
+      </Button>
     </slot>
   </Cell>
 </LayoutGrid>
