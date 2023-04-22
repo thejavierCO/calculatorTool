@@ -5,27 +5,29 @@
   import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
   import Timer from "./Components/timer.svelte";
-  import { storeBase, Types } from "./js/data";
+  import { storeBase } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
-  const store = storeBase(id, [], true);
-  function errorEvent(a) {
-    console.warn(a);
-  }
+  const store = storeBase(id, []);
 </script>
 
 <main>
-  <Store {store} on:error={errorEvent}>
-    <Title value={"Working " + ver} />
+  <Store
+    {store}
+    on:edit={({ detail }) => {
+      console.log(detail);
+    }}
+  >
+    <Title value={"Working Testing " + ver} />
     <div slot="input" let:action>
       <Card>
-        <Form id="" {action} textBtnSubmit="Save" />
+        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
       </Card>
     </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer
-          time={data.time}
+          time={data.seconds}
           status={data.status}
           start={data.start}
           let:btnPlay
@@ -34,15 +36,14 @@
           let:start
           let:status
           on:state={({ detail }) => edit(detail)}
-          on:warn={({ detail }) => console.log(detail, id)}
         >
           <Form
             {id}
             {start}
             {status}
-            time={data.time}
-            action={edit}
-            textBtnSubmit="Save"
+            seconds={data.seconds}
+            btnSubmitText="Save"
+            on:save={({ detail }) => edit(detail)}
           />
           <Button on:click={btnPlay}>
             <Label>Play</Label>

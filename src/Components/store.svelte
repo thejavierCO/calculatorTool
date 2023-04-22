@@ -2,14 +2,14 @@
   import { createEventDispatcher } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import { v4 as uuidv4 } from "uuid";
-  export let store;
-  const emit = createEventDispatcher();
 
+  export let store;
+  if (!store) throw "require store";
+  const emit = createEventDispatcher();
   let InsertAddStart = false;
   let InsertAddEnd = false;
-  if (Object.keys($$slots).filter((e) => e != "default")[0] == "add")
-    InsertAddEnd = true;
-  else InsertAddStart = true;
+  let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
+  slotsIDs[0] == "add" ? (InsertAddEnd = true) : (InsertAddStart = true);
 
   export function add(data) {
     emit("add", data);
@@ -34,25 +34,25 @@
   }
   export function edit(id, data) {
     emit("edit", { id, data });
-    store.update((e) => {
-      let item = e.filter((e) => e.id == id);
-      if (item.length == 1) {
-        return e.map((e) => {
-          if (e.id == id) {
-            Object.keys(data).forEach((k) => {
-              e[k] = data[k];
-            });
-            return e;
-          }
-          return e;
-        });
-      } else emit("error", "not exist element");
-      return e;
-    });
+    // store.update((e) => {
+    //   let item = e.filter((e) => e.id == id);
+    //   if (item.length == 1) {
+    //     return e.map((e) => {
+    //       if (e.id == id) {
+    //         Object.keys(data).forEach((k) => {
+    //           e[k] = data[k];
+    //         });
+    //         return e;
+    //       }
+    //       return e;
+    //     });
+    //   } else emit("error", "not exist element");
+    //   return e;
+    // });
   }
 </script>
 
-<slot Id={uuidv4()} />
+<slot />
 
 <LayoutGrid>
   {#if $store.length == 0}
