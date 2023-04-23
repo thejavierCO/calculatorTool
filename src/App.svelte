@@ -27,6 +27,26 @@
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer
+          seconds={data.seconds}
+          status={data.status}
+          posicion={data.start}
+          let:btnPlay
+          let:btnStop
+          let:btnPause
+          autoRun
+          on:state={({ detail }) => console.log(detail)}
+        >
+          <Button on:click={btnPlay}>
+            <Label>Play</Label>
+          </Button>
+          <Button on:click={btnStop}>
+            <Label>Stop</Label>
+          </Button>
+          <Button on:click={btnPause}>
+            <Label>Pause</Label>
+          </Button>
+        </Timer>
+        <!-- <Timer
           time={data.seconds}
           status={data.status}
           start={data.start}
@@ -54,7 +74,7 @@
           <Button on:click={btnPause}>
             <Label>Pause</Label>
           </Button>
-        </Timer>
+        </Timer> -->
         <div slot="actions">
           <Button on:click={del}>
             <Label>Del</Label>

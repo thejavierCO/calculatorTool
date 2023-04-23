@@ -6,32 +6,37 @@
     onMount,
   } from "svelte";
 
-  export let time: number = 1;
-  export let start: number = 0;
+  export let seconds: number = 1;
+  export let posicion: number = 0;
   export let autoRun = false;
   export let status: "Play" | "Pause" | "Stop" = "Stop";
 
+  let millis = seconds * 1000;
+  let start: Date | undefined;
+  let end: Date | undefined;
   const TimeInterval = 1000 / 10;
   const emit = createEventDispatcher();
-  let Time = time * 1000;
   let interval;
 
   let loop = (fns) => {
     let inter = setInterval(() => {
+      fns({ posicion, id: inter, status });
       switch (status) {
         case "Play":
-          start = start + TimeInterval;
-          if (start > Time) status = "Stop";
+          if (!end) end = new Date(new Date().getTime() + millis);
+          console.log(end, new Date());
           break;
         case "Pause":
+          end = undefined;
           clearInterval(inter);
           break;
         case "Stop":
           clearInterval(inter);
-          start = 0;
+          posicion = 0;
+          start = undefined;
+          end = undefined;
           break;
       }
-      fns({ start, id: inter, status });
     }, TimeInterval);
     return inter;
   };
@@ -47,28 +52,28 @@
     if (interval) clearInterval(interval);
   });
   beforeUpdate(() => {
-    Time = time * 1000;
+    millis = seconds * 1000;
     if (status == "Play" && !interval) {
-      interval = loop(({ status }) => {
+      interval = loop(() => {
         if (status == "Stop") interval = undefined;
         else if (status == "Pause") interval = undefined;
-        emit("state", { status, time, start });
       });
-    } else emit("warn", { type: "is " + status, interval });
-    if (status == "Stop" && !interval) start = 0;
+      emit("state", { status, seconds, posicion });
+    }
   });
 </script>
 
+{posicion} - {millis}<br />
 <slot
   btnPause={acctions.pause}
   btnStop={acctions.stop}
   btnPlay={acctions.play}
-  {time}
-  {start}
+  {seconds}
+  {posicion}
   {autoRun}
   {status}
 >
-  <p>{time}</p>
-  <p>{start}</p>
+  <p>{seconds}</p>
+  <p>{posicion}</p>
   <p>{autoRun}</p>
 </slot>
