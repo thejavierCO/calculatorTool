@@ -33,18 +33,22 @@
           let:btnPlay
           let:btnStop
           let:btnPause
+          let:status
           autoRun
           on:state={({ detail }) => console.log(detail)}
         >
-          <Button on:click={btnPlay}>
-            <Label>Play</Label>
-          </Button>
-          <Button on:click={btnStop}>
-            <Label>Stop</Label>
-          </Button>
-          <Button on:click={btnPause}>
-            <Label>Pause</Label>
-          </Button>
+          {#if status == "Play"}
+            <Button on:click={btnStop}>
+              <Label>Stop</Label>
+            </Button>
+            <Button on:click={btnPause}>
+              <Label>Pause</Label>
+            </Button>
+          {:else}
+            <Button on:click={btnPlay}>
+              <Label>Play</Label>
+            </Button>
+          {/if}
         </Timer>
         <!-- <Timer
           time={data.seconds}
