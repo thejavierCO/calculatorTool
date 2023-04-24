@@ -26,7 +26,7 @@
     </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
-        <Timer
+        <!-- <Timer
           seconds={data.seconds}
           status={data.status}
           posicion={data.start}
@@ -49,7 +49,7 @@
               <Label>Play</Label>
             </Button>
           {/if}
-        </Timer>
+        </Timer> -->
         <!-- <Timer
           time={data.seconds}
           status={data.status}

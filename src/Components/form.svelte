@@ -15,7 +15,8 @@
   export let id = "";
   export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let seconds = 1;
-  export let start = 0;
+  export let start: Date | number = 0;
+  export let end: Date | number = 0;
   export let btnSubmitText = "submit";
 
   let isSave = id ? true : false;
@@ -46,18 +47,13 @@
       type="number"
     />
   </Cell>
-  {#if start > 0}
-    <Cell span={12}>
-      Posicion: {start}
-    </Cell>
-  {/if}
   <Cell span={12}>
     {#if isSave == false}
       <slot name="submit">
         <Button
           on:click={() => {
             isSave = id ? !isSave : false;
-            emit("save", { id, status, seconds, start });
+            emit("save", { id, status, seconds, time: { start, end } });
           }}
         >
           <Label>{btnSubmitText}</Label>
