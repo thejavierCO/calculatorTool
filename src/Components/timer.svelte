@@ -28,14 +28,26 @@
     let inter = setInterval(() => {
       switch (status) {
         case "Play":
-          if (end === start) end = new Date(start + millis).getTime();
-          posicion = new Date();
-          if (posicion.getTime() > end) status = "Stop";
+          if (start == 0 && end == 0) {
+            start = new Date().getTime();
+            end = new Date(start + millis).getTime();
+          }
+          if (end == 0) {
+            if (!posicion) posicion = new Date();
+            console.log(posicion.getTime() - start - millis);
+          }
+          if (start != 0 && end != 0) {
+            posicion = new Date();
+            // if (posicion.getTime() > end) status = "Stop";
+          }
           break;
         case "Pause":
+          end = 0;
           clearInterval(inter);
           break;
         case "Stop":
+          start = 0;
+          end = 0;
           clearInterval(inter);
           break;
       }
@@ -64,7 +76,8 @@
       interval = loop(time, ({ posicion, start, end }) => {
         if (status == "Stop") interval = undefined;
         else if (status == "Pause") interval = undefined;
-        console.log(posicion, start, end);
+        time = { start, end };
+        // console.log(posicion, start, end);
       });
     }
     emit("state", {
@@ -75,17 +88,15 @@
   });
 </script>
 
-<!-- {posicion} - {millis}<br />
 <slot
   btnPause={acctions.pause}
   btnStop={acctions.stop}
   btnPlay={acctions.play}
   {seconds}
-  {posicion}
   {autoRun}
   {status}
+  {time}
 >
   <p>{seconds}</p>
-  <p>{posicion}</p>
   <p>{autoRun}</p>
-</slot> -->
+</slot>

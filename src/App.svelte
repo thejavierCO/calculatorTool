@@ -30,19 +30,15 @@
           seconds={data.seconds}
           status={data.status}
           time={data.time}
-          autoRun
-        />
-        <!-- <Timer
-          seconds={data.seconds}
-          status={data.status}
-          posicion={data.start}
           let:btnPlay
           let:btnStop
           let:btnPause
           let:status
-          autoRun
+          let:time
           on:state={({ detail }) => console.log(detail)}
+          autoRun
         >
+          {time.start} - {time.end}
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
@@ -55,7 +51,7 @@
               <Label>Play</Label>
             </Button>
           {/if}
-        </Timer> -->
+        </Timer>
         <!-- <Timer
           time={data.seconds}
           status={data.status}
