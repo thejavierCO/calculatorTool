@@ -26,7 +26,12 @@
     </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
-        <Timer />
+        <Timer
+          seconds={data.seconds}
+          status={data.status}
+          time={data.time}
+          autoRun
+        />
         <!-- <Timer
           seconds={data.seconds}
           status={data.status}
