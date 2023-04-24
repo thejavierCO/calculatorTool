@@ -15,8 +15,8 @@
   export let id = "";
   export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let seconds = 1;
-  export let start: Date | number = 0;
-  export let end: Date | number = 0;
+  export let start: number = 0;
+  export let end: number = 0;
   export let btnSubmitText = "submit";
 
   let isSave = id ? true : false;
