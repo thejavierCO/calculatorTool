@@ -25,20 +25,22 @@
   let loop = (time: time, fns) => {
     let { start, end } = time;
     let posicion: Date;
+    let test;
     let inter = setInterval(() => {
       switch (status) {
         case "Play":
           if (start == 0 && end == 0) {
             start = new Date().getTime();
-            end = new Date(start + millis).getTime();
+            end = new Date().getTime();
           }
           if (end == 0) {
             if (!posicion) posicion = new Date();
-            console.log(posicion.getTime() - start - millis);
-          }
-          if (start != 0 && end != 0) {
-            posicion = new Date();
-            // if (posicion.getTime() > end) status = "Stop";
+            else {
+              end = new Date(
+                posicion.getTime() + posicion.getTime() - start + millis
+              ).getTime();
+              start = posicion.getTime();
+            }
           }
           break;
         case "Pause":
