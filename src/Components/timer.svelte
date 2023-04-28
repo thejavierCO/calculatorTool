@@ -33,15 +33,13 @@
             start = new Date().getTime();
             end = new Date().getTime();
           }
-          if (end == 0) {
+          if (end != 0) posicion = new Date();
+          else {
             if (!posicion) posicion = new Date();
-            else {
-              end = new Date(
-                posicion.getTime() + posicion.getTime() - start + millis
-              ).getTime();
-              start = posicion.getTime();
-            }
+            console.log(posicion.getTime(), start - start + millis);
           }
+          console.log(start, end, posicion.getTime());
+
           break;
         case "Pause":
           end = 0;
