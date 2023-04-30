@@ -2,6 +2,7 @@
   type time = {
     start: number;
     end: number;
+    lastPosicion: number;
   };
   import {
     beforeUpdate,
@@ -11,47 +12,48 @@
   } from "svelte";
 
   export let seconds: number = 1;
-  export let time: time = { start: 0, end: 0 };
-  // export let posicion: number = 0;
+  export let time: time = { start: 0, end: 0, lastPosicion: 0 };
+  export let posicion: number = 0;
   export let autoRun = false;
   export let status: "Play" | "Pause" | "Stop" = "Stop";
 
   let millis = seconds * 1000;
-  // const TimeInterval = seconds >= 60 ? 1000 : seconds >= 30 ? 100 : 10;
-  const TimeInterval = 1000;
+  const TimeInterval = seconds >= 60 ? 900 : seconds >= 30 ? 100 : 10;
+  // const TimeInterval = 1000;
 
   const emit = createEventDispatcher();
   let interval;
   let loop = (time: time, fns) => {
-    let { start, end } = time;
-    let posicion: Date;
-    let test;
+    let posicion: number;
     let inter = setInterval(() => {
       switch (status) {
         case "Play":
-          if (start == 0 && end == 0) {
-            start = new Date().getTime();
-            end = new Date().getTime();
+          if (!time.lastPosicion) {
+            posicion = new Date().getTime();
+            if (time.start == 0 && time.end == 0) {
+              time.start = new Date().getTime();
+              time.end = new Date(time.start + millis).getTime();
+            }
+            if (posicion >= time.end) status = "Stop";
+          } else {
+            time.start = new Date().getTime();
+            time.end = new Date(
+              time.start + (time.end - time.lastPosicion)
+            ).getTime();
+            time.lastPosicion = 0;
           }
-          if (end != 0) posicion = new Date();
-          else {
-            if (!posicion) posicion = new Date();
-            console.log(posicion.getTime(), start - start + millis);
-          }
-          console.log(start, end, posicion.getTime());
-
           break;
         case "Pause":
-          end = 0;
+          time.lastPosicion = new Date().getTime();
           clearInterval(inter);
           break;
         case "Stop":
-          start = 0;
-          end = 0;
+          time.start = 0;
+          time.end = 0;
           clearInterval(inter);
           break;
       }
-      fns({ posicion, start, end });
+      fns(time);
     }, TimeInterval);
     return inter;
   };
@@ -73,18 +75,18 @@
   beforeUpdate(() => {
     millis = seconds * 1000;
     if (status == "Play" && !interval) {
-      interval = loop(time, ({ posicion, start, end }) => {
+      interval = loop(time, (a) => {
         if (status == "Stop") interval = undefined;
         else if (status == "Pause") interval = undefined;
-        time = { start, end };
-        // console.log(posicion, start, end);
+        posicion = ((a) => (a < 0 ? 0 : a))(time.end - new Date().getTime());
+        emit("state", {
+          status,
+          seconds,
+          time,
+          posicion,
+        });
       });
     }
-    emit("state", {
-      status,
-      seconds,
-      time,
-    });
   });
 </script>
 
@@ -96,6 +98,7 @@
   {autoRun}
   {status}
   {time}
+  {posicion}
 >
   <p>{seconds}</p>
   <p>{autoRun}</p>

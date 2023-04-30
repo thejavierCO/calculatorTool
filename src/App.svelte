@@ -34,11 +34,11 @@
           let:btnStop
           let:btnPause
           let:status
-          let:time
-          on:state={({ detail }) => console.log(detail)}
+          let:posicion
+          on:state={({ detail }) => edit(detail)}
           autoRun
         >
-          {time.start} - {time.end}
+          {posicion}
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
