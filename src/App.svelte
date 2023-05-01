@@ -16,14 +16,12 @@
     <Title value={"Working Testing " + ver} />
     <div slot="input" let:action>
       <Card>
-        <Form
-          btnSubmitText="Save"
-          on:save={({ detail }) => console.log(detail)}
-        />
+        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
       </Card>
     </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
+        {JSON.stringify(data)}
         <Timer
           seconds={data.seconds}
           status={data.status}
@@ -32,11 +30,7 @@
           let:btnStop
           let:btnPause
           let:status
-          let:posicion
-          on:state={({ detail }) => edit(detail)}
-          autoRun
         >
-          {posicion}
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

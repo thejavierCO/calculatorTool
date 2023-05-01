@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { ITime } from "../types";
   import { createEventDispatcher, onMount } from "svelte";
 
   import Select, { Option } from "@smui/select";
@@ -15,8 +16,7 @@
   export let id = "";
   export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let seconds = 1;
-  export let start: number = 0;
-  export let end: number = 0;
+  export let time: ITime = { start: 0, end: 0, count: 0 };
   export let btnSubmitText = "submit";
 
   let isSave = id ? true : false;
@@ -49,16 +49,14 @@
   </Cell>
   <Cell span={12}>
     {#if isSave == false}
-      <slot name="submit">
-        <Button
-          on:click={() => {
-            isSave = id ? !isSave : false;
-            emit("save", { id, status, seconds, time: { start, end } });
-          }}
-        >
-          <Label>{btnSubmitText}</Label>
-        </Button>
-      </slot>
+      <Button
+        on:click={() => {
+          isSave = id ? !isSave : false;
+          emit("save", { id, status, seconds, time });
+        }}
+      >
+        <Label>{btnSubmitText}</Label>
+      </Button>
     {/if}
   </Cell>
 </LayoutGrid>
