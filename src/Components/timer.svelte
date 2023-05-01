@@ -13,7 +13,7 @@
 
   export let seconds: number = 1;
   export let time: time = { start: 0, end: 0, lastPosicion: 0 };
-  export let posicion: number = 0;
+  let posicion: number = 0;
   export let autoRun = false;
   export let status: "Play" | "Pause" | "Stop" = "Stop";
 

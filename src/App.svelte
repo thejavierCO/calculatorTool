@@ -12,16 +12,14 @@
 </script>
 
 <main>
-  <Store
-    {store}
-    on:edit={({ detail }) => {
-      console.log(detail);
-    }}
-  >
+  <Store {store}>
     <Title value={"Working Testing " + ver} />
     <div slot="input" let:action>
       <Card>
-        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
+        <Form
+          btnSubmitText="Save"
+          on:save={({ detail }) => console.log(detail)}
+        />
       </Card>
     </div>
     <div slot="print" let:edit let:del let:id let:data>
@@ -52,35 +50,6 @@
             </Button>
           {/if}
         </Timer>
-        <!-- <Timer
-          time={data.seconds}
-          status={data.status}
-          start={data.start}
-          let:btnPlay
-          let:btnStop
-          let:btnPause
-          let:start
-          let:status
-          on:state={({ detail }) => edit(detail)}
-        >
-          <Form
-            {id}
-            {start}
-            {status}
-            seconds={data.seconds}
-            btnSubmitText="Save"
-            on:save={({ detail }) => edit(detail)}
-          />
-          <Button on:click={btnPlay}>
-            <Label>Play</Label>
-          </Button>
-          <Button on:click={btnStop}>
-            <Label>Stop</Label>
-          </Button>
-          <Button on:click={btnPause}>
-            <Label>Pause</Label>
-          </Button>
-        </Timer> -->
         <div slot="actions">
           <Button on:click={del}>
             <Label>Del</Label>
