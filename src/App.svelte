@@ -21,8 +21,8 @@
     </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
-        {JSON.stringify(data)}
         <Timer
+          on:state={({ detail }) => console.log(data.id, detail)}
           seconds={data.seconds}
           status={data.status}
           time={data.time}
@@ -30,7 +30,10 @@
           let:btnStop
           let:btnPause
           let:status
+          let:posicion
+          autoRun
         >
+          {posicion}
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
