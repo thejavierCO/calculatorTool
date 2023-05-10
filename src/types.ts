@@ -1,7 +1,7 @@
 export type ITime = {
   start: number;
+  pause: number;
   end: number;
-  count: number;
 };
 
 export type IActions = {
@@ -11,3 +11,7 @@ export type IActions = {
 }
 
 export type IStatus = "Play" | "Pause" | "Stop";
+
+export type IFns = (time: ITime) => void;
+
+export type IMillis = number;

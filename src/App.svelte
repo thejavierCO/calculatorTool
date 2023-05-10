@@ -8,7 +8,7 @@
   import { storeBase } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
-  const store = storeBase(id, []);
+  const store = storeBase(id, [], true);
 </script>
 
 <main>
@@ -22,7 +22,8 @@
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer
-          on:state={({ detail }) => console.log(data.id, detail)}
+          on:state={({ detail }) => edit(detail)}
+          on:time={({ detail }) => edit(detail)}
           seconds={data.seconds}
           status={data.status}
           time={data.time}
@@ -31,9 +32,8 @@
           let:btnPause
           let:status
           let:posicion
-          autoRun
         >
-          {posicion}
+          <p>{posicion}</p>
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

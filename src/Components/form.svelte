@@ -16,7 +16,7 @@
   export let id = "";
   export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let seconds = 1;
-  export let time: ITime = { start: 0, end: 0, count: 0 };
+  export let time: ITime = { start: 0, end: 0, pause: 0 };
   export let btnSubmitText = "submit";
 
   let isSave = id ? true : false;

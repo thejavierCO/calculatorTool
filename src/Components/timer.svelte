@@ -2,6 +2,7 @@
   import type { ITime, IActions, IStatus } from "../types";
   import {
     beforeUpdate,
+    afterUpdate,
     createEventDispatcher,
     onDestroy,
     onMount,
@@ -9,7 +10,7 @@
   import Counter from "./countInterval.svelte";
 
   export let seconds: number = 1;
-  export let time: ITime = { start: 0, end: 0, count: 0 };
+  export let time: ITime = { start: 0, pause: 0, end: 0 };
   export let autoRun = false;
   export let status: IStatus = "Stop";
 
@@ -20,23 +21,11 @@
   let acctions: IActions = {
     play: () => {
       status = "Play";
-      if (time.end == 0 && time.start == 0) {
-        time.start = new Date().getTime();
-        time.end = new Date(time.start + millis).getTime();
-      }
-      if (time.end == 0 && time.count != 0) {
-        time.start = new Date().getTime();
-        time.end = new Date(time.start + time.count).getTime();
-      }
     },
     pause: () => {
       status = "Pause";
-      time.end = 0;
     },
     stop: () => {
-      time.start = 0;
-      time.end = 0;
-      time.count = 0;
       status = "Stop";
     },
   };
@@ -45,16 +34,18 @@
     if (autoRun) acctions.play();
   });
 
-  beforeUpdate(() => {
-    emit("state", {
-      status,
-      seconds,
-      time,
-    });
+  afterUpdate(() => {
+    emit("state", { status });
   });
 </script>
 
-<Counter bind:status {time} bind:acctions let:posicion>
+<Counter
+  bind:status
+  {time}
+  {millis}
+  let:posicion
+  on:time={({ detail }) => emit("time", detail.time)}
+>
   <slot
     btnPause={acctions.pause}
     btnStop={acctions.stop}
@@ -65,7 +56,13 @@
     {time}
     {posicion}
   >
-    <p>{seconds}</p>
-    <p>{autoRun}</p>
+    <p>{autoRun ? "AutoRun" : ""}</p>
+    <p>{JSON.stringify(seconds)}</p>
+    <p>{JSON.stringify(status)}</p>
+    <p>{JSON.stringify(time)}</p>
+    <p>{JSON.stringify(posicion)}</p>
+    <button on:click={() => acctions.play()}>play</button>
+    <button on:click={() => acctions.pause()}>pause</button>
+    <button on:click={() => acctions.stop()}>stop</button>
   </slot>
 </Counter>
