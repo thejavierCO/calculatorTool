@@ -7,55 +7,55 @@
   let emit = createEventDispatcher();
   let posicion = 0;
   let interval;
-  /*let loop = (runing: IFns | void) => {
-    let interval;
-    return new Promise((res, rej) => {
-      if (!interval) {
-        interval = setInterval(() => {
-          let pos = new Date().getTime();
-          if (status == "Play") {
-            if (time.start == 0) time.start = pos;
-            if (time.end == 0) time.end = pos + millis;
-            if (time.pause != 0) {
-              time.start = pos;
-              time.end =
-                pos +
-                Math.round(
-                  time.end -
-                    Math.round(time.pause != 0 ? time.pause : time.start)
-                );
-              time.pause = 0;
+
+  let actions = {
+    start: () =>
+      new Promise((res, rej) => {
+        if (!interval) {
+          interval = setInterval(() => {
+            let pos = new Date().getTime();
+            if (status == "Pause" || status == "Stop") {
+              if (status == "Pause") actions.pause();
+              if (status == "Stop") actions.end();
+              clearInterval(interval);
+              interval = undefined;
+            } else {
+              if (time.start == 0) time.start = new Date().getTime();
+              if (time.end == 0) {
+                time.end = new Date(
+                  Math.round(
+                    time.pause != 0 ? new Date().getTime() : time.start
+                  ) +
+                    Math.round(
+                      time.pause != 0
+                        ? millis - Math.round(time.pause - time.start)
+                        : millis
+                    )
+                ).getTime();
+                console.warn(Math.round(time.pause - time.start));
+                if (time.pause != 0) time.pause = 0;
+              }
             }
-            if (pos > time.end) status = "Stop";
-          } else if (status == "Pause" || status == "Stop") {
-            if (status == "Pause") time.pause = pos;
-            if (status == "Stop") {
-              time.start = 0;
-              time.end = 0;
-              time.pause = 0;
-            }
-            clearInterval(interval);
-            interval = undefined;
-            res({ time, status });
-          }
-          if (runing) runing(time);
-        }, 100);
-      } else rej({ error: "not duplicate interval" });
-    });
-  };*/
+          }, 1000);
+        } else rej({ error: "exist interval", interval });
+      }),
+    pause: () => {
+      time.end = 0;
+      time.pause = new Date().getTime();
+      status = "Pause";
+    },
+    end: () => {
+      time = { start: 0, pause: 0, end: 0 };
+      status = "Stop";
+    },
+  };
+  onDestroy(() => {
+    if (interval) clearInterval(interval);
+    interval = undefined;
+  });
   beforeUpdate(() => {
     if (status == "Play") {
-      /*loop((e) => {
-        posicion = e.end - new Date().getTime();
-        if (posicion < 0) posicion = 0;
-        emit("time", { time, posicion });
-      })
-        .then((e) => {
-          console.log(e);
-        })
-        .catch((e) => {
-          console.warn(e);
-        });*/
+      actions.start().catch(() => console.warn("_"));
     }
   });
 </script>
