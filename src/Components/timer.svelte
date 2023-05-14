@@ -1,12 +1,6 @@
 <script lang="ts">
   import type { ITime, IActions, IStatus } from "../types";
-  import {
-    beforeUpdate,
-    afterUpdate,
-    createEventDispatcher,
-    onDestroy,
-    onMount,
-  } from "svelte";
+  import { afterUpdate, createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
 
   export let seconds: number = 1;
