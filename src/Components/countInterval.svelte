@@ -9,7 +9,7 @@
   let interval;
 
   let actions = {
-    start: () =>
+    start: (fns) =>
       new Promise((res, rej) => {
         if (!interval) {
           interval = setInterval(() => {
@@ -23,19 +23,23 @@
               if (time.start == 0) time.start = new Date().getTime();
               if (time.end == 0) {
                 time.end = new Date(
-                  Math.round(
-                    time.pause != 0 ? new Date().getTime() : time.start
-                  ) +
+                  time.start +
                     Math.round(
                       time.pause != 0
-                        ? millis - Math.round(time.pause - time.start)
+                        ? millis -
+                            Math.round(
+                              time.start < time.pause
+                                ? time.pause - time.start
+                                : time.start - time.pause
+                            )
                         : millis
                     )
                 ).getTime();
-                console.warn(Math.round(time.pause - time.start));
                 if (time.pause != 0) time.pause = 0;
               }
+              console.log(time.end - time.start, pos < time.end);
             }
+            fns(time);
           }, 1000);
         } else rej({ error: "exist interval", interval });
       }),
@@ -55,7 +59,10 @@
   });
   beforeUpdate(() => {
     if (status == "Play") {
-      actions.start().catch(() => console.warn("_"));
+      actions
+        .start((a) => console.log(a, status))
+        .then((e) => console.log("end", e, status))
+        .catch((e) => console.warn("error", e, status));
     }
   });
 </script>
