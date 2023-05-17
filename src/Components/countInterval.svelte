@@ -26,7 +26,8 @@
           time.pause = 0;
         }
         pos = ((a) => (a < 0 ? 0 : a))(time.end - data);
-        if (time.end - time.start < 0 || data > time.end) status = "Stop";
+        if (time.end - time.start < 0 || data > time.end || pos == 0)
+          status = "Stop";
         break;
       case "Pause":
         if (time.pause == 0) time.pause = data;
@@ -40,8 +41,13 @@
         status = "Stop";
         break;
     }
+    emit("time", { time });
   });
+  onMount(() => {
+    console.log(status);
 
+    if (pos == 0) status = "Stop";
+  });
   onDestroy(() => {
     if (typeof unsus == "function") {
       unsus();

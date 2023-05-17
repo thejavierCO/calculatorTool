@@ -41,7 +41,7 @@
   {millis}
   {posicion}
   let:posicion
-  on:time={({ detail }) => emit("time", detail.time)}
+  on:time={({ detail }) => emit("time", detail)}
 >
   <slot
     btnPause={acctions.pause}
