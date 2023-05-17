@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ITime, IActions, IStatus } from "../types";
+  import type { Readable } from "svelte/store";
   import { afterUpdate, createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
 
@@ -7,6 +8,7 @@
   export let time: ITime = { start: 0, pause: 0, end: 0 };
   export let autoRun = false;
   export let status: IStatus = "Stop";
+  export let posicion: Readable<number>;
 
   let millis = seconds * 1000;
 
@@ -37,6 +39,7 @@
   bind:status
   {time}
   {millis}
+  {posicion}
   let:posicion
   on:time={({ detail }) => emit("time", detail.time)}
 >

@@ -5,10 +5,11 @@
   import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
   import Timer from "./Components/timer.svelte";
-  import { storeBase } from "./js/data";
+  import { storeBase, Time } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
   const store = storeBase(id, [], true);
+  const posicion = Time(100);
 </script>
 
 <main>
@@ -27,6 +28,7 @@
           seconds={data.seconds}
           status={data.status}
           time={data.time}
+          {posicion}
           let:btnPlay
           let:btnStop
           let:btnPause

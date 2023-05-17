@@ -1,70 +1,53 @@
 <script lang="ts">
-  import { beforeUpdate, createEventDispatcher, onDestroy } from "svelte";
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onDestroy,
+    onMount,
+  } from "svelte";
   import type { ITime, IStatus, IFns, IMillis } from "../types";
+  import type { Readable, Unsubscriber } from "svelte/store";
   export let time: ITime;
   export let millis: IMillis;
   export let status: IStatus;
   let emit = createEventDispatcher();
-  let posicion = 0;
-  let interval;
-
-  let actions = {
-    start: (fns) =>
-      new Promise((res, rej) => {
-        if (!interval) {
-          interval = setInterval(() => {
-            let pos = new Date().getTime();
-            if (status == "Pause" || status == "Stop") {
-              if (status == "Pause") actions.pause();
-              if (status == "Stop") actions.end();
-              clearInterval(interval);
-              interval = undefined;
-            } else {
-              if (time.start == 0) time.start = new Date().getTime();
-              if (time.end == 0) {
-                time.end = new Date(
-                  time.start +
-                    Math.round(
-                      time.pause != 0
-                        ? millis -
-                            Math.round(
-                              time.start < time.pause
-                                ? time.pause - time.start
-                                : time.start - time.pause
-                            )
-                        : millis
-                    )
-                ).getTime();
-                if (time.pause != 0) time.pause = 0;
-              }
-              console.log(time.end - time.start, pos < time.end);
-            }
-            fns(time);
-          }, 1000);
-        } else rej({ error: "exist interval", interval });
-      }),
-    pause: () => {
-      time.end = 0;
-      time.pause = new Date().getTime();
-      status = "Pause";
-    },
-    end: () => {
-      time = { start: 0, pause: 0, end: 0 };
-      status = "Stop";
-    },
-  };
-  onDestroy(() => {
-    if (interval) clearInterval(interval);
-    interval = undefined;
+  export let posicion: Readable<number>;
+  let pos = 0;
+  let unsus: Unsubscriber = posicion.subscribe((data) => {
+    switch (status) {
+      case "Play":
+        if (time.start == 0) time.start = data;
+        if (time.end == 0) time.end = time.start + millis;
+        if (time.pause != 0) {
+          let posPause = Math.round(time.pause - time.start);
+          let timePause = time.end - time.start;
+          time.start = data;
+          time.end = time.start + timePause - posPause;
+          time.pause = 0;
+        }
+        pos = ((a) => (a < 0 ? 0 : a))(time.end - data);
+        if (time.end - time.start < 0 || data > time.end) status = "Stop";
+        break;
+      case "Pause":
+        if (time.pause == 0) time.pause = data;
+        status = "Pause";
+        break;
+      case "Stop":
+        pos = 0;
+        time.start = 0;
+        time.pause = 0;
+        time.end = 0;
+        status = "Stop";
+        break;
+    }
   });
-  beforeUpdate(() => {
-    if (status == "Play") {
-      actions
-        .start((a) => console.log(a, status))
-        .then((e) => console.log("end", e, status))
-        .catch((e) => console.warn("error", e, status));
+
+  onDestroy(() => {
+    if (typeof unsus == "function") {
+      unsus();
+      unsus = undefined;
     }
   });
 </script>
 
-<slot {posicion}>{JSON.stringify(time)}</slot>
+<slot posicion={pos}>{JSON.stringify(time)}</slot>

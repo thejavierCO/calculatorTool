@@ -1,4 +1,4 @@
-import { writable, get, derived } from "svelte/store";
+import { writable, get, derived, readable } from "svelte/store";
 
 export let Types = [
   "Bote Negro",
@@ -17,3 +17,14 @@ export let storeBase = (id, data, useLocalStorage = false) => {
   if (useLocalStorage) store.subscribe((data) => localStorage.setItem(id, JSON.stringify(data)))
   return store;
 };
+
+let intervalId;
+
+export let Time = (ms = 1000) => readable(0, (set) => {
+  if (!intervalId) {
+    intervalId = setInterval(() => {
+      set(new Date().getTime())
+    }, ms)
+  }
+  return () => console.warn("unsus")
+})
