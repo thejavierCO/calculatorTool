@@ -27,26 +27,22 @@
         }
         pos = ((a) => (a < 0 ? 0 : a))(time.end - data);
         if (time.end - time.start < 0 || data > time.end || pos == 0)
-          status = "Stop";
+          emit("stop");
         break;
       case "Pause":
         if (time.pause == 0) time.pause = data;
-        status = "Pause";
         break;
       case "Stop":
         pos = 0;
         time.start = 0;
         time.pause = 0;
         time.end = 0;
-        status = "Stop";
         break;
     }
     emit("time", { time });
   });
   onMount(() => {
-    console.log(status);
-
-    if (pos == 0) status = "Stop";
+    if (pos == 0) emit("Stop");
   });
   onDestroy(() => {
     if (typeof unsus == "function") {

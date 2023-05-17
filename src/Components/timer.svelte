@@ -17,21 +17,20 @@
   let acctions: IActions = {
     play: () => {
       status = "Play";
+      emit("state", { status });
     },
     pause: () => {
       status = "Pause";
+      emit("state", { status });
     },
     stop: () => {
       status = "Stop";
+      emit("state", { status });
     },
   };
 
   onMount(() => {
     if (autoRun) acctions.play();
-  });
-
-  afterUpdate(() => {
-    emit("state", { status });
   });
 </script>
 
@@ -41,6 +40,7 @@
   {millis}
   {posicion}
   let:posicion
+  on:stop={(_) => acctions.stop()}
   on:time={({ detail }) => emit("time", detail)}
 >
   <slot
