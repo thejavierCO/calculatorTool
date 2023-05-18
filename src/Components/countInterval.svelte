@@ -45,10 +45,7 @@
     if (pos == 0) emit("Stop");
   });
   onDestroy(() => {
-    if (typeof unsus == "function") {
-      unsus();
-      unsus = undefined;
-    }
+    if (typeof unsus == "function") unsus();
   });
 </script>
 
