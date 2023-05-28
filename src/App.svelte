@@ -36,14 +36,12 @@
           let:btnPause
           let:status
           let:posicion
-          let:Total
         >
           <CircularProgress
-            class="my-four-colors"
-            style="height: 200px; width: 200px;"
-            progress={(posicion * 1) / Total}
-            fourColor
+            style="height: 200px; width: 200px; stroke:red !important;"
+            progress={posicion(1, 3)}
           /><br />
+          {posicion(1, 3)}<br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

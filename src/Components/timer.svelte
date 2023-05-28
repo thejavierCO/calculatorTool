@@ -51,8 +51,10 @@
     {autoRun}
     {status}
     {time}
-    {posicion}
-    Total={millis}
+    posicion={(Maxtotal = 100, MaxDecimal = 0) =>
+      parseFloat(((posicion * Maxtotal) / millis).toString()).toFixed(
+        MaxDecimal
+      )}
   >
     <p>{autoRun ? "AutoRun" : ""}</p>
     <p>{JSON.stringify(seconds)}</p>

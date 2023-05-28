@@ -1,3 +1,16 @@
 body {
   margin: 0px;
 }
+
+/* :root {
+  --mdc-theme-primary: green;
+}
+
+main {
+  background-color: black;
+  color: #fff;
+}
+
+.smui-card__content {
+  background-color: black;
+} */
