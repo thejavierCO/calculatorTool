@@ -5,6 +5,8 @@
   import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
   import Timer from "./Components/timer.svelte";
+  import CircularProgress from "@smui/circular-progress";
+
   import { storeBase, Time } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
@@ -34,8 +36,14 @@
           let:btnPause
           let:status
           let:posicion
+          let:Total
         >
-          <p>{posicion}</p>
+          <CircularProgress
+            class="my-four-colors"
+            style="height: 200px; width: 200px;"
+            progress={(posicion * 1) / Total}
+            fourColor
+          /><br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

@@ -52,7 +52,7 @@
     {status}
     {time}
     {posicion}
-    porcentajePosicion={(posicion * 100) / millis}
+    Total={millis}
   >
     <p>{autoRun ? "AutoRun" : ""}</p>
     <p>{JSON.stringify(seconds)}</p>
