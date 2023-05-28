@@ -2,9 +2,11 @@ body {
   margin: 0px;
 }
 
-/* :root {
+:root {
   --mdc-theme-primary: green;
 }
+
+/*
 
 main {
   background-color: black;
