@@ -9,7 +9,7 @@
   let InsertAddStart = false;
   let InsertAddEnd = false;
   let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
-  slotsIDs[0] == "add" ? (InsertAddEnd = true) : (InsertAddStart = true);
+  slotsIDs[0] == "input" ? (InsertAddEnd = true) : (InsertAddStart = true);
 
   export function add(data) {
     emit("add", data);

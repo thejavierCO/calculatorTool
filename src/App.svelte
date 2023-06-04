@@ -17,11 +17,6 @@
 <main>
   <Store {store}>
     <Title value={"Working Testing " + ver} />
-    <div slot="input" let:action>
-      <Card>
-        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
-      </Card>
-    </div>
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer
@@ -60,6 +55,11 @@
             <Label>Del</Label>
           </Button>
         </div>
+      </Card>
+    </div>
+    <div slot="input" let:action>
+      <Card>
+        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
       </Card>
     </div>
   </Store>
