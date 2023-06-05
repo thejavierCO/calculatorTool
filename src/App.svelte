@@ -16,7 +16,7 @@
 
 <main>
   <Store {store}>
-    <Title value={"Working Testing " + ver} />
+    <Title value={"Temporizadores " + ver} />
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer
