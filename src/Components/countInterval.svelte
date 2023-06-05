@@ -19,10 +19,11 @@
         if (time.start == 0) time.start = data;
         if (time.end == 0) time.end = time.start + millis;
         if (time.pause != 0) {
-          let posPause = Math.round(time.pause - time.start);
-          let timePause = time.end - time.start;
+          let posPause = Math.round(time.pause - time.start),
+            timePause = time.end - time.start,
+            timeOff = timePause - posPause;
           time.start = data;
-          time.end = time.start + timePause - posPause;
+          time.end = time.start + timeOff;
           time.pause = 0;
         }
         pos = ((a) => (a < 0 ? 0 : a))(time.end - data);

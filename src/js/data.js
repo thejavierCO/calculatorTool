@@ -18,13 +18,18 @@ export let storeBase = (id, data, useLocalStorage = false) => {
   return store;
 };
 
-let intervalId;
-
-export let Time = (ms = 1000) => readable(0, (set) => {
-  if (!intervalId) {
-    intervalId = setInterval(() => {
-      set(new Date().getTime())
-    }, ms)
+export class ConutTime {
+  constructor(ms = 1000) {
+    this.store = readable(0, (set) => {
+      if (!this.intervalId) {
+        this.intervalId = setInterval(() => {
+          set(new Date().getTime())
+        }, ms)
+      }
+      return () => console.warn("unsus", this.intervalId);
+    })
   }
-  return () => console.warn("unsus")
-})
+  getTime() {
+    return this.store
+  }
+}

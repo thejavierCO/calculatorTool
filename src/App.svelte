@@ -7,11 +7,11 @@
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
 
-  import { storeBase, Time } from "./js/data";
+  import { storeBase, ConutTime } from "./js/data";
   export let id = "store";
   export let ver = "0.0.1";
   const store = storeBase(id, [], true);
-  const posicion = Time(100);
+  const posicion = new ConutTime(100).getTime();
 </script>
 
 <main>
@@ -37,7 +37,7 @@
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={posicion(1, 3)}
           /><br />
-          {posicion(1, 3)}<br />
+          {posicion(1000, 3)}<br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
