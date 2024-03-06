@@ -35,7 +35,7 @@
           ID:{id}<br />
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={posicion(1, 3)}
+            progress={Number(posicion(1, 3))}
           /><br />
           {posicion(1000, 3)}<br />
           {#if status == "Play"}
