@@ -9,14 +9,13 @@
 
   import { storeBase, ConutTime } from "./js/data";
   export let id = "store";
-  export let ver = "0.0.1";
   const store = storeBase(id, [], true);
   const posicion = new ConutTime(100).getTime();
 </script>
 
 <main>
   <Store {store}>
-    <Title value={"Temporizadores " + ver} />
+    <Title value="Temporizadores" />
     <div slot="print" let:edit let:del let:id let:data>
       <Card>
         <Timer

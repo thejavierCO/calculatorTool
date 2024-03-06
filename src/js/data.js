@@ -1,11 +1,5 @@
 import { writable, get, derived, readable } from "svelte/store";
 
-export let Types = [
-  "Bote Negro",
-  "Bote dorado",
-  "Bote de aluminio"
-];
-
 export let storeBase = (id, data, useLocalStorage = false) => {
   let store = writable(data, (set) => {
     if (useLocalStorage) {
