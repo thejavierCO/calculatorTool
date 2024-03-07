@@ -1,6 +1,5 @@
 <script lang="ts">
   import {
-    beforeUpdate,
     createEventDispatcher,
     onDestroy,
     onMount,
@@ -10,8 +9,8 @@
   export let time: ITime;
   export let millis: IMillis;
   export let status: IStatus;
-  let emit = createEventDispatcher();
   export let posicion: Readable<number>;
+  let emit = createEventDispatcher();
   let pos = 0;
   let unsus: Unsubscriber = posicion.subscribe((data) => {
     switch (status) {

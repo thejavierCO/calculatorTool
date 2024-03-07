@@ -9,9 +9,8 @@
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
 
-  import { storeBase, ConutTime } from "./js/data";
+  import { storeBase } from "./js/data";
   const store = storeBase([]).useLocalStorage("store");
-  const posicion = new ConutTime(100).getTime();
 </script>
 
 <main>
@@ -25,7 +24,6 @@
           seconds={data.seconds}
           status={data.status}
           time={data.time}
-          {posicion}
           let:btnPlay
           let:btnStop
           let:btnPause

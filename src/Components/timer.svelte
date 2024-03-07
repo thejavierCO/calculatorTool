@@ -1,14 +1,16 @@
 <script lang="ts">
   import type { ITime, IActions, IStatus } from "../types";
   import type { Readable } from "svelte/store";
-  import { afterUpdate, createEventDispatcher, onMount } from "svelte";
+  
+  import { createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
+  import { ConutTime } from "../js/data";
 
   export let seconds: number = 1;
   export let time: ITime = { start: 0, pause: 0, end: 0 };
   export let autoRun = false;
   export let status: IStatus = "Stop";
-  export let posicion: Readable<number>;
+  export let posicion: Readable<number> = new ConutTime(100).getTime();
 
   let millis = seconds * 1000;
 
