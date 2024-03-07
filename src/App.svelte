@@ -1,15 +1,16 @@
 <script>
   import Title from "./Components/Title.svelte";
+  import Store from "./Components/store.svelte";
+
   import Card from "./Components/CardForm.svelte";
   import Form from "./Components/form.svelte";
-  import Store from "./Components/store.svelte";
   import Button, { Label } from "@smui/button";
+
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
 
   import { storeBase, ConutTime } from "./js/data";
-  export let id = "store";
-  const store = storeBase(id, [], true);
+  const store = storeBase([]).useLocalStorage("s");
   const posicion = new ConutTime(100).getTime();
 </script>
 

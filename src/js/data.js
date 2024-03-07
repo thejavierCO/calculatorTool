@@ -1,15 +1,13 @@
 import { writable, get, derived, readable } from "svelte/store";
 
-export let storeBase = (id, data, useLocalStorage = false) => {
-  let store = writable(data, (set) => {
-    if (useLocalStorage) {
-      const data = JSON.parse(localStorage.getItem(id));
-      if (data == null) localStorage.setItem(id, JSON.stringify(data))
-      else set(data)
-    }
-  })
-  if (useLocalStorage) store.subscribe((data) => localStorage.setItem(id, JSON.stringify(data)))
-  return store;
+export let storeBase = (data) => {
+  let store = writable(data)
+  return ({store,useLocalStorage:(id)=>{
+    if(localStorage.getItem(id)==null)localStorage.setItem(id,"[]")
+    else store.update(_=>JSON.parse(localStorage.getItem(id)))
+    store.subscribe((data) => localStorage.setItem(id, JSON.stringify(data)))
+    return store;
+  }});
 };
 
 export class ConutTime {
