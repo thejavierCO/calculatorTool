@@ -1,4 +1,4 @@
-import { writable, get, derived, readable } from "svelte/store";
+import { writable, readable } from "svelte/store";
 
 export let storeBase = (data) => {
   let store = writable(data)
@@ -13,11 +13,7 @@ export let storeBase = (data) => {
 export class ConutTime {
   constructor(ms = 1000) {
     this.store = readable(0, (set) => {
-      if (!this.intervalId) {
-        this.intervalId = setInterval(() => {
-          set(new Date().getTime())
-        }, ms)
-      }
+      if (!this.intervalId) this.intervalId = setInterval(() => set(new Date().getTime()), ms)
       return () => console.warn("unsus", this.intervalId);
     })
   }

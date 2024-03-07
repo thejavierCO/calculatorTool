@@ -2,12 +2,13 @@
   import { createEventDispatcher } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import { v4 as uuidv4 } from "uuid";
-
-  export let store;
-  if (!store) throw "require store";
   const emit = createEventDispatcher();
+  export let store;
   let InsertAddStart = false;
   let InsertAddEnd = false;
+
+  if (!store) throw "require store";
+  
   let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
   slotsIDs[0] == "input" ? (InsertAddEnd = true) : (InsertAddStart = true);
 

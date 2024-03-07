@@ -10,7 +10,7 @@
   import CircularProgress from "@smui/circular-progress";
 
   import { storeBase, ConutTime } from "./js/data";
-  const store = storeBase([]).useLocalStorage("s");
+  const store = storeBase([]).useLocalStorage("store");
   const posicion = new ConutTime(100).getTime();
 </script>
 
@@ -32,12 +32,11 @@
           let:status
           let:posicion
         >
-          ID:{id}<br />
+          <p><span>ID:{id}</span></p>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={Number(posicion(1, 3))}
           /><br />
-          {posicion(1000, 3)}<br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
