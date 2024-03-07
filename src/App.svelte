@@ -9,12 +9,10 @@
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
 
-  import { storeBase } from "./js/data";
-  const store = storeBase([]).useLocalStorage("store");
 </script>
 
 <main>
-  <Store {store}>
+  <Store useLocalStorage>
     <Title value="Temporizadores" />
     <div slot="print" let:edit let:del let:id let:data>
       <Card>

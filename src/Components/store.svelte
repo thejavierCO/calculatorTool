@@ -1,14 +1,18 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher} from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import { v4 as uuidv4 } from "uuid";
+  import { Storedb } from "../js/data";
   const emit = createEventDispatcher();
-  export let store;
+  export let useLocalStorage = false;
+  let store = new Storedb([]);
   let InsertAddStart = false;
   let InsertAddEnd = false;
 
   if (!store) throw "require store";
-  
+  let db = store.db
+  if(useLocalStorage){store.useLocalStore(typeof useLocalStorage == "string"?useLocalStorage:"store")}
+
   let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
   slotsIDs[0] == "input" ? (InsertAddEnd = true) : (InsertAddStart = true);
 
@@ -16,7 +20,7 @@
     emit("add", data);
     let { id } = data;
     if (!id) data.id = uuidv4();
-    store.update((e) => {
+    db.update((e) => {
       if (e.filter((e) => e.id == id).length == 0) {
         e.push(data);
       } else emit("error", "exist element");
@@ -25,7 +29,7 @@
   }
   export function del(id) {
     emit("del", { id });
-    store.update((e) => {
+    db.update((e) => {
       let item = e.filter((e) => e.id == id);
       if (item.length == 1) {
         return e.filter((e) => e.id != id);
@@ -35,7 +39,7 @@
   }
   export function edit(id, data) {
     emit("edit", { id, data });
-    store.update((e) => {
+    db.update((e) => {
       let item = e.filter((e) => e.id == id);
       if (item.length == 1) {
         return e.map((e) => {
@@ -58,7 +62,7 @@
 <slot />
 
 <LayoutGrid>
-  {#if $store.length == 0}
+  {#if $db.length == 0}
     <Cell>
       <slot name="input" action={add} />
     </Cell>
@@ -68,11 +72,11 @@
         <slot name="input" action={add} />
       </Cell>
     {/if}
-    {#each $store as data, index}
+    {#each $db as data, index}
       <Cell>
         <slot
           name="print"
-          length={$store.length}
+          length={$db.length}
           id={data.id}
           {data}
           {index}
