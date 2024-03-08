@@ -14,8 +14,14 @@
 <main>
   <Store useLocalStorage>
     <Title value="Temporizadores" />
-    <div slot="print" let:edit let:del let:id let:data>
+    <div slot="input" let:action>
       <Card>
+        <h1>new form temporal</h1>
+        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
+      </Card>
+    </div>
+    <div slot="print" let:edit let:del let:id let:data>
+      <Card {id}>
         <Timer
           on:state={({ detail }) => edit(detail)}
           on:time={({ detail }) => edit(detail)}
@@ -28,7 +34,6 @@
           let:status
           let:posicion
         >
-          <p><span>ID:{id}</span></p>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={Number(posicion(1, 3))}
@@ -51,11 +56,6 @@
             <Label>Del</Label>
           </Button>
         </div>
-      </Card>
-    </div>
-    <div slot="input" let:action>
-      <Card>
-        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
       </Card>
     </div>
   </Store>

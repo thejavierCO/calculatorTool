@@ -1,15 +1,5 @@
 import { writable, readable } from "svelte/store";
 
-export let storeBase = (data) => {
-  let store = writable(data)
-  return ({store,useLocalStorage:(id)=>{
-    if(localStorage.getItem(id)==null)localStorage.setItem(id,"[]")
-    else store.update(_=>JSON.parse(localStorage.getItem(id)))
-    store.subscribe((data) => localStorage.setItem(id, JSON.stringify(data)))
-    return store;
-  }});
-};
-
 export class Storedb{
   constructor(db){
     this.store = writable(db);
@@ -36,7 +26,7 @@ export class ConutTime {
       return _ => console.warn("unsus");
     })
   }
-  getTime() {
+  get Time() {
     return this.store
   }
 }
