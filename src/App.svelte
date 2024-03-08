@@ -34,10 +34,16 @@
           let:status
           let:posicion
         >
-          <CircularProgress
+          <!-- <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={Number(posicion(1, 3))}
-          /><br />
+          /><br /> -->
+          <p>{data.seconds}</p>
+          <p>{data.status}</p>
+          <p>{JSON.stringify(data.time)}</p>
+          <p>{status}</p>
+          <p>{Number(posicion(1,2)) % 60}</p>
+          
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

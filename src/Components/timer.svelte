@@ -10,7 +10,7 @@
   export let time: ITime = { start: 0, pause: 0, end: 0 };
   export let autoRun = false;
   export let status: IStatus = "Stop";
-  export let posicion: Readable<number> = new ConutTime(100).Time;
+  export let posicion: Readable<number> = new ConutTime().Time;
 
   let millis = seconds * 1000;
 

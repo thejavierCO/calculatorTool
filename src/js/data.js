@@ -11,7 +11,7 @@ export class Storedb{
     this.store.subscribe((data) => localStorage.setItem(id, JSON.stringify(data)))
     return this
   }
-  suscribe(){
+  get suscribe(){
     return this.store.subscribe
   }
   get db(){
@@ -20,9 +20,13 @@ export class Storedb{
 }
 
 export class ConutTime {
-  constructor(ms = 1000) {
+  constructor() {
     this.store = readable(0, (set) => {
-      if (!this.intervalId) this.intervalId = setInterval(() => set(new Date().getTime()), ms)
+      function updateClock(_){
+        set(new Date().getTime())
+        window.requestAnimationFrame(updateClock);
+      }
+      window.requestAnimationFrame(updateClock);
       return _ => console.warn("unsus");
     })
   }
