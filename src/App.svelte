@@ -38,7 +38,7 @@
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={Number(parseFloat(((current_time * 1 / (data.seconds*1000)).toString())).toFixed(3))}
           /><br />
-          <p>{current_time}</p>
+          <p>{data.status} - {status}</p>
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

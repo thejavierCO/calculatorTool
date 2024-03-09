@@ -17,7 +17,10 @@
 </script>
 
 <Counter
-  on:status={({detail:status})=>{emit("state",{status})}}
+  on:status={({detail:status})=>{
+    console.log(status)
+    emit("state",{status})
+  }}
   on:time={({detail:{time}})=>{emit("time",{time})}}
   {status}
   {time}
