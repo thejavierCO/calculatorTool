@@ -32,18 +32,13 @@
           let:btnStop
           let:btnPause
           let:status
-          let:posicion
+          let:current_time
         >
-          <!-- <CircularProgress
+          <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={Number(posicion(1, 3))}
-          /><br /> -->
-          <p>{data.seconds}</p>
-          <p>{data.status}</p>
-          <p>{JSON.stringify(data.time)}</p>
-          <p>{status}</p>
-          <p>{posicion}</p>
-          
+            progress={Number(parseFloat(((current_time * 1 / (data.seconds*1000)).toString())).toFixed(3))}
+          /><br />
+          <p>{current_time}</p>
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>

@@ -5,8 +5,8 @@ export type ITime = {
 };
 
 export type IActions = {
-  play: () => void,
-  pause: () => void,
+  play: (data?) => void,
+  pause: (data?) => void,
   stop: () => void,
 }
 
