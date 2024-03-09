@@ -42,7 +42,7 @@
           <p>{data.status}</p>
           <p>{JSON.stringify(data.time)}</p>
           <p>{status}</p>
-          <p>{Number(posicion(1,2)) % 60}</p>
+          <p>{posicion}</p>
           
           {#if status == "Play"}
             <Button on:click={btnStop}>
