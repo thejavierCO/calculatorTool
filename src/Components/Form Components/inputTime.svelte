@@ -4,8 +4,6 @@
   export let value = "";
   export let label = "Time";
   export let suffix = "";
-  export let min = 0;
-  export let max = 60;
 </script>
 
 <Cell span={4}>

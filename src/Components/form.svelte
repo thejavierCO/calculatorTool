@@ -17,6 +17,7 @@
   export let status: "Play" | "Pause" | "Stop" = "Stop";
   export let seconds = 1;
   export let time: ITime = { start: 0, end: 0, pause: 0 };
+
   export let btnSubmitText = "submit";
   let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
   console.log(slotsIDs);

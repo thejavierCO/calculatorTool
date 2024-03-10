@@ -13,24 +13,31 @@
 </script>
 
 <main>
-  <Store
-    on:edit={({ detail }) => console.log(detail, "edit")}
-    on:add={({ detail }) => console.log(detail, "add")}
-    on:del={({ detail }) => console.log(detail, "del")}
-  >
+  <Store useLocalStorage>
     <Title value="Temporizadores" />
     <div slot="input" let:action>
       <Card>
-        <Form on:submit={(evt) => console.log(evt)}>
-          <InputTime value="0" label="hours" suffix="hrs" min="0" max="60" />
-          <InputTime value="0" label="minutes" suffix="min" min="0" max="60" />
-          <InputTime value="0" label="seconds" suffix="sec" min="0" max="60" />
+        <Form
+          on:submit={({ detail: time }) => {
+            let [hours, minutes, seconds] = time;
+            let data = {
+              id: "",
+              status: "Stop",
+              seconds: hours * 60 * 60 + minutes * 60 + seconds,
+              time: { start: 0, end: 0, pause: 0 },
+            };
+            action(data);
+          }}
+        >
+          <InputTime value="0" label="hours" suffix="hrs" />
+          <InputTime value="0" label="minutes" suffix="min" />
+          <InputTime value="0" label="seconds" suffix="sec" />
         </Form>
       </Card>
     </div>
     <div slot="print" let:edit let:del let:id let:data let:index>
       <Card {id}>
-        <!-- <Timer
+        <Timer
           on:state={({ detail }) => edit(id, detail)}
           on:time={({ detail }) => edit(id, detail)}
           seconds={data.seconds}
@@ -42,7 +49,11 @@
           let:status
           let:current_time
         >
-          <h4>{index}</h4>
+          <h4>
+            <span>{Math.round(current_time / 60 / 60 / 60)} hours</span>
+            <span>{Math.round(current_time / 60 / 60)} minutes</span>
+            <span>{Math.round(current_time % 60)} seconds</span>
+          </h4>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={Number(
@@ -51,9 +62,6 @@
               ).toFixed(3)
             )}
           /><br />
-          <h3>{JSON.stringify(data)}</h3>
-          <p>{status}</p>
-          <p>{current_time}</p>
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
@@ -71,7 +79,7 @@
           <Button on:click={del}>
             <Label>Del</Label>
           </Button>
-        </div> -->
+        </div>
       </Card>
     </div>
   </Store>

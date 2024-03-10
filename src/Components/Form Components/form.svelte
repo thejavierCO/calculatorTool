@@ -19,6 +19,7 @@
         .querySelectorAll("input[type='number']")
     ).map((e: HTMLInputElement) => {
       e.min = "0";
+      e.max = "59";
       return e;
     });
   });
@@ -31,11 +32,11 @@
         emit(
           "submit",
           Array.from(evt.currentTarget.querySelectorAll("input")).map((e) => {
-            return e.value ? e.value : e;
+            if (e.type == "number") return Number(e.value ? e.value : e);
           })
         )}
     >
-      <LayoutGrid>
+      <LayoutGrid style="padding:16px;">
         <slot />
         <Cell span={12}>
           <Button><Label>submit</Label></Button>

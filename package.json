@@ -1,7 +1,7 @@
 {
   "name": "calculatortool",
   "private": true,
-  "version": "0.0.11",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
