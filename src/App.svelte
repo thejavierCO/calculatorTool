@@ -25,7 +25,7 @@
     </div>
     <div slot="print" let:edit let:del let:id let:data let:index>
       <Card {id}>
-        <Timer
+        <!-- <Timer
           on:state={({ detail }) => edit(id, detail)}
           on:time={({ detail }) => edit(id, detail)}
           seconds={data.seconds}
@@ -66,7 +66,7 @@
           <Button on:click={del}>
             <Label>Del</Label>
           </Button>
-        </div>
+        </div> -->
       </Card>
     </div>
   </Store>

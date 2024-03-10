@@ -20,8 +20,8 @@
   on:status={({ detail: status }) => emit("state", { status })}
   on:time={({ detail: { time } }) => emit("time", { time })}
   {status}
-  {time}
   {seconds}
+  bind:time
   let:current_time
   let:actions
 >
