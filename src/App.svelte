@@ -50,9 +50,9 @@
           let:current_time
         >
           <h4>
-            <span>{Math.round(current_time / 60 / 60 / 60)} hours</span>
-            <span>{Math.round(current_time / 60 / 60)} minutes</span>
-            <span>{Math.round(current_time % 60)} seconds</span>
+            <span>{Math.round(current_time / 1000 / 60 / 60)} :</span>
+            <span>{Math.round(current_time / 1000 / 60)} :</span>
+            <span>{Math.round(current_time / 1000)} </span>
           </h4>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
