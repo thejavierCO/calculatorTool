@@ -3,11 +3,13 @@
   import Store from "./Components/store.svelte";
 
   import Card from "./Components/CardForm.svelte";
-  import Form from "./Components/form.svelte";
+  import Form from "./Components/Form Components/form.svelte";
+  import InputTime from "./Components/Form Components/inputTime.svelte";
   import Button, { Label } from "@smui/button";
 
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
+  import { children } from "svelte/internal";
 </script>
 
 <main>
@@ -19,8 +21,11 @@
     <Title value="Temporizadores" />
     <div slot="input" let:action>
       <Card>
-        <h1>new form temporal</h1>
-        <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
+        <Form on:submit={(evt) => console.log(evt)}>
+          <InputTime value="0" label="hours" suffix="hrs" min="0" max="60" />
+          <InputTime value="0" label="minutes" suffix="min" min="0" max="60" />
+          <InputTime value="0" label="seconds" suffix="sec" min="0" max="60" />
+        </Form>
       </Card>
     </div>
     <div slot="print" let:edit let:del let:id let:data let:index>

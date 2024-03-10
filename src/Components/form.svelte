@@ -18,7 +18,8 @@
   export let seconds = 1;
   export let time: ITime = { start: 0, end: 0, pause: 0 };
   export let btnSubmitText = "submit";
-
+  let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
+  console.log(slotsIDs);
   let isSave = id ? true : false;
   onMount(() => {
     Array.from(
@@ -39,13 +40,14 @@
     </Cell>
   {/if}
   <Cell span={12}>
-    <Textfield
+    <!-- <Textfield
       bind:value={seconds}
       on:change={(_) => (id ? (isSave = false) : undefined)}
       label="Time"
       suffix="sec"
       type="number"
-    />
+    /> -->
+    <slot name="input" />
   </Cell>
   <Cell span={12}>
     {#if isSave == false}
