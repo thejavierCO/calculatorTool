@@ -31,29 +31,29 @@
         current_time = ((a) => (a < 0 ? 0 : a))(time.end - data);
         if (time.end - time.start < 0 || data > time.end || current_time == 0)
           control.stop();
+        emit("time", { time });
       }
     },
     pause: (data) => {
       status = "Pause";
-      emit("status", "Pause");
-      if (data) {
-        if (time.pause == 0) time.pause = data;
+      if (data && time.pause == 0) {
+        time.pause = data;
+        emit("status", "Pause");
       }
     },
     stop: () => {
       status = "Stop";
-      emit("status", "Stop");
       time.start = 0;
       time.pause = 0;
       time.end = 0;
       current_time = 0;
+      emit("status", "Stop");
     },
   };
 
   let unsus: Unsubscriber = posicion.subscribe((data) => {
     if (status == "Play") control.play(data);
     else if (status == "Pause") control.pause(data);
-    emit("time", { time });
   });
 
   onDestroy(() => unsus());

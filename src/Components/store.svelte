@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher} from "svelte";
+  import { createEventDispatcher } from "svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import { v4 as uuidv4 } from "uuid";
   import { Storedb } from "../js/data";
@@ -10,20 +10,23 @@
   let InsertAddEnd = false;
 
   if (!store) throw "require store";
-  let db = store.db
-  if(useLocalStorage){store.useLocalStore(typeof useLocalStorage == "string"?useLocalStorage:"store")}
+  let db = store.db;
+  if (useLocalStorage) {
+    store.useLocalStore(
+      typeof useLocalStorage == "string" ? useLocalStorage : "store"
+    );
+  }
 
   let slotsIDs = Object.keys($$slots).filter((e) => e != "default");
   slotsIDs[0] == "input" ? (InsertAddEnd = true) : (InsertAddStart = true);
 
   export function add(data) {
-    emit("add", data);
     let { id } = data;
     if (!id) data.id = uuidv4();
+    emit("add", data);
     db.update((e) => {
-      if (e.filter((e) => e.id == id).length == 0) {
-        e.push(data);
-      } else emit("error", "exist element");
+      if (e.filter((e) => e.id == id).length == 0) e.push(data);
+      else emit("error", "exist element");
       return e;
     });
   }
@@ -31,31 +34,27 @@
     emit("del", { id });
     db.update((e) => {
       let item = e.filter((e) => e.id == id);
-      if (item.length == 1) {
-        return e.filter((e) => e.id != id);
-      } else emit("error", "not exist element");
+      if (item.length == 1) return e.filter((e) => e.id != id);
+      else emit("error", "not exist element");
       return e;
     });
   }
   export function edit(id, data) {
     emit("edit", { id, data });
-    db.update((e) => {
-      let item = e.filter((e) => e.id == id);
-      if (item.length == 1) {
-        return e.map((e) => {
-          if (e.id == id) {
-            Object.keys(data).forEach((k) => {
-              if (e[k] != data[k]) {
-                e[k] = data[k];
-              }
-            });
-            return e;
-          }
-          return e;
-        });
-      } else emit("error", "not exist element");
-      return e;
-    });
+    // db.update((e) => {
+    //   let item = e.filter((e) => e.id == id);
+    //   if (item.length == 1) {
+    //     return e.map((e) => {
+    //       if (e.id == id) {
+    //         Object.keys(data).forEach((k) => {
+    //           if (e[k] != data[k]) e[k] = data[k];
+    //         });
+    //         return e;
+    //       } else return e;
+    //     });
+    //   } else emit("error", "not exist element");
+    //   return e;
+    // });
   }
 </script>
 
@@ -81,7 +80,7 @@
           {data}
           {index}
           del={() => del(data.id)}
-          edit={(dt) => edit(data.id, dt)}
+          {edit}
         />
       </Cell>
     {/each}
