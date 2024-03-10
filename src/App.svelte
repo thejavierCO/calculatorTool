@@ -9,7 +9,6 @@
 
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
-  import { children } from "svelte/internal";
 </script>
 
 <main>
