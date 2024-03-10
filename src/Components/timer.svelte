@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ITime, IStatus } from "../types";
-  
+
   import { createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
 
@@ -12,16 +12,13 @@
   export let status: IStatus = "Stop";
 
   onMount(() => {
-    if (autoRun) status = "Play"
+    if (autoRun) status = "Play";
   });
 </script>
 
 <Counter
-  on:status={({detail:status})=>{
-    console.log(status)
-    emit("state",{status})
-  }}
-  on:time={({detail:{time}})=>{emit("time",{time})}}
+  on:status={({ detail: status }) => emit("state", { status })}
+  on:time={({ detail: { time } }) => emit("time", { time })}
   {status}
   {time}
   {seconds}
@@ -29,13 +26,13 @@
   let:actions
 >
   <slot
-    btnPause={()=>actions.pause()}
-    btnStop={()=>actions.stop()}
-    btnPlay={()=>actions.play()}
+    btnPause={() => actions.pause()}
+    btnStop={() => actions.stop()}
+    btnPlay={() => actions.play()}
     {seconds}
     {autoRun}
     {status}
     {time}
     {current_time}
-  ></slot>
+  />
 </Counter>

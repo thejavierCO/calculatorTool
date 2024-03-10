@@ -8,11 +8,11 @@
 
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
-
+  import { stringify } from "uuid";
 </script>
 
 <main>
-  <Store useLocalStorage>
+  <Store>
     <Title value="Temporizadores" />
     <div slot="input" let:action>
       <Card>
@@ -20,7 +20,7 @@
         <Form btnSubmitText="Save" on:save={({ detail }) => action(detail)} />
       </Card>
     </div>
-    <div slot="print" let:edit let:del let:id let:data>
+    <div slot="print" let:edit let:del let:id let:data let:index>
       <Card {id}>
         <Timer
           on:state={({ detail }) => edit(detail)}
@@ -34,11 +34,17 @@
           let:status
           let:current_time
         >
+          <h4>{index}</h4>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={Number(parseFloat(((current_time * 1 / (data.seconds*1000)).toString())).toFixed(3))}
+            progress={Number(
+              parseFloat(
+                ((current_time * 1) / (data.seconds * 1000)).toString()
+              ).toFixed(3)
+            )}
           /><br />
-          <p>{data.status} - {status}</p>
+          <h3>{JSON.stringify(data)}</h3>
+          <p>{status}</p>
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
