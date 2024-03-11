@@ -14,25 +14,6 @@
 <main>
   <Store useLocalStorage>
     <Title value="Temporizadores" />
-    <div slot="input" let:action>
-      <Card>
-        <Form
-          on:submit={({ detail: time }) => {
-            let [hours, minutes, seconds] = time;
-            let data = {
-              status: "Stop",
-              seconds: hours * 60 * 60 + minutes * 60 + seconds,
-              time: { start: 0, end: 0, pause: 0 },
-            };
-            action(data);
-          }}
-        >
-          <InputTime value="0" label="hours" suffix="hrs" />
-          <InputTime value="0" label="minutes" suffix="min" />
-          <InputTime value="0" label="seconds" suffix="sec" />
-        </Form>
-      </Card>
-    </div>
     <div slot="print" let:edit let:del let:id let:data let:index>
       <Card {id}>
         <Timer
@@ -78,6 +59,25 @@
             <Label>Del</Label>
           </Button>
         </div>
+      </Card>
+    </div>
+    <div slot="input" let:action>
+      <Card>
+        <Form
+          on:submit={({ detail: time }) => {
+            let [hours, minutes, seconds] = time;
+            let data = {
+              status: "Stop",
+              seconds: hours * 60 * 60 + minutes * 60 + seconds,
+              time: { start: 0, end: 0, pause: 0 },
+            };
+            action(data);
+          }}
+        >
+          <InputTime value="0" label="hours" suffix="hrs" />
+          <InputTime value="0" label="minutes" suffix="min" />
+          <InputTime value="0" label="seconds" suffix="sec" />
+        </Form>
       </Card>
     </div>
   </Store>

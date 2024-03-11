@@ -41,9 +41,9 @@
         emit("status", "Pause");
       }
     },
-    stop: (updateStop) => {
+    stop: (forceUpdate) => {
       if (status != "Stop") emit("status", "Stop");
-      if (updateStop) emit("status", "Stop");
+      if (forceUpdate) emit("status", "Stop");
       status = "Stop";
       time.start = 0;
       time.pause = 0;
