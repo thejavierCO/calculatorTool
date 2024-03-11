@@ -20,7 +20,6 @@
           on:submit={({ detail: time }) => {
             let [hours, minutes, seconds] = time;
             let data = {
-              id: "",
               status: "Stop",
               seconds: hours * 60 * 60 + minutes * 60 + seconds,
               time: { start: 0, end: 0, pause: 0 },
