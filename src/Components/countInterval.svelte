@@ -41,19 +41,21 @@
         emit("status", "Pause");
       }
     },
-    stop: () => {
+    stop: (updateStop) => {
+      if (status != "Stop") emit("status", "Stop");
+      if (updateStop) emit("status", "Stop");
       status = "Stop";
       time.start = 0;
       time.pause = 0;
       time.end = 0;
       current_time = 0;
-      emit("status", "Stop");
     },
   };
 
   let unsus: Unsubscriber = posicion.subscribe((data) => {
     if (status == "Play") control.play(data);
     else if (status == "Pause") control.pause(data);
+    else if (status == "Stop") control.stop(true);
   });
 
   onDestroy(() => unsus());

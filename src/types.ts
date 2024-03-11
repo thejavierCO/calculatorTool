@@ -7,7 +7,7 @@ export type ITime = {
 export type IActions = {
   play: (data?) => void,
   pause: (data?) => void,
-  stop: () => void,
+  stop: (forceUpdate?: boolean) => void,
 }
 
 export type IStatus = "Play" | "Pause" | "Stop";

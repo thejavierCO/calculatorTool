@@ -21,7 +21,7 @@
   on:time={({ detail: { time } }) => emit("time", { time })}
   {status}
   {seconds}
-  bind:time
+  {time}
   let:current_time
   let:actions
 >
