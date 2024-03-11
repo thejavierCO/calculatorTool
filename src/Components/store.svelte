@@ -43,16 +43,16 @@
     emit("edit", { id, data });
     db.update((e) => {
       let item = e.filter((e) => e.id == id);
-      if (item.length == 1) {
+      if (item.length == 1)
         return e.map((e) => {
           if (e.id == id) {
-            Object.keys(data).forEach((k) => {
-              if (e[k] != data[k]) e[k] = data[k];
-            });
+            Object.keys(data).forEach((k) =>
+              e[k] != data[k] ? (e[k] = data[k]) : ""
+            );
             return e;
           } else return e;
         });
-      } else emit("error", "not exist element");
+      else emit("error", "not exist element");
       return e;
     });
   }
