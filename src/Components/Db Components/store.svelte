@@ -50,7 +50,6 @@
             ? ((e) => {
                 Object.keys(data).forEach((k) => {
                   if (e[k] != data[k]) {
-                    console.log(k);
                     emit("edit", {
                       id,
                       data: {

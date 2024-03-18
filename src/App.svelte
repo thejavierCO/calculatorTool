@@ -21,9 +21,6 @@
     let:edit
     let:add
     let:del
-    on:edit={({ detail: { id, data } }) => {
-      console.log(id, JSON.stringify(data.oldData));
-    }}
   >
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data>
