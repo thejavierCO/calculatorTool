@@ -9,6 +9,11 @@
 
   import Timer from "./Components/timer.svelte";
   import CircularProgress from "@smui/circular-progress";
+
+  import Fab, { Icon } from "@smui/fab";
+  import Dialog, { Content, Actions } from "@smui/dialog";
+
+  let open = false;
 </script>
 
 <main>
@@ -29,12 +34,12 @@
           let:current_time
         >
           <h4>
-            <span>{parseFloat(
-              (current_time / 1000 / 60).toString()
-            ).toFixed(1)} </span><br>
-            <span>{parseFloat(
-              (current_time / 1000 % 60).toString()
-            ).toFixed(1)} </span><br>
+            <span
+              >{parseFloat((current_time / 1000 / 60).toString()).toFixed(1)}
+            </span>:
+            <span
+              >{parseFloat(((current_time / 1000) % 60).toString()).toFixed(1)}
+            </span><br />
           </h4>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
@@ -65,23 +70,44 @@
       </Card>
     </div>
     <div slot="input" let:action>
-      <Card>
-        <Form
-          on:submit={({ detail: time }) => {
-            let [hours, minutes, seconds] = time;
-            let data = {
-              status: "Stop",
-              seconds: hours * 60 * 60 + minutes * 60 + seconds,
-              time: { start: 0, end: 0, pause: 0 },
-            };
-            action(data);
-          }}
-        >
-          <InputTime value="0" label="hours" suffix="hrs" />
-          <InputTime value="0" label="minutes" suffix="min" />
-          <InputTime value="0" label="seconds" suffix="sec" />
-        </Form>
-      </Card>
+      <Dialog
+        bind:open
+        aria-labelledby="simple-title"
+        aria-describedby="simple-content"
+      >
+        <Content id="simple-content">
+          <Form
+            on:submit={({ detail: time }) => {
+              let [hours, minutes, seconds] = time;
+              let data = {
+                status: "Stop",
+                seconds: hours * 60 * 60 + minutes * 60 + seconds,
+                time: { start: 0, end: 0, pause: 0 },
+              };
+              action(data);
+              open = !open;
+            }}
+          >
+            <InputTime value="0" label="hours" suffix="hrs" />
+            <InputTime value="0" label="minutes" suffix="min" />
+            <InputTime value="0" label="seconds" suffix="sec" />
+          </Form>
+        </Content>
+      </Dialog>
+    </div>
+    <div class="fab-icon-add">
+      <Fab on:click={() => (open = !open)}>
+        <span style="font-size:30px;">+</span>
+      </Fab>
     </div>
   </Store>
 </main>
+
+<style>
+  div.fab-icon-add {
+    display: block;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+</style>
