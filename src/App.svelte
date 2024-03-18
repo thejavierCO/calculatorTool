@@ -1,6 +1,6 @@
 <script>
   import Title from "./Components/Title.svelte";
-  import Store from "./Components/store.svelte";
+  import Store from "./Components/Db Components/store.svelte";
 
   import Card from "./Components/CardForm.svelte";
   import Form from "./Components/Form Components/form.svelte";
@@ -17,9 +17,9 @@
 </script>
 
 <main>
-  <Store useLocalStorage>
+  <Store useLocalStorage let:edit let:add let:del>
     <Title value="Temporizadores" />
-    <div slot="print" let:edit let:del let:id let:data let:index>
+    <div slot="print" let:id let:data let:index>
       <Card {id}>
         <Timer
           on:state={({ detail }) => edit(id, detail)}
@@ -63,13 +63,13 @@
           {/if}
         </Timer>
         <div slot="actions">
-          <Button on:click={del}>
+          <Button on:click={() => del(id)}>
             <Label>Del</Label>
           </Button>
         </div>
       </Card>
     </div>
-    <div slot="input" let:action>
+    <div slot="input">
       <Dialog
         bind:open
         aria-labelledby="simple-title"
@@ -84,7 +84,7 @@
                 seconds: hours * 60 * 60 + minutes * 60 + seconds,
                 time: { start: 0, end: 0, pause: 0 },
               };
-              action(data);
+              add(data);
               open = !open;
             }}
           >
