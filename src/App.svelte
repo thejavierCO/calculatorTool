@@ -29,9 +29,12 @@
           let:current_time
         >
           <h4>
-            <span>{Math.round(current_time / 1000 / 60 / 60)} :</span>
-            <span>{Math.round(current_time / 1000 / 60)} :</span>
-            <span>{Math.round(current_time / 1000)} </span>
+            <span>{parseFloat(
+              (current_time / 1000 / 60).toString()
+            ).toFixed(1)} </span><br>
+            <span>{parseFloat(
+              (current_time / 1000 % 60).toString()
+            ).toFixed(1)} </span><br>
           </h4>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
