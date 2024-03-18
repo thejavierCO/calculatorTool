@@ -1,17 +1,15 @@
 <script>
-  import Title from "./Components/Title.svelte";
-  import Store from "./Components/Db Components/store.svelte";
+  import Button, { Label } from "@smui/button";
+  import CircularProgress from "@smui/circular-progress";
+  import Fab from "@smui/fab";
+  import Dialog, { Content } from "@smui/dialog";
 
-  import Card from "./Components/CardForm.svelte";
+  import Title from "./Components/Main Components/Title.svelte";
+  import Store from "./Components/Db Components/store.svelte";
+  import Card from "./Components/Main Components/CardForm.svelte";
   import Form from "./Components/Form Components/form.svelte";
   import InputTime from "./Components/Form Components/inputTime.svelte";
-  import Button, { Label } from "@smui/button";
-
-  import Timer from "./Components/timer.svelte";
-  import CircularProgress from "@smui/circular-progress";
-
-  import Fab, { Icon } from "@smui/fab";
-  import Dialog, { Content, Actions } from "@smui/dialog";
+  import Timer from "./Components/Timer Components/timer.svelte";
 
   let open = false;
 </script>
@@ -19,7 +17,7 @@
 <main>
   <Store useLocalStorage let:edit let:add let:del>
     <Title value="Temporizadores" />
-    <div slot="print" let:id let:data let:index>
+    <div slot="print" let:id let:data>
       <Card {id}>
         <Timer
           on:state={({ detail }) => edit(id, detail)}
@@ -109,6 +107,6 @@
     position: fixed;
     bottom: 10px;
     right: 10px;
-    z-index:10000;
+    z-index: 10000;
   }
 </style>

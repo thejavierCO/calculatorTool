@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ITime, IStatus } from "../types";
+  import type { ITime, IStatus } from "../../types";
 
   import { createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
@@ -17,8 +17,12 @@
 </script>
 
 <Counter
-  on:status={({ detail: status }) => emit("state", { status })}
-  on:time={({ detail: { time } }) => emit("time", { time })}
+  on:current_status_timer={({ detail }) => {
+    if (status != detail.status) {
+      emit("state", { status: detail.status });
+      emit("time", { time });
+    }
+  }}
   {status}
   {seconds}
   {time}

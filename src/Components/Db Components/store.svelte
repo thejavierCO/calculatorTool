@@ -17,6 +17,9 @@
       if (JSON.stringify(data) != oldData)
         localStorage.setItem(name, JSON.stringify(data));
     });
+    window.addEventListener("storage", ({ key, newValue }) =>
+      key == name ? store.update((_) => JSON.parse(newValue)) : ""
+    );
   }
 
   export function add(data) {
@@ -39,15 +42,17 @@
     });
   }
   export function edit(id, data) {
-    emit("edit", { id, data });
     store.update((e) => {
       let item = e.filter((e) => e.id == id);
       if (item.length == 1)
         return e.map((e) => {
           if (e.id == id) {
-            Object.keys(data).forEach((k) =>
-              e[k] != data[k] ? (e[k] = data[k]) : ""
-            );
+            Object.keys(data).forEach((k) => {
+              if (e[k] != data[k]) {
+                emit("edit", { id, data });
+                e[k] = data[k];
+              } else emit("error", "element is update");
+            });
             return e;
           } else return e;
         });

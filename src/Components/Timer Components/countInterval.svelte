@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { ITime, IStatus, IActions, IMillis } from "../types";
+  import type { ITime, IStatus, IActions, IMillis } from "../../types";
   import type { Readable, Unsubscriber } from "svelte/store";
-  import { ConutTime } from "../js/data";
+  import { ConutTime } from "../../js/data";
 
   import { createEventDispatcher, onDestroy } from "svelte";
 
@@ -16,7 +16,7 @@
   let control: IActions = {
     play: (data) => {
       status = "Play";
-      emit("status", "Play");
+      emit("current_status_timer", { status, time });
       if (data) {
         if (time.start == 0) time.start = data;
         if (time.end == 0) time.end = time.start + millis;
@@ -31,19 +31,18 @@
         current_time = ((a) => (a < 0 ? 0 : a))(time.end - data);
         if (time.end - time.start < 0 || data > time.end || current_time == 0)
           control.stop();
-        emit("time", { time });
       }
     },
     pause: (data) => {
       status = "Pause";
       if (data && time.pause == 0) {
         time.pause = data;
-        emit("status", "Pause");
+        emit("current_status_timer", { status, time });
       }
     },
     stop: (forceUpdate) => {
-      if (status != "Stop") emit("status", "Stop");
-      if (forceUpdate) emit("status", "Stop");
+      if (status != "Stop" || forceUpdate)
+        emit("current_status_timer", { status, time });
       status = "Stop";
       time.start = 0;
       time.pause = 0;
