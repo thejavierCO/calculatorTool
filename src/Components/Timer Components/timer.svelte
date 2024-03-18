@@ -3,7 +3,6 @@
 
   import { createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
-
   let emit = createEventDispatcher();
 
   export let seconds: number = 1;
@@ -18,10 +17,7 @@
 
 <Counter
   on:current_status_timer={({ detail }) => {
-    if (status != detail.status) {
-      emit("state", { status: detail.status });
-      emit("time", { time });
-    }
+    if (status != detail.status) emit("state", detail);
   }}
   {status}
   {seconds}

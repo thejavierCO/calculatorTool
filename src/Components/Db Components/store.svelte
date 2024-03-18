@@ -42,22 +42,31 @@
     });
   }
   export function edit(id, data) {
-    store.update((e) => {
-      let item = e.filter((e) => e.id == id);
-      if (item.length == 1)
-        return e.map((e) => {
-          if (e.id == id) {
-            Object.keys(data).forEach((k) => {
-              if (e[k] != data[k]) {
-                emit("edit", { id, data });
-                e[k] = data[k];
-              } else emit("error", "element is update");
-            });
-            return e;
-          } else return e;
-        });
+    store.update((db) => {
+      let [item] = db.filter((e) => e.id == id);
+      if (typeof item != "undefined")
+        return db.map((e) =>
+          e.id == item.id
+            ? ((e) => {
+                Object.keys(data).forEach((k) => {
+                  if (e[k] != data[k]) {
+                    console.log(k);
+                    emit("edit", {
+                      id,
+                      data: {
+                        newData: data,
+                        oldData: e,
+                      },
+                    });
+                    e[k] = data[k];
+                  } else emit("error", "element is update");
+                });
+                return e;
+              })(e)
+            : e
+        );
       else emit("error", "not exist element");
-      return e;
+      return db;
     });
   }
 </script>

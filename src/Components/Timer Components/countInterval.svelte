@@ -16,7 +16,6 @@
   let control: IActions = {
     play: (data) => {
       status = "Play";
-      emit("current_status_timer", { status, time });
       if (data) {
         if (time.start == 0) time.start = data;
         if (time.end == 0) time.end = time.start + millis;
@@ -31,6 +30,7 @@
         current_time = ((a) => (a < 0 ? 0 : a))(time.end - data);
         if (time.end - time.start < 0 || data > time.end || current_time == 0)
           control.stop();
+        emit("current_status_timer", { status, time });
       }
     },
     pause: (data) => {

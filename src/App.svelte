@@ -10,18 +10,26 @@
   import Form from "./Components/Form Components/form.svelte";
   import InputTime from "./Components/Form Components/inputTime.svelte";
   import Timer from "./Components/Timer Components/timer.svelte";
+  import Main from "./Components/Main Components/Main.svelte";
 
   let open = false;
 </script>
 
-<main>
-  <Store useLocalStorage let:edit let:add let:del>
+<Main>
+  <Store
+    useLocalStorage
+    let:edit
+    let:add
+    let:del
+    on:edit={({ detail: { id, data } }) => {
+      console.log(id, JSON.stringify(data.oldData));
+    }}
+  >
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data>
       <Card {id}>
         <Timer
-          on:state={({ detail }) => edit(id, detail)}
-          on:time={({ detail }) => edit(id, detail)}
+          on:state={({ detail: { status } }) => edit(id, { status })}
           seconds={data.seconds}
           status={data.status}
           time={data.time}
@@ -99,7 +107,7 @@
       </Fab>
     </div>
   </Store>
-</main>
+</Main>
 
 <style>
   div.fab-icon-add {
