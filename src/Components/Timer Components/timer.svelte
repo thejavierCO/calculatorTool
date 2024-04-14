@@ -3,6 +3,7 @@
 
   import { createEventDispatcher, onMount } from "svelte";
   import Counter from "./countInterval.svelte";
+  import { TimeView } from "../../js/data";
   let emit = createEventDispatcher();
 
   export let seconds: number = 1;
@@ -33,6 +34,6 @@
     {autoRun}
     {status}
     {time}
-    {current_time}
+    current_time={new TimeView(current_time)}
   />
 </Counter>

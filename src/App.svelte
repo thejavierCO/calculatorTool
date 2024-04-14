@@ -16,12 +16,7 @@
 </script>
 
 <Main>
-  <Store
-    useLocalStorage
-    let:edit
-    let:add
-    let:del
-  >
+  <Store useLocalStorage let:edit let:add let:del>
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data>
       <Card {id}>
@@ -36,21 +31,15 @@
           let:status
           let:current_time
         >
-          <h4>
-            <span
-              >{parseFloat((current_time / 1000 / 60).toString()).toFixed(1)}
-            </span>:
-            <span
-              >{parseFloat(((current_time / 1000) % 60).toString()).toFixed(1)}
-            </span><br />
-          </h4>
+          <h3>
+            <br />
+            <span>{current_time.Hours}</span>:<span>{current_time.Minutes}</span
+            >:<span>{current_time.Seconds}</span>
+            <br />
+          </h3>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={Number(
-              parseFloat(
-                ((current_time * 1) / (data.seconds * 1000)).toString()
-              ).toFixed(3)
-            )}
+            progress={current_time.getCurrentTimeBase(data.seconds)}
           /><br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
