@@ -21,7 +21,7 @@
     <div slot="print" let:id let:data>
       <Card {id}>
         <Timer
-          on:state={({ detail: { status } }) => edit(id, { status })}
+          on:state={({ detail:{data}}) =>edit(id,data)}
           seconds={data.seconds}
           status={data.status}
           time={data.time}
@@ -29,17 +29,17 @@
           let:btnStop
           let:btnPause
           let:status
-          let:current_time
+          let:formatTime
         >
           <h3>
-            <br />
-            <span>{current_time.Hours}</span>:<span>{current_time.Minutes}</span
-            >:<span>{current_time.Seconds}</span>
-            <br />
+            <span>{JSON.stringify(data)}</span>
+            <!-- <span>{formatTime.Hours}</span>:
+            <span>{formatTime.Minutes}</span>:
+            <span>{formatTime.Seconds}</span> -->
           </h3>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={current_time.getCurrentTimeBase(data.seconds)}
+            progress={formatTime.getCurrentTimeBase(data.seconds)}
           /><br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
