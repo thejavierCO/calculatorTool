@@ -19,7 +19,7 @@
       if (detail.status == "Pause") emit("isPause");
       status = detail.status;
     }
-    if (status == "Play") posicion = Counter.formatTime;
+    posicion = Counter.formatTime;
   });
 
   onMount(() => {
