@@ -43,7 +43,7 @@ export class TimeView {
   get Miliseconds() {
     return Math.trunc(this.current())
   }
-  getCurrentTimeBase(max) {
+  Range(max) {
     return Number(
       parseFloat(
         ((this.current() * 1) / (max * 1000)).toString()

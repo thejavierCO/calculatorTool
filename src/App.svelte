@@ -36,10 +36,10 @@
             <span>{formatTime.Minutes}</span>:
             <span>{formatTime.Seconds}</span>
           </h3>
-          <!-- <CircularProgress
+          <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={formatTime.getCurrentTimeBase(data.seconds)}
-          /><br /> -->
+            progress={formatTime.Range(data.seconds)}
+          /><br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
