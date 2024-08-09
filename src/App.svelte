@@ -16,10 +16,7 @@
 </script>
 
 <Main>
-  <Store useLocalStorage let:edit let:add let:del on:store={(evt)=>{
-    evt.preventDefault();
-    console.log(evt)
-  }}>
+  <Store useLocalStorage let:edit let:add let:del>
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data>
       <Card {id}>
