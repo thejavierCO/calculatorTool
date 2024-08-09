@@ -107,28 +107,19 @@ export class dbStoreUseLocalStorage extends dbStore {
   constructor(fnsUnsuscribe) {
     super((setInternalStore)=>{
       console.log("start")
-      let setLocalStore = (data) => localStorage.setItem("store", data);
-      let getLocalStore = () => localStorage.getItem("store");
       this.localStorageKeys = new localStorageDb();
       this.localStorageKeys.use("store", ({ type, data }) => {
+        let setLocalStore = (data) => localStorage.setItem("store", data);
+        let getLocalStore = () => localStorage.getItem("store");
         switch (type) {
           case "init":
             if(getLocalStore()==null)return setLocalStore("[]");
             else return setInternalStore(JSON.parse(getLocalStore()));
           case "updateStorage":
-            if(!data.isFocus)debugger
-            if(data.oldValue=="[]"||data.newValue=="[]") return setInternalStore(JSON.parse(data.newValue));
-            else if(!data.isFocus){
-              console.warn(data.isFocus,getLocalStore(),"storage")
-              return setInternalStore(JSON.parse(data.newValue));
-            }
+            console.warn(data.newValue)
+            return setInternalStore(JSON.parse(data.newValue));
           case "updateStore":
-            if(data.isFocus)debugger
-            if(data.oldValue=="[]"||data.newValue=="[]")return setLocalStore(data.newValue);
-            else if(data.isFocus){
-              console.warn(data.isFocus,getLocalStore(),"store")
-              return setLocalStore(data.newValue);
-            }
+            return setLocalStore(data.newValue);
           case "clear":
             return setInternalStore([])
         }
@@ -136,7 +127,7 @@ export class dbStoreUseLocalStorage extends dbStore {
       return fnsUnsuscribe
     });
     this.Destroy = this.store.subscribe((data) => {
-      if (JSON.stringify(data) != localStorage.getItem("store")) {
+      if (document.hasFocus()) {
         this.localStorageKeys.get("store")
           .start({
             type: "updateStore",
