@@ -7,28 +7,26 @@
 
   const emit = createEventDispatcher();
 
-  let db = new (useLocalStorage ? dbStoreUseLocalStorage : dbStore)();
-
-  const store = db.store;
+  let store = new (useLocalStorage ? dbStoreUseLocalStorage : dbStore)();
 
   onDestroy(() => {
-    if (useLocalStorage) db.Destroy();
+    if (useLocalStorage) store.Destroy();
   });
 
   onMount(() =>
     emit("mount", {
-      add: (data) => db.add(data),
-      del: (id) => db.del(id),
-      edit: (id, data) => db.edit(id, data),
+      add: (data) => store.add(data),
+      del: (id) => store.del(id),
+      edit: (id, data) => store.edit(id, data),
       store: () => get(store),
     })
   );
 </script>
 
 <slot
-  add={(data) => db.add(data)}
-  del={(id) => db.del(id)}
-  edit={(id, data) => db.edit(id, data)}
+  add={(data) => store.add(data)}
+  del={(id) => store.del(id)}
+  edit={(id, data) => store.edit(id, data)}
 />
 
 <LayoutGrid>
