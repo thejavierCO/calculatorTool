@@ -10,6 +10,7 @@ export class dbStore extends EventTarget {
     this.store = writable([], fnsDefaultStore);
     this.on("Item", ({ detail: dt }) => {
       const [type, data] = dt;
+      this.emit(type,data);
       this.update(e => 
         type == "add"? 
           [...e,data]:
@@ -73,8 +74,9 @@ export class localStorageDb extends EventTarget{
     this._keys = [];
     window.addEventListener("storage",(e)=>this.emit("storageChange",e))
     this.on("storageChange",({detail:{ key, newValue, oldValue }}) => {
-        try{this.keys.get(key).start({ type: "updateStorage", data: {newValue, oldValue} });}
-        catch(err){this.keys.clear()}
+        try{
+          this.keys.get(key).start({ type: "updateStorage", data: {newValue, oldValue} });
+        }catch(err){this.keys.clear()}
     })
   }
   get keys(){

@@ -1,4 +1,5 @@
 <script>
+  import {blur} from "svelte/transition"
   import Button, { Label } from "@smui/button";
   import CircularProgress from "@smui/circular-progress";
   import Fab from "@smui/fab";
@@ -16,9 +17,13 @@
 </script>
 
 <Main>
-  <Store useLocalStorage let:edit let:add let:del>
+  <Store useLocalStorage let:edit let:add let:del
+    on:edit={({ detail:{data}  }) => {
+      console.log(data)
+    }}
+  >
     <Title value="Temporizadores" />
-    <div slot="print" let:id let:data>
+    <div slot="print" let:id let:data in:blur={{duration:500}} out:blur={{duration:500}}>
       <Card {id}>
         <Timer
           on:state={({ detail:{data}}) =>edit(id,data)}
@@ -60,7 +65,7 @@
         </div>
       </Card>
     </div>
-    <div slot="input">
+    <div slot="input" in:blur={{duration:500}} out:blur={{duration:500}}>
       <Dialog
         bind:open
         aria-labelledby="simple-title"

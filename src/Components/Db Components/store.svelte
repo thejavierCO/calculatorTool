@@ -9,8 +9,18 @@
 
   let store = new (useLocalStorage ? dbStoreUseLocalStorage : dbStore)();
 
+  let Destroy = store.subscribe((data) => emit("store", data));
+  store.on("add", ({detail}) => emit("add", detail));
+  store.on("del", ({detail}) => emit("del", detail));
+  store.on("edit", ({detail}) => emit("edit", detail));
+
+  emit("mount")
+
   onDestroy(() => {
-    if (useLocalStorage) store.Destroy();
+    if (useLocalStorage){
+      store.Destroy();
+      Destroy();
+    }
   });
 
   onMount(() =>
