@@ -16,7 +16,10 @@
 </script>
 
 <Main>
-  <Store useLocalStorage let:edit let:add let:del>
+  <Store useLocalStorage let:edit let:add let:del on:store={(evt)=>{
+    evt.preventDefault();
+    console.log(evt)
+  }}>
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data>
       <Card {id}>
@@ -32,15 +35,14 @@
           let:formatTime
         >
           <h3>
-            <span>{JSON.stringify(data)}</span>
-            <!-- <span>{formatTime.Hours}</span>:
+            <span>{formatTime.Hours}</span>:
             <span>{formatTime.Minutes}</span>:
-            <span>{formatTime.Seconds}</span> -->
+            <span>{formatTime.Seconds}</span>
           </h3>
-          <CircularProgress
+          <!-- <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={formatTime.getCurrentTimeBase(data.seconds)}
-          /><br />
+          /><br /> -->
           {#if status == "Play"}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
