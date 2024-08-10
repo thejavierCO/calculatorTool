@@ -1,40 +1,65 @@
 <script>
   import { createEventDispatcher, onMount, onDestroy } from "svelte";
-  import { Temporizador } from "./data";
+  import {Clock, timeFormat} from "./timer.js"
   let emit = createEventDispatcher();
 
   export let time = { start: 0, pause: 0, end: 0 };
   export let status = "Stop";
   export let seconds = 1;
   export let autoRun = false;
+  
+  const Millis = seconds*1000;
+  const clock = new Clock();
+  let current = 0;
+  let position = new timeFormat(0);
 
-  let Counter = new Temporizador(seconds * 1000, time, status);
-
-  let posicion = Counter.formatTime;
-  Counter.on("current_status_timer", ({ detail }) => {
-    if (status != detail.status) {
-      emit("state", { data: detail });
-      if (detail.status == "Stop") emit("isStop");
-      if (detail.status == "Play") emit("isPlay");
-      if (detail.status == "Pause") emit("isPause");
-      status = detail.status;
+  const Destroy = clock.subscribe((t)=>{
+    current = t;
+    if(status=="Play"){
+      if(time.pause==0){
+        if(time.start != 0&&time.end != 0){
+          if(current >= time.end)status = "Stop";
+          else position = new timeFormat(time.end-current);
+        }else if(time.start == 0&&time.end == 0){
+          time.start = current;
+          time.end = time.start + Millis;
+          emit("Status",{status,time})
+          emit("Play",{time})
+        }
+      }else if(time.start != 0&&time.end != 0){
+        let posPause = Math.round(time.pause - time.start),
+          timePause = time.end - time.start,
+          timeOff = timePause - posPause;
+        time.start = current;
+        time.end = time.start + timeOff;
+        time.pause = 0;
+      }
+    }else if(status == "Pause"){
+      if(time.pause==0){
+        time.pause = current;
+        emit("Status",{status,time})
+        emit("Pause",{time})
+      }
+    }else if(status == "Stop"){
+      time.start = 0;
+      time.end = 0;
+      time.pause = 0;
+      position = new timeFormat(0);
+      emit("Status",{status,time})
+      emit("Stop",{time})
     }
-    posicion = Counter.formatTime;
   });
 
-  onMount(() => {
-    if (autoRun) {
-      if (status != "Play") return Counter.play();
-    }
-  });
-
-  onDestroy(() => Counter.Destroy());
+  onMount(()=>{
+    if(autoRun)status = "Play";
+  })
+  onDestroy(()=>{Destroy();})
 </script>
 
 <slot
-  btnPause={() => Counter.pause()}
-  btnStop={() => Counter.stop()}
-  btnPlay={() => Counter.play()}
+  btnPause={() => status = "Pause"}
+  btnPlay={() => status = "Play"}
+  btnStop={() => status = "Stop"}
   {status}
-  formatTime={posicion}
+  formatTime={position}
 />

@@ -4,7 +4,6 @@
   import CircularProgress from "@smui/circular-progress";
   import Fab from "@smui/fab";
   import Dialog, { Content } from "@smui/dialog";
-
   import Title from "./Components/Main Components/Title.svelte";
   import Store from "./Components/Db Components/store.svelte";
   import Card from "./Components/Main Components/CardForm.svelte";
@@ -12,24 +11,24 @@
   import InputTime from "./Components/Form Components/inputTime.svelte";
   import Timer from "./Components/Timer Components/timer.svelte";
   import Main from "./Components/Main Components/Main.svelte";
-
   let open = false;
 </script>
 
 <Main>
-  <Store useLocalStorage let:edit let:add let:del
-    on:edit={({ detail:{data}  }) => {
-      console.log(data)
-    }}
+  <Store 
+  useLocalStorage
+  let:edit
+  let:add
+  let:del
   >
     <Title value="Temporizadores" />
     <div slot="print" let:id let:data in:blur={{duration:500}} out:blur={{duration:500}}>
       <Card {id}>
         <Timer
-          on:state={({ detail:{data}}) =>edit(id,data)}
           seconds={data.seconds}
           status={data.status}
           time={data.time}
+          on:Status={({detail})=>edit(id,detail)}
           let:btnPlay
           let:btnStop
           let:btnPause
@@ -43,7 +42,7 @@
           </h3>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={formatTime.Range(data.seconds)}
+            progress={formatTime.useRange(data.seconds)}
           /><br />
           {#if status == "Play"}
             <Button on:click={btnStop}>
