@@ -2,32 +2,32 @@
   import { createEventDispatcher, onDestroy, onMount } from "svelte";
   import { get } from "svelte/store";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
-  import { dbStore, dbStoreUseLocalStorage } from "./store.js";
+  import { Store } from "./store";
+  import StoreUseLocalStorage from "./storeAndLocalStorage";
   export let useLocalStorage = false;
 
   const emit = createEventDispatcher();
 
-  let store = new (useLocalStorage ? dbStoreUseLocalStorage : dbStore)();
+  let store = new (useLocalStorage ? StoreUseLocalStorage : Store)();
 
-  let Destroy = store.subscribe((data) => emit("store", data));
-  store.on("add", ({detail}) => emit("add", detail));
-  store.on("del", ({detail}) => emit("del", detail));
-  store.on("edit", ({detail}) => emit("edit", detail));
-
-  emit("mount")
+  store.on("del", (_) =>
+    emit("delete", {
+      add: (data) => store.add(data),
+      del: (id) => store.get(id).Destroy(),
+      edit: (id, data) => store.get(id).edit(data),
+      store: () => get(store),
+    })
+  );
 
   onDestroy(() => {
-    if (useLocalStorage){
-      store.Destroy();
-      Destroy();
-    }
+    if (useLocalStorage) store.Destroy();
   });
 
   onMount(() =>
     emit("mount", {
       add: (data) => store.add(data),
-      del: (id) => store.del(id),
-      edit: (id, data) => store.edit(id, data),
+      del: (id) => store.get(id).Destroy(),
+      edit: (id, data) => store.get(id).edit(data),
       store: () => get(store),
     })
   );
@@ -35,8 +35,9 @@
 
 <slot
   add={(data) => store.add(data)}
-  del={(id) => store.del(id)}
-  edit={(id, data) => store.edit(id, data)}
+  del={(id) => store.get(id).Destroy()}
+  edit={(id, data) => store.get(id).edit(data)}
+  store={$store}
 />
 
 <LayoutGrid>
