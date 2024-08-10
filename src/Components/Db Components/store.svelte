@@ -10,6 +10,10 @@
 
   let store = new (useLocalStorage ? StoreUseLocalStorage : Store)();
 
+  store.on("add", ({detail:data}) => emit("add",{data}));
+  store.on("edit", ({detail:{id,data}}) =>emit("edit", {id,data}));
+  store.on("del", ({detail:id}) => emit("del",{id}));
+
   store.on("del", (_) =>
     emit("delete", {
       add: (data) => store.add(data),
