@@ -26,7 +26,7 @@
           emit("Status",{status,time})
           emit("Play",{time})
         }
-      }else if(time.start != 0&&time.end != 0){
+      }else if(time.pause!=0&&time.start != 0&&time.end != 0){
         let posPause = Math.round(time.pause - time.start),
           timePause = time.end - time.start,
           timeOff = timePause - posPause;
@@ -34,13 +34,11 @@
         time.end = time.start + timeOff;
         time.pause = 0;
       }
-    }else if(status == "Pause"){
-      if(time.pause==0){
-        time.pause = current;
-        emit("Status",{status,time})
-        emit("Pause",{time})
-      }
-    }else if(status == "Stop"){
+    }else if(status == "Pause"&&time.pause==0){
+      time.pause = current;
+      emit("Status",{status,time})
+      emit("Pause",{time})
+    }else if(status == "Stop"&&time.start!=0&&time.end!=0){
       time.start = 0;
       time.end = 0;
       time.pause = 0;
