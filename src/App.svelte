@@ -28,7 +28,7 @@
           seconds={data.seconds}
           status={data.status}
           time={data.time}
-          on:Status={({detail})=>edit(id,detail)}
+          on:Status={({detail:data})=>edit(id,data)}
           let:btnPlay
           let:btnStop
           let:btnPause
