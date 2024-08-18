@@ -24,23 +24,23 @@ export class timeFormat {
   constructor(TimeMillis) {
     this._current_time = TimeMillis;
   }
-  current() {
+  get current() {
     return this._current_time
   }
   get Hours() {
-    return new String(Math.trunc(this.current() / 1000 / 60 / 60) % 60).padStart(2, "0")
+    return new String(Math.trunc(this.current / 1000 / 60 / 60) % 60).padStart(2, "0")
   }
   get Minutes() {
-    return new String(Math.trunc(this.current() / 1000 / 60) % 60).padStart(2, "0")
+    return new String(Math.trunc(this.current / 1000 / 60) % 60).padStart(2, "0")
   }
   get Seconds() {
-    return new String(Math.trunc(this.current() / 1000) % 60).padStart(2, "0")
+    return new String(Math.trunc(this.current / 1000) % 60).padStart(2, "0")
   }
   get Miliseconds() {
-    return new String(Math.trunc(this.current())).padEnd(4, "0")
+    return new String(Math.trunc(this.current)).padEnd(4, "0")
   }
   useRange(max) {
-    return Number(parseFloat(((this.current() * 1) / (max * 1000)).toString()).toFixed(3))
+    return Number(parseFloat(((this.current * 1) / (max * 1000)).toString()).toFixed(3))
   }
 }
 

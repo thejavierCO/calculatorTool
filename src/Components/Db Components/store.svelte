@@ -10,39 +10,26 @@
 
   let store = new (useLocalStorage ? StoreUseLocalStorage : Store)();
 
-  store.on("add", ({detail:data}) => emit("add",{data}));
-  store.on("edit", ({detail:{id,data}}) =>emit("edit", {id,data}));
-  store.on("del", ({detail:id}) => emit("del",{id}));
+  store.on("add", ({ detail: data }) => emit("add", { data }));
+  store.on("edit", ({ detail: { id, data } }) => emit("edit", { id, data }));
 
-  store.on("del", (_) =>
-    emit("delete", {
-      add: (data) => store.add(data),
-      del: (id) => store.get(id).Destroy(),
-      edit: (id, data) => store.get(id).edit(data),
-      store: () => get(store),
-    })
-  );
+  const actions = {
+    add: (data) => store.add(data),
+    del: (id) => store.get(id).Destroy(),
+    edit: (id, data) => store.get(id).edit(data),
+    store: () => get(store),
+  };
+
+  store.on("del", (_) => emit("delete", actions));
 
   onDestroy(() => {
     if (useLocalStorage) store.Destroy();
   });
 
-  onMount(() =>
-    emit("mount", {
-      add: (data) => store.add(data),
-      del: (id) => store.get(id).Destroy(),
-      edit: (id, data) => store.get(id).edit(data),
-      store: () => get(store),
-    })
-  );
+  onMount(() => emit("mount", actions));
 </script>
 
-<slot
-  add={(data) => store.add(data)}
-  del={(id) => store.get(id).Destroy()}
-  edit={(id, data) => store.get(id).edit(data)}
-  store={$store}
-/>
+<slot add={actions.add} edit={actions.edit} del={actions.del} store={$store} />
 
 <LayoutGrid>
   {#if $$slots.print}
@@ -52,5 +39,4 @@
       </Cell>
     {/each}
   {/if}
-  <slot name="input" />
 </LayoutGrid>
