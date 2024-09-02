@@ -9,7 +9,7 @@ export class localStorageDbItem {
   set data(data) {
     if (typeof data != "string") throw "require type string for save"
     localStorage.setItem(this.key, data);
-    this.parent.emit("changeItem", this);
+    this.parent.emit("ChangeItem", this);
   }
   defaultData(defaultData) {
     if (defaultData && this.data == null) this.data = defaultData;
@@ -17,7 +17,10 @@ export class localStorageDbItem {
     return this;
   }
   Destroy() {
-    this.parent.keys = this.parent.keys.filter(e => e.key != this.key).map(e => e.getBase())
+    this.parent.keys = this.parent.keys.filter(e => {
+      localStorage.removeItem(e.key);
+      return e.key != this.key;
+    }).map(e => e.getBase())
   }
   getBase() {
     return { key: this.key }
@@ -29,7 +32,7 @@ export class localStorageDbItem {
     return data ? JSON.stringify(data) : this.data;
   }
   onChange(fns) {
-    return this.parent.on("ChangeItem", ({ detail: { key, newValue, oldValue } }) => {
+    return this.parent.on("UpdateItem", ({ detail: { key, newValue, oldValue } }) => {
       if (key == this.key) fns({ newValue, oldValue });
     })
   }
@@ -40,7 +43,7 @@ export class localStorageDb extends EventTarget {
     super();
     this._keys = [];
     window.addEventListener("storage", ({ key, newValue, oldValue }) => {
-      if (key !== null) this.emit("ChangeItem", { key, newValue, oldValue });
+      if (key !== null) this.emit("UpdateItem", { key, newValue, oldValue });
       else this.emit("ClearStorage");
     })
   }
@@ -61,6 +64,9 @@ export class localStorageDb extends EventTarget {
     this._keys = [...this._keys, Item.getBase()];
     this.emit("addItem", Item)
     return Item;
+  }
+  clear() {
+    localStorage.clear();
   }
   emit(name, data) {
     if (data) return this.dispatchEvent(new CustomEvent(name, { detail: data, cancelable: true }))
