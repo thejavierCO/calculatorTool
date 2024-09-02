@@ -4,6 +4,7 @@ import { Store } from "./store"
 export default class StoreUseLocalStorage extends Store {
   constructor(fnsUnsuscribe) {
     super((setInternalStore) => {
+      console.log("start")
       this.Keys = new localStorageDb();
       const store = this.Keys.add("store").defaultData("[]")
       setInternalStore(store.toJSON());

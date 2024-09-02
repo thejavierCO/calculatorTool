@@ -1,38 +1,46 @@
-<script lang="ts">
-  import type { ITime, IStatus } from "../../types";
-
-  import { createEventDispatcher, onMount } from "svelte";
-  import Counter from "./countInterval.svelte";
+<script>
+  import {
+    createEventDispatcher,
+    onMount,
+    onDestroy,
+    beforeUpdate,
+  } from "svelte";
+  import Timer from "./timer.js";
   let emit = createEventDispatcher();
 
-  export let seconds: number = 1;
-  export let time: ITime = { start: 0, pause: 0, end: 0 };
+  export let time = { start: 0, pause: 0, end: 0 };
+  export let status = "Stop";
+  export let seconds = 1;
   export let autoRun = false;
-  export let status: IStatus = "Stop";
+
+  let timer = new Timer(seconds * 1000, status, time);
+  let position = timer.formatTime(0);
+
+  timer.on("clock", ({ detail: t }) => (position = timer.formatTime(t)));
+  timer.on("Status", ({ target }) => {
+    status = target.status;
+    emit("Status", { status, time });
+  });
 
   onMount(() => {
-    if (autoRun) status = "Play";
+    if (autoRun) {
+      setTimeout(() => timer.Play(), 10);
+    }
+  });
+  beforeUpdate(() => {
+    timer.updateTime(time);
+    timer.updateStatus(status);
+    timer.updateMiliseconds(seconds * 1000);
+  });
+  onDestroy(() => {
+    timer.Destroy();
   });
 </script>
 
-<Counter
-  on:current_status_timer={({ detail }) => {
-    if (status != detail.status) emit("state", detail);
-  }}
+<slot
+  btnPlay={() => timer.Play()}
+  btnStop={() => timer.Stop()}
+  btnPause={() => timer.Pause()}
   {status}
-  {seconds}
-  {time}
-  let:current_time
-  let:actions
->
-  <slot
-    btnPause={() => actions.pause()}
-    btnStop={() => actions.stop()}
-    btnPlay={() => actions.play()}
-    {seconds}
-    {autoRun}
-    {status}
-    {time}
-    {current_time}
-  />
-</Counter>
+  formatTime={position}
+/>

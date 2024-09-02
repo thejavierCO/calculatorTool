@@ -9,7 +9,7 @@ export class localStorageDbItem {
   set data(data) {
     if (typeof data != "string") throw "require type string for save"
     localStorage.setItem(this.key, data);
-    this.parent.emit("ChangeItem", this);
+    this.parent.emit("changeItem", this);
   }
   defaultData(defaultData) {
     if (defaultData && this.data == null) this.data = defaultData;
@@ -17,11 +17,7 @@ export class localStorageDbItem {
     return this;
   }
   Destroy() {
-    this.parent.keys = this.parent.keys.filter(e => {
-      localStorage.removeItem(e.key)
-      return e.key != this.key
-    }).map(e => e.getBase())
-    this.parent.emit("delItem", this.key);
+    this.parent.keys = this.parent.keys.filter(e => e.key != this.key).map(e => e.getBase())
   }
   getBase() {
     return { key: this.key }
@@ -44,9 +40,8 @@ export class localStorageDb extends EventTarget {
     super();
     this._keys = [];
     window.addEventListener("storage", ({ key, newValue, oldValue }) => {
-      if (key !== null) {
-        this.emit("ChangeItem", { key, newValue, oldValue });
-      } else this.emit("ClearStorage");
+      if (key !== null) this.emit("ChangeItem", { key, newValue, oldValue });
+      else this.emit("ClearStorage");
     })
   }
   get keys() {
@@ -66,10 +61,6 @@ export class localStorageDb extends EventTarget {
     this._keys = [...this._keys, Item.getBase()];
     this.emit("addItem", Item)
     return Item;
-  }
-  clear() {
-    localStorage.clear();
-    this.emit("ClearStorage");
   }
   emit(name, data) {
     if (data) return this.dispatchEvent(new CustomEvent(name, { detail: data, cancelable: true }))
