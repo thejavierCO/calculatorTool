@@ -25,9 +25,7 @@
   });
 
   onMount(() => {
-    if (autoRun) {
-      setTimeout(() => timer.Play(), 10);
-    }
+    if (autoRun) timer.status = "Play";
   });
 </script>
 

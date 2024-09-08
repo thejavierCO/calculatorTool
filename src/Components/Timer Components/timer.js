@@ -5,7 +5,7 @@ export class Clock extends EventTarget {
     const updateClock = () => {
       this._currentTime = new Date().getTime();
       this.emit("clock", this._currentTime)
-      console.log(window.requestAnimationFrame(updateClock));
+      window.requestAnimationFrame(updateClock);
     };
     updateClock();
   }
