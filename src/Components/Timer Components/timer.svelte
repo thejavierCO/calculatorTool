@@ -13,27 +13,21 @@
   export let seconds = 1;
   export let autoRun = false;
 
-  let timer = new Timer(seconds * 1000, status, time);
-  let position = timer.formatTime(0);
+  let timer = new Timer(seconds * 1000);
+  let position = timer.formatTime;
 
-  timer.on("clock", ({ detail: t }) => (position = timer.formatTime(t)));
+  timer.time = time;
+  timer.on("clock", (_) => (position = timer.formatTime));
   timer.on("Status", ({ target }) => {
     status = target.status;
-    emit("Status", { status, time });
+    time = target.time;
+    emit("Status", { status: target.status, time: target.time });
   });
 
   onMount(() => {
     if (autoRun) {
       setTimeout(() => timer.Play(), 10);
     }
-  });
-  beforeUpdate(() => {
-    timer.updateTime(time);
-    timer.updateStatus(status);
-    timer.updateMiliseconds(seconds * 1000);
-  });
-  onDestroy(() => {
-    timer.Destroy();
   });
 </script>
 

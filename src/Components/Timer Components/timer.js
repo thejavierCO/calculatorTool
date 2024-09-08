@@ -1,22 +1,28 @@
-import { readable, get } from "svelte/store";
-
-export class Clock {
-  constructor(fns) {
-    this._posicion = readable(0, (set) => {
-      const updateClock = _ => {
-        set(new Date().getTime())
-        window.requestAnimationFrame(updateClock);
-        if (fns) fns(this);
-      }
-      let clock = window.requestAnimationFrame(updateClock);
-      return _ => window.cancelAnimationFrame(clock);
-    })
+export class Clock extends EventTarget {
+  constructor() {
+    super();
+    this._currentTime = 0;
+    const updateClock = () => {
+      this._currentTime = new Date().getTime();
+      this.emit("clock", this._currentTime)
+      console.log(window.requestAnimationFrame(updateClock));
+    };
+    updateClock();
   }
-  get subscribe() {
-    return this._posicion.subscribe
+  subscribe(fns) {
+    return this.on("clock", ({ detail }) => fns(detail));
   }
   get currentTime() {
-    return get(this._posicion)
+    return this._currentTime
+  }
+  on(event, callback) {
+    this.addEventListener(event, callback);
+    return () => {
+      this.removeEventListener(event, callback);
+    }
+  }
+  emit(event, data) {
+    return this.dispatchEvent(new CustomEvent(event, { detail: data }));
   }
 }
 
@@ -44,77 +50,72 @@ export class timeFormat {
   }
 }
 
-export default class Timer extends EventTarget {
-  constructor(Miliseconds, status, time) {
+export default class Timer extends Clock {
+  constructor(milliseconds, start = 0, pause = 0, end = 0) {
     super();
-    this.status = status || "Stop";
-    this.Miliseconds = Miliseconds;
-    this.current = 0;
-    this.time = time || { start: 0, end: 0, pause: 0 };
-    this.clock = new Clock();
-    this.Destroy = this.clock.subscribe(t => {
-      this.current = t
-      if (this.status == "Play" && this.current >= this.time.end) this.Stop();
-      this.emit("clock", this.status == "Play" ? this.time.end - t : this.status == "Pause" ? this.time.end - this.time.pause : 0);
-    });
+    this._start = start;
+    this._pause = pause;
+    this._end = end;
+    this._posicion = 0;
+    this._status = "Stop";
+    this._milliseconds = milliseconds;
   }
-  updateTime(data) {
-    this.time = data;
+  get formatTime() {
+    return new timeFormat(this._posicion);
   }
-  updateStatus(data) {
-    this.status = data;
+  get time() {
+    return ({ start: this._start, pause: this._pause, end: this._end })
   }
-  updateMiliseconds(data) {
-    this.Miliseconds = data;
+  set time(time) {
+    let { start, pause, end } = time;
+    this._start = start;
+    this._pause = pause;
+    this._end = end;
   }
-  formatTime(data) {
-    return new timeFormat(data);
+  get status() {
+    return this._status
+  }
+  set status(data) {
+    if (data == "Play") {
+      this.Play()
+    } else if (data == "Pause") {
+      this.Pause()
+    } else if (data == "Stop") {
+      this.Stop()
+    }
+    this._status = data;
   }
   Play() {
-    if (this.current == 0) throw "currentTime is 0"
-    if (this.time.pause != 0) {
-      let posPause = Math.round(this.time.pause - this.time.start),
-        timePause = this.time.end - this.time.start,
+    const currentTime = new Date().getTime();
+    if (this._pause != 0) {
+      let posPause = Math.round(this._pause - this._start),
+        timePause = this._end - this._start,
         timeOff = timePause - posPause;
-      this.time.start = this.current;
-      this.time.end = this.time.start + timeOff;
-      this.time.pause = 0;
-    } else if (this.time.start == 0 && this.time.end == 0) {
-      this.time.start = this.current;
-      this.time.end = this.time.start + this.Miliseconds;
-    } else {
-      throw new Error("Timer already running");
+      this._start = currentTime;
+      this._end = this._start + timeOff;
+      this._pause = 0;
+    } else if (this._pause == 0 || (this._start == 0 && this._end == 0)) {
+      this._start = currentTime;
+      this._end = this._start + this._milliseconds;
     }
-    this.status = "Play";
+    if (this._start != 0 && this._end != 0) console.warn("currentPlay", this.time);
+    this._position = this._end - this._start;
     this.emit("Play");
     this.emit("Status");
   }
-  Pause() {
-    if (this.time.pause == 0) this.time.pause = this.current;
-    else throw new Error("Timer already paused");
-    this.status = "Pause";
-    this.emit("Pause");
-    this.emit("Status");
-  }
   Stop() {
-    if (this.time.pause != 0) throw new Error("Timer already paused")
-    if (this.time.start != 0 && this.time.end != 0) {
-      this.time.start = 0;
-      this.time.end = 0;
-      this.time.pause = 0;
-    } else throw new Error("Timer already stopped")
-    this.status = "Stop";
-    this.time = { start: 0, end: 0, pause: 0 };
+    if (this._start == 0 && this._end == 0) console.warn("currentStop");
+    this.time = { start: 0, pause: 0, end: 0 };
+    this._position = 0;
     this.emit("Stop");
     this.emit("Status");
   }
-  on(event, callback) {
-    this.addEventListener(event, callback);
-    return () => {
-      this.removeEventListener(event, callback);
-    }
-  }
-  emit(event, data) {
-    return this.dispatchEvent(new CustomEvent(event, { detail: data }));
+  Pause() {
+    const currentTime = new Date().getTime();
+    if (this._pause == 0) this._pause = currentTime;
+    else console.warn("currentPause");
+    this._position = this._end - this._pause;
+    this.emit("Pause");
+    this.emit("Status");
   }
 }
