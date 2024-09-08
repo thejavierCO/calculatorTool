@@ -26,7 +26,7 @@ class StoreItem {
   }
 }
 
-export class Store extends EventTarget {
+export default class Store extends EventTarget {
   Destroy() {
     throw new Error("Method not implemented.");
   }

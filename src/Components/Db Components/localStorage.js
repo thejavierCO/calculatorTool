@@ -38,7 +38,7 @@ export class localStorageDbItem {
   }
 }
 
-export class localStorageDb extends EventTarget {
+export default class localStorageDb extends EventTarget {
   constructor() {
     super();
     this._keys = [];

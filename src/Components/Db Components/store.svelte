@@ -2,7 +2,7 @@
   import { createEventDispatcher, onDestroy, onMount } from "svelte";
   import { get } from "svelte/store";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
-  import { Store } from "./store";
+  import Store from "./store";
   import StoreUseLocalStorage from "./storeAndLocalStorage";
   export let useLocalStorage = false;
 
