@@ -1,0 +1,11 @@
+{
+  "short_name": "TempApp",
+  "name": "Temporizador-app",
+  "description": "aplicaion de temporizadores",
+  "icons": [],
+  "start_url": "./",
+  "background_color": "#000",
+  "display": "fullscreen",
+  "scope": "./",
+  "theme_color": "#fff"
+}
