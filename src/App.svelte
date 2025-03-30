@@ -29,6 +29,7 @@
             if (!hours) hours = 0;
             if (!minutes) minutes = 0;
             if (!seconds) seconds = 0;
+            if(seconds==0 ||hours < 0 || minutes < 0 )return alert("Not defined time");
             let data = {
               status: "Stop",
               seconds: hours * 60 * 60 + minutes * 60 + seconds,
@@ -64,32 +65,33 @@
           let:formatTime
         >
           <h3>
-            <span>{formatTime().Hours}</span>:
-            <span>{formatTime().Minutes}</span>:
-            <span>{formatTime().Seconds}</span>
+            <span>
+              {formatTime().Hours}:
+              {formatTime().Minutes}:
+              {formatTime().Seconds}:
+              {formatTime().Miliseconds}
+            </span>
           </h3>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
             progress={formatTime().useRange(data.seconds)}
           /><br />
-          {#if status == "Play"}
+          {#if status != "Play"}
+            <Button on:click={btnPlay}>
+              <Label>Play</Label>
+            </Button>
+          {:else}
             <Button on:click={btnStop}>
               <Label>Stop</Label>
             </Button>
             <Button on:click={btnPause}>
               <Label>Pause</Label>
             </Button>
-          {:else}
-            <Button on:click={btnPlay}>
-              <Label>Play</Label>
-            </Button>
           {/if}
-        </Timer>
-        <div slot="actions">
           <Button on:click={() => del(id)}>
             <Label>Del</Label>
           </Button>
-        </div>
+        </Timer>
       </Card>
     </div>
     <div class="fab-icon-add">
@@ -115,7 +117,6 @@
       </Fab>
     </div>
   </Store>
-  <!-- </Clock> -->
 </Main>
 
 <style>
