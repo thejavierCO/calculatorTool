@@ -11,6 +11,7 @@
   import InputTime from "./Components/Form Components/inputTime.svelte";
   import Timer from "./Components/Timer Components/timer_inde.svelte";
   import Main from "./Components/Main Components/Main.svelte";
+  import FormatCounter from "./Components/Timer Components/FormatCounter.svelte";
   let open = false;
 </script>
 
@@ -29,12 +30,12 @@
             if (!hours) hours = 0;
             if (!minutes) minutes = 0;
             if (!seconds) seconds = 0;
-            if(seconds==0 ||hours < 0 || minutes < 0 )return alert("Not defined time");
             let data = {
               status: "Stop",
               seconds: hours * 60 * 60 + minutes * 60 + seconds,
               time: { start: 0, end: 0, pause: 0 },
             };
+            if(data.seconds==0)throw alert("not defined time");
             add(data);
             open = !open;
           }}
@@ -62,20 +63,25 @@
           let:btnStop
           let:btnPause
           let:status
-          let:formatTime
+          let:position
         >
+          <FormatCounter time={position} let:Data>
           <h3>
-            <span>
-              {formatTime().Hours}:
-              {formatTime().Minutes}:
-              {formatTime().Seconds}:
-              {formatTime().Miliseconds}
-            </span>
+            <p>
+              {#if Data.Hours != 0}
+                {Data.pad.Hours} : 
+              {/if}
+              {#if Data.Minutes != 0}
+                {Data.pad.Minutes} : 
+              {/if}
+              {Data.pad.Seconds}
+            </p>
           </h3>
           <CircularProgress
             style="height: 200px; width: 200px; stroke:red !important;"
-            progress={formatTime().useRange(data.seconds)}
+            progress={Data.useRange(data.seconds)}
           /><br />
+          </FormatCounter>
           {#if status != "Play"}
             <Button on:click={btnPlay}>
               <Label>Play</Label>
