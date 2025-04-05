@@ -1,6 +1,6 @@
 <script>
   export let time = 0;
-    class timeFormat {
+  class timeFormat {
     constructor(TimeMillis) {
       this._current_time = TimeMillis;
     }
@@ -10,14 +10,23 @@
     get Hours() {
       return Math.trunc(this.current / 1000 / 60 / 60) % 60
     }
+    HoursToSec(){
+      return this.Hours*60*60
+    }
     get Minutes() {
       return Math.trunc(this.current / 1000 / 60) % 60
+    }
+    MinutesToSec(){
+      return this.Minutes*60
     }
     get Seconds() {
       return Math.trunc(this.current / 1000) % 60
     }
+    SecondsToMilis(a){
+      return a?a*1000:this.Seconds*1000
+    }
     get Miliseconds() {
-      return Math.trunc(this.current)
+      return Math.trunc(this.current-this.SecondsToMilis(this.HoursToSec()+this.MinutesToSec()+this.Seconds))
     }
     get pad(){
         return {

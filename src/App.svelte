@@ -24,22 +24,16 @@
       aria-describedby="simple-content"
     >
       <Content id="simple-content">
-        <Form
-          on:submit={({ detail: time }) => {
-            let [hours, minutes, seconds] = time;
-            if (!hours) hours = 0;
-            if (!minutes) minutes = 0;
-            if (!seconds) seconds = 0;
-            let data = {
-              status: "Stop",
-              seconds: hours * 60 * 60 + minutes * 60 + seconds,
-              time: { start: 0, end: 0, pause: 0 },
-            };
-            if(data.seconds==0)throw alert("not defined time");
-            add(data);
-            open = !open;
-          }}
-        >
+        <Form on:submit={({ detail: [h, m, s] }) => {
+          const Sec = (!h?0:h) * 60 * 60 + (!m?0:m) * 60 + (!s?0:s);
+          if(Sec==0) throw alert("not defined time");
+          add({
+            status: "Stop",
+            seconds: Sec,
+            time: { start: 0, end: 0, pause: 0 },
+          });
+          open = !open;
+        }}>
           <InputTime value="0" label="hours" suffix="hrs" />
           <InputTime value="0" label="minutes" suffix="min" />
           <InputTime value="0" label="seconds" suffix="sec" />
@@ -66,21 +60,18 @@
           let:position
         >
           <FormatCounter time={position} let:Data>
-          <h3>
-            <p>
-              {#if Data.Hours != 0}
-                {Data.pad.Hours} : 
-              {/if}
-              {#if Data.Minutes != 0}
-                {Data.pad.Minutes} : 
-              {/if}
-              {Data.pad.Seconds}
-            </p>
-          </h3>
-          <CircularProgress
-            style="height: 200px; width: 200px; stroke:red !important;"
-            progress={Data.useRange(data.seconds)}
-          /><br />
+            <h3>
+              <p>
+                {#if Data.Hours != 0}{Data.pad.Hours}:{/if}
+                {#if Data.Minutes != 0}{Data.pad.Minutes}:{/if}
+                {#if Data.Seconds != 0}{Data.pad.Seconds}:{/if}
+                {Data.pad.Miliseconds}
+              </p>
+            </h3>
+            <CircularProgress
+              style="height: 200px; width: 200px;"
+              progress={Data.useRange(data.seconds)}
+            /><br />
           </FormatCounter>
           {#if status != "Play"}
             <Button on:click={btnPlay}>
