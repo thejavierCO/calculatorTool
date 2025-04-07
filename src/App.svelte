@@ -62,11 +62,10 @@
           <FormatCounter time={position} let:Data>
             <h3>
               <p>
-                {#if Data.Hours != 0}{Data.pad.Hours} :{/if}
-                {#if Data.Minutes != 0}{Data.pad.Minutes} :{/if}
-                {#if Data.Seconds != 0}{Data.pad.Seconds} : {/if}
-                {#if Data.Miliseconds != 0}{Data.pad.Miliseconds}{/if}
-                
+                {#if Data.Hours != 0}{Data.pad.Hours} :{:else }00 :{/if}
+                {#if Data.Minutes != 0}{Data.pad.Minutes} :{:else }00 :{/if}
+                {#if Data.Seconds != 0}{Data.pad.Seconds} :{:else }00 :{/if}
+                {#if Data.Miliseconds != 0}{Data.pad.Miliseconds}{:else }000{/if}
               </p>
             </h3>
             <CircularProgress
